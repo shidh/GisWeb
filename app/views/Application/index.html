@@ -6,6 +6,7 @@
 #{/set}
 #{set 'moreScripts'}
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/jquery.slides.min.js'}"></script>
 	<script type="text/javascript">
 		var map;
 		var ajaxRequest;
@@ -27,9 +28,11 @@
 
 			#{list items:models.Poi.findAll(), as:'poi'}
 				var marker = L.marker([${poi.latitude}, ${poi.longitude}]).addTo(map);
-				var content =	#{list items:0..poi.photos.size()-1, as:'index'}
+				var content =	'<div id="slides_${poi.id}">' +
+								#{list items:0..poi.photos.size()-1, as:'index'}
 									'<img width="200px" src="@{Application.getPicture(poi.id, index)}"/>' +
 								#{/list}
+								'</div>' +
 								'<br />Accuracy: ' + ${poi.accuracy}
 								+ '<br />Altitude: ' + ${poi.altitude}
 								+ '<br />Bearing: ' + ${poi.bearing}
@@ -38,6 +41,13 @@
 								+ '<br />Provider: ${poi.provider}'
 								+ '<br />Time: ' + ${poi.time};
 				marker.bindPopup(content);
+				marker.on('click', function(){
+					$("#slides_${poi.id}").slidesjs({
+						pagination: {
+							active: false
+						}
+					});
+				});
 			#{/list}
 		}
 	</script>
