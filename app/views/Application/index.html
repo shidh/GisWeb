@@ -33,19 +33,32 @@
 									'<img width="200px" src="@{Application.getPicture(poi.id, index)}"/>' +
 								#{/list}
 								'</div>' +
-								'<br />Accuracy: ' + ${poi.accuracy}
-								+ '<br />Altitude: ' + ${poi.altitude}
-								+ '<br />Bearing: ' + ${poi.bearing}
-								+ '<br />Latitude: ' + ${poi.latitude}
-								+ '<br />Longitude: ' + ${poi.longitude}
-								+ '<br />Provider: ${poi.provider}'
-								+ '<br />Time: ' + ${poi.time};
+								'#{CustomTag.form @Application.submitPoiData(), method:"POST", id:"submitPoiData"}' +
+									#{list items:['poi.accuracy','poi.altitude','poi.bearing','poi.latitude','poi.longitude','poi.provider','poi.time'], as:'fieldItem'}
+									#{field fieldItem}
+										'<p>' +
+											'<label>&{field.name.cut('poi.').capFirst()}</label>' +
+											'<input type="text" id="${field.id}" name="${field.name.cut('poi.')}" value="${field.value}" class="submitPoiDataField" readonly="true">' +
+											'<span class="error">${field.error}</span>' +
+										'</p>' +
+									#{/field}
+									#{/list}
+									'<input type="text" id="poi_id" name="id" value="${poi.id}" readonly="true" style="display: none;">' +
+									'<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;" />\#{/CustomTag.form}';
 				marker.bindPopup(content);
 				marker.on('click', function(){
 					$("#slides_${poi.id}").slidesjs({
 						pagination: {
 							active: false
 						}
+					});
+					$("input.submitPoiDataField").click(function(){
+						$(this).removeAttr("readonly");
+						$("#submitPoiDataButton").css("display","inline");
+					});
+					$("#submitPoiDataButton").click(function(){
+						$("input.submitPoiDataField").attr("readonly", "true");
+						$("#submitPoiDataButton").css("display","none");
 					});
 				});
 			#{/list}

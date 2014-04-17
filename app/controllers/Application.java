@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import models.*;
+import tags.*;
 
 public class Application extends Controller {
 
@@ -67,5 +68,19 @@ public class Application extends Controller {
 		Poi poi = Poi.findById(id);
 		response.setContentTypeIfNotSet(poi.photos.get(position).type());
 		renderBinary(poi.photos.get(position).get());
+	}
+
+	public static void submitPoiData(String accuracy, String altitude, String bearing, String id,
+			String latitude, String longitude, String provider, String time) {
+		Poi poi = Poi.findById(Long.valueOf(id));
+		poi.accuracy = Float.valueOf(accuracy);
+		poi.altitude = Double.valueOf(altitude);
+		poi.bearing = Float.valueOf(bearing);
+		poi.latitude = Double.valueOf(latitude);
+		poi.longitude = Double.valueOf(longitude);
+		poi.provider = provider;
+		poi.time = Long.valueOf(time);
+		poi.save();
+		index();
 	}
 }
