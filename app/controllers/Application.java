@@ -8,6 +8,7 @@ import play.mvc.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import models.*;
@@ -16,7 +17,17 @@ import tags.*;
 public class Application extends Controller {
 
 	public static void index() {
-		render();
+		
+		ArrayList<String> poiFieldsList = new ArrayList<String>();
+		Field[] poiFieldsArray = Poi.class.getFields();
+		for (Field field: poiFieldsArray) {
+			String fieldString = field.toString();
+			if (fieldString.contains("models.Poi.") && !fieldString.contains("java.util.List")) {
+				poiFieldsList.add(fieldString.substring(fieldString.lastIndexOf(".Poi.") + 1).toLowerCase());
+			}
+		}
+		
+		render(poiFieldsList);
 	}
 
 	public static void savePOI(String accuracy, String altitude,

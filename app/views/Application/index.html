@@ -34,7 +34,7 @@
 								#{/list}
 								'</div>' +
 								'#{CustomTag.form @Application.submitPoiData(), method:"POST", id:"submitPoiData"}' +
-									#{list items:['poi.accuracy','poi.altitude','poi.bearing','poi.latitude','poi.longitude','poi.provider','poi.time'], as:'fieldItem'}
+									#{list items:poiFieldsList, as:'fieldItem'}
 									#{field fieldItem}
 										'<p>' +
 											'<label>&{field.name.cut('poi.').capFirst()}</label>' +
