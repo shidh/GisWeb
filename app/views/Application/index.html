@@ -28,37 +28,20 @@
 
 			#{list items:models.Poi.findAll(), as:'poi'}
 				var marker = L.marker([${poi.latitude}, ${poi.longitude}]).addTo(map);
-				var content =	'<div id="slides_${poi.id}">' +
+				var content =	'<div id="slides${poi.id}">' +
 								#{list items:0..poi.photos.size()-1, as:'index'}
 									'<img width="200px" src="@{Application.getPicture(poi.id, index)}"/>' +
 								#{/list}
 								'</div>' +
-								'#{CustomTag.form @Application.submitPoiData(), method:"POST", id:"submitPoiData"}' +
-									#{list items:poiFieldsList, as:'fieldItem'}
-									#{field fieldItem}
-										'<p>' +
-											'<label>&{field.name.cut('poi.').capFirst()}</label>' +
-											'<input type="text" id="${field.id}" name="${field.name.cut('poi.')}" value="${field.value}" class="submitPoiDataField" readonly="true">' +
-											'<span class="error">${field.error}</span>' +
-										'</p>' +
-									#{/field}
-									#{/list}
-									'<input type="text" id="poi_id" name="id" value="${poi.id}" readonly="true" style="display: none;">' +
-									'<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;" />\#{/CustomTag.form}';
+								'#{CustomTag.form @Application.editPoi(), method:"POST", id:"editPoi"}' +
+									'<input type="text" id="poiId" name="poiId" value="${poi.id}" readonly="true" style="display: none;">' +
+									'<input id="editPoiDataButton" type="submit" value="Edit" />\#{/CustomTag.form}';
 				marker.bindPopup(content);
 				marker.on('click', function(){
-					$("#slides_${poi.id}").slidesjs({
+					$("#slides${poi.id}").slidesjs({
 						pagination: {
 							active: false
 						}
-					});
-					$("input.submitPoiDataField").click(function(){
-						$(this).removeAttr("readonly");
-						$("#submitPoiDataButton").css("display","inline");
-					});
-					$("#submitPoiDataButton").click(function(){
-						$("input.submitPoiDataField").attr("readonly", "true");
-						$("#submitPoiDataButton").css("display","none");
 					});
 				});
 			#{/list}

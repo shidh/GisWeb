@@ -1,0 +1,34 @@
+#{extends 'main.html'/}
+#{set title:'GisWeb' /}
+#{set 'moreStyles'}
+#{/set}
+#{set 'moreScripts'}
+#{/set}
+
+#{form @Application.updatePoi(), method:"POST", id:"submitPoiData"}
+	<div id="poi"></div>
+	<select name="powerTag" id="powerTag">
+		<option value=""></option>
+		#{list items:models.Poi.getPowerTagFields(), as:"powerTag"}
+			<option value="${powerTag.camelCase()}">${powerTag}</option>
+		#{/list}
+	</select>
+	<div id="poiDetails"></div>
+	<input type="text" id="poiId" name="poiId" value="${poiId}" readonly="true" style="display: none;">
+	<input id="submitPoiDataButton" type="submit" value="Save"/>
+#{/form}
+<script type="text/javascript">
+	$(document).ready(function(){
+		var action = #{jsAction @poi(':poiId') /};
+		$('#poi').load(
+			action({poiId: ${poiId}})
+		);
+	});
+	
+	$("#powerTag").change(function(){
+		var action = #{jsAction @poiDetails(':powerTag', ':poiId') /};
+		$('#poiDetails').load(
+			action({powerTag: $("#powerTag").val(), poiId: ${poiId}})
+		);
+	});
+</script>
