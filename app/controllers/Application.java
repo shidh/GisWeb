@@ -1,8 +1,6 @@
 package controllers;
 
-import play.*;
 import play.db.jpa.Blob;
-import play.db.jpa.GenericModel;
 import play.libs.MimeTypes;
 import play.mvc.*;
 
@@ -43,44 +41,61 @@ public class Application extends Controller {
 		render();
 	}
 
-	public static String poi(String poiId) {
-		return poiHtml("models.Poi", poiId);
+	public static String poi(String poiId) throws IllegalArgumentException,
+			IllegalAccessException {
+		Poi poi = Poi.findById(Long.valueOf(poiId));
+		Field[] fields = Poi.class.getFields();
+
+		String output = poiHtml(fields, poi);
+
+		return output;
 	}
 
-	public static String poiDetails(String powerTag, String poiId) {
-		return poiHtml("models.powerTags." + powerTag, poiId);
+	public static String poiDetails(String powerTag, String poiId)
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchFieldException, SecurityException, ClassNotFoundException {
+		Poi poi = Poi.findById(Long.valueOf(poiId));
+		Object object = Poi.class.getField("powerTag" + powerTag).get(poi);
+		Field[] fields = Class.forName("models.powerTags." + powerTag)
+				.getFields();
+
+		String output = poiHtml(fields, object);
+
+		return output;
 	}
 
-	public static String poiHtml(String className, String poiId) {
+	private static String poiHtml(Field[] fields, Object object)
+			throws IllegalArgumentException, IllegalAccessException {
 		String output = "";
 
-		try {
-			Field[] fields = Class.forName(className).getFields();
-			Poi poi = Poi.findById(Long.valueOf(poiId));
+		for (Field field : fields) {
+			String name = field.getName();
+			String type = field.getType().toString();
 
-			for (Field field : fields) {
-				String type = field.getType().toString();
+			if (!type.equals("interface java.util.List") && !name.equals("id")
+					&& !name.equals("willBeSaved")
+					&& !name.contains("powerTag")) {
+				String value = "";
+				if (object != null && field.get(object) != null) {
+					value = field.get(object).toString();
+				}
+				output += "<p>";
+				output += "<label>" + name + "</label>";
+				output += "<input type='text' id='" + name + "' name='" + name
+						+ "' value='" + value
+						+ "' class='submitPoiDataField' readonly='true'>";
+				output += "</p>";
+			} else if (field.toString().equals(
+					"public java.util.List models.Poi.photos")) {
+				ArrayList list = new ArrayList((List) field.get(object));
 
-				if (!type.equals("interface java.util.List")) {
-					String name = field.getName();
-					String value = "";
-
-					if (className.equals("models.Poi")) {
-						value = field.get(poi).toString();
-					}
-
-					output += "<p>";
-					output += "<label>" + name + "</label>";
-					output += "<input type='text' id='" + name + "' name='"
-							+ name + "' value='" + value
-							+ "' class='submitPoiDataField' readonly='true'>";
-					output += "</p>";
+				for (int i = 0; i < list.size(); i++) {
+					output += "<img width='200px' src='/application/getpicture?position="
+							+ i + "&id=" + ((Poi) object).id.toString() + "'/>";
 				}
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
 		}
-		System.out.println(output);
+
 		return output;
 	}
 

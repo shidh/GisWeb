@@ -8,7 +8,7 @@ import play.db.jpa.Model;
 @Entity
 public class Cable extends Model {
 
-	public byte[] cables;
+	public String cables;
 	public byte circuits;
 	public LocationEnum location;
 	public String name;
