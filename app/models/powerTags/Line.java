@@ -8,7 +8,7 @@ import play.db.jpa.Model;
 @Entity
 public class Line extends Model {
 
-	public byte[] cables;
+	public byte cables;
 	public Operator operator;
 	public String ref;
 	public int voltage;

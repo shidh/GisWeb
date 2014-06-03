@@ -8,9 +8,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import models.*;
+import models.powerTags.Generator;
+import models.powerTags.Generator.MethodEnum;
+import models.powerTags.Generator.TypeEnum;
+import models.powerTags.Generator.MethodEnum.*;
+import models.powerTags.Generator.SourceEnum;
+import models.powerTags.Generator.SourceEnum.*;
 
 public class Application extends Controller {
 
@@ -42,30 +50,50 @@ public class Application extends Controller {
 	}
 
 	public static String poi(String poiId) throws IllegalArgumentException,
-			IllegalAccessException {
+			IllegalAccessException, ClassNotFoundException,
+			NoSuchMethodException, SecurityException, InvocationTargetException {
 		Poi poi = Poi.findById(Long.valueOf(poiId));
 		Field[] fields = Poi.class.getFields();
-
-		String output = poiHtml(fields, poi);
-
-		return output;
+		return getHtmlCode(fields, poi, "", "");
 	}
 
 	public static String poiDetails(String powerTag, String poiId)
 			throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, ClassNotFoundException {
+			NoSuchFieldException, SecurityException, ClassNotFoundException,
+			NoSuchMethodException, InvocationTargetException {
 		Poi poi = Poi.findById(Long.valueOf(poiId));
 		Object object = Poi.class.getField("powerTag" + powerTag).get(poi);
 		Field[] fields = Class.forName("models.powerTags." + powerTag)
 				.getFields();
-
-		String output = poiHtml(fields, object);
-
-		return output;
+		return getHtmlCode(fields, object, "", "");
 	}
 
-	private static String poiHtml(Field[] fields, Object object)
-			throws IllegalArgumentException, IllegalAccessException {
+	public static String generatorMethod(String source, String poiId)
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchFieldException, SecurityException, ClassNotFoundException,
+			NoSuchMethodException, InvocationTargetException {
+		Poi poi = Poi.findById(Long.valueOf(poiId));
+		Object object = Poi.class.getField("powerTagGenerator").get(poi);
+		Field[] fields = {Class.forName("models.powerTags.Generator")
+				.getField("method")};
+		return getHtmlCode(fields, object, source, "");
+	}
+
+	public static String generatorType(String source, String method, String poiId)
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchFieldException, SecurityException, ClassNotFoundException,
+			NoSuchMethodException, InvocationTargetException {
+		Poi poi = Poi.findById(Long.valueOf(poiId));
+		Object object = Poi.class.getField("powerTagGenerator").get(poi);
+		Field[] fields = {Class.forName("models.powerTags.Generator")
+				.getField("type")};
+		return getHtmlCode(fields, object, source, method);
+	}
+	
+	private static String getHtmlCode(Field[] fields, Object object, String source, String method)
+			throws IllegalArgumentException, IllegalAccessException,
+			ClassNotFoundException, NoSuchMethodException, SecurityException,
+			InvocationTargetException {
 		String output = "";
 
 		for (Field field : fields) {
@@ -75,16 +103,73 @@ public class Application extends Controller {
 			if (!type.equals("interface java.util.List") && !name.equals("id")
 					&& !name.equals("willBeSaved")
 					&& !name.contains("powerTag")) {
-				String value = "";
-				if (object != null && field.get(object) != null) {
-					value = field.get(object).toString();
+				
+				if (type.contains("Generator$MethodEnum") && fields.length == 1) {
+					MethodEnum[] methods = Generator.getMethods(SourceEnum.valueOf(source));
+					output += "<label for='" + name + "'>" + name + "</label>";
+					output += "<select name='" + name + "' id='" + name + "'>";
+					output += "<option value=''></option>";
+					
+					Method getName = MethodEnum.class.getMethod("getName");
+					Method getType = MethodEnum.class.getMethod("name");
+					
+					for (MethodEnum methodEnum: methods) {
+						String enumName = (String) getName.invoke(methodEnum);
+						String enumType = (String) getType.invoke(methodEnum);
+						output += "<option value='" + enumType + "'>"
+								+ enumName + "</option>";
+					}
+					output += "</select>";
+				} else if (type.contains("Generator$TypeEnum") && fields.length == 1) {
+					TypeEnum[] types = Generator.getTypes(SourceEnum.valueOf(source), MethodEnum.valueOf(method));
+					output += "<label for='" + name + "'>" + name + "</label>";
+					output += "<select name='" + name + "' id='" + name + "'>";
+					output += "<option value=''></option>";
+					
+					Method getName = TypeEnum.class.getMethod("getName");
+					Method getType = TypeEnum.class.getMethod("name");
+					
+					for (TypeEnum typeEnum: types) {
+						String enumName = (String) getName.invoke(typeEnum);
+						String enumType = (String) getType.invoke(typeEnum);
+						output += "<option value='" + enumType + "'>"
+								+ enumName + "</option>";
+					}
+					output += "</select>";
+				} else if (type.contains("Enum") && !type.contains("Generator$MethodEnum") && !type.contains("Generator$TypeEnum")) {
+					Class enumClass = Class.forName(type.replace("class ", ""));
+					Object[] enumConstants = enumClass.getEnumConstants();
+					Method getName = enumClass.getMethod("getName");
+					Method getType = enumClass.getMethod("name");
+					output += "<label for='" + name + "'>" + name + "</label>";
+					output += "<select name='" + name + "' id='" + name + "'>";
+					output += "<option value=''></option>";
+
+					for (Object enumConstant : enumConstants) {
+						String enumName = (String) getName.invoke(enumConstant);
+						String enumType = (String) getType.invoke(enumConstant);
+						output += "<option value='" + enumType + "'>"
+								+ enumName + "</option>";
+					}
+					output += "</select>";
+
+					if (type.contains("Generator$SourceEnum")) {
+						output += "<div id='generatorMethod'></div>";
+						output += "<div id='generatorType'></div>";
+					}
+				} else {
+					String value = "";
+
+					if (object != null && field.get(object) != null) {
+						value = field.get(object).toString();
+					}
+					output += "<p>";
+					output += "<label>" + name + "</label>";
+					output += "<input type='text' id='" + name + "' name='"
+							+ name + "' value='" + value
+							+ "' class='submitPoiDataField' readonly='true'>";
+					output += "</p>";
 				}
-				output += "<p>";
-				output += "<label>" + name + "</label>";
-				output += "<input type='text' id='" + name + "' name='" + name
-						+ "' value='" + value
-						+ "' class='submitPoiDataField' readonly='true'>";
-				output += "</p>";
 			} else if (field.toString().equals(
 					"public java.util.List models.Poi.photos")) {
 				ArrayList list = new ArrayList((List) field.get(object));

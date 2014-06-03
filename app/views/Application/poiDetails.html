@@ -7,6 +7,7 @@
 
 #{form @Application.updatePoi(), method:"POST", id:"submitPoiData"}
 	<div id="poi"></div>
+	<label for="powerTag">power tag</label>
 	<select name="powerTag" id="powerTag">
 		<option value=""></option>
 		#{list items:models.Poi.getPowerTagFields(), as:"powerTag"}
@@ -25,10 +26,40 @@
 		);
 	});
 	
+	$('#poiDetails').on('change', '#source', function(){
+		var action = #{jsAction @generatorMethod(':source', ':poiId') /};
+		$('#generatorType').empty();
+		if ($("#source").val() == "") {
+			$('#generatorMethod').empty();
+		}
+		else {
+			$('#generatorMethod').load(
+				action({source: $("#source").val(), poiId: ${poiId}})
+			);
+		};
+	});
+	
+	$('#poiDetails').on('change', '#method', function(){
+		var action = #{jsAction @generatorType(':source', ':method', ':poiId') /};
+		if ($("#method").val() == "") {
+			$('#generatorType').empty();
+		}
+		else {
+			$('#generatorType').load(
+				action({source: $("#source").val(), method: $("#method").val(), poiId: ${poiId}})
+			);
+		};
+	});
+	
 	$("#powerTag").change(function(){
 		var action = #{jsAction @poiDetails(':powerTag', ':poiId') /};
-		$('#poiDetails').load(
-			action({powerTag: $("#powerTag").val(), poiId: ${poiId}})
-		);
+		if ($("#powerTag").val() == "") {
+			$('#poiDetails').empty();
+		}
+		else {
+			$('#poiDetails').load(
+				action({powerTag: $("#powerTag").val(), poiId: ${poiId}})
+			);
+		};
 	});
 </script>

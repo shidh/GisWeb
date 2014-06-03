@@ -187,7 +187,7 @@ public class Generator extends Model {
 		}
 	}
 
-	private enum MethodEnum {
+	public enum MethodEnum {
 		BARRAGE("barrage"), COMBUSTION("combustion"), FISSION("fission"), FUSION(
 				"fusion"), GASIFICATION("gasification"), PHOTOVOLTAIC(
 				"photovoltaic"), RUN_OF_THE_RIVER("run of the river"), STREAM(
