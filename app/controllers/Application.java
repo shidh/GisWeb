@@ -89,7 +89,7 @@ public class Application extends Controller {
 				.getField("type")};
 		return getHtmlCode(fields, object, source, method);
 	}
-	
+
 	private static String getHtmlCode(Field[] fields, Object object, String source, String method)
 			throws IllegalArgumentException, IllegalAccessException,
 			ClassNotFoundException, NoSuchMethodException, SecurityException,
@@ -104,36 +104,26 @@ public class Application extends Controller {
 					&& !name.equals("willBeSaved")
 					&& !name.contains("powerTag")) {
 				
+				String select = "<label for='" + name + "'>" + name + "</label>";
+				select += "<select name='" + name + "' id='" + name + "'>";
+				select += "<option value=''></option>";
+
 				if (type.contains("Generator$MethodEnum") && fields.length == 1) {
 					MethodEnum[] methods = Generator.getMethods(SourceEnum.valueOf(source));
-					output += "<label for='" + name + "'>" + name + "</label>";
-					output += "<select name='" + name + "' id='" + name + "'>";
-					output += "<option value=''></option>";
-					
-					Method getName = MethodEnum.class.getMethod("getName");
-					Method getType = MethodEnum.class.getMethod("name");
-					
+					output += select;
+
 					for (MethodEnum methodEnum: methods) {
-						String enumName = (String) getName.invoke(methodEnum);
-						String enumType = (String) getType.invoke(methodEnum);
-						output += "<option value='" + enumType + "'>"
-								+ enumName + "</option>";
+						output += "<option value='" + methodEnum.name() + "'>"
+								+ methodEnum.name + "</option>";
 					}
 					output += "</select>";
 				} else if (type.contains("Generator$TypeEnum") && fields.length == 1) {
 					TypeEnum[] types = Generator.getTypes(SourceEnum.valueOf(source), MethodEnum.valueOf(method));
-					output += "<label for='" + name + "'>" + name + "</label>";
-					output += "<select name='" + name + "' id='" + name + "'>";
-					output += "<option value=''></option>";
-					
-					Method getName = TypeEnum.class.getMethod("getName");
-					Method getType = TypeEnum.class.getMethod("name");
-					
+					output += select;
+
 					for (TypeEnum typeEnum: types) {
-						String enumName = (String) getName.invoke(typeEnum);
-						String enumType = (String) getType.invoke(typeEnum);
-						output += "<option value='" + enumType + "'>"
-								+ enumName + "</option>";
+						output += "<option value='" + typeEnum.name() + "'>"
+								+ typeEnum.name + "</option>";
 					}
 					output += "</select>";
 				} else if (type.contains("Enum") && !type.contains("Generator$MethodEnum") && !type.contains("Generator$TypeEnum")) {
@@ -141,9 +131,7 @@ public class Application extends Controller {
 					Object[] enumConstants = enumClass.getEnumConstants();
 					Method getName = enumClass.getMethod("getName");
 					Method getType = enumClass.getMethod("name");
-					output += "<label for='" + name + "'>" + name + "</label>";
-					output += "<select name='" + name + "' id='" + name + "'>";
-					output += "<option value=''></option>";
+					output += select;
 
 					for (Object enumConstant : enumConstants) {
 						String enumName = (String) getName.invoke(enumConstant);
@@ -157,14 +145,14 @@ public class Application extends Controller {
 						output += "<div id='generatorMethod'></div>";
 						output += "<div id='generatorType'></div>";
 					}
-				} else {
+				} else if (!type.contains("Generator$MethodEnum") && !type.contains("Generator$TypeEnum")) {
 					String value = "";
 
 					if (object != null && field.get(object) != null) {
 						value = field.get(object).toString();
 					}
 					output += "<p>";
-					output += "<label>" + name + "</label>";
+					output += "<label for='" + name + "'>" + name + "</label>";
 					output += "<input type='text' id='" + name + "' name='"
 							+ name + "' value='" + value
 							+ "' class='submitPoiDataField' readonly='true'>";
