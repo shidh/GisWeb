@@ -27,7 +27,7 @@
 	});
 	
 	$('#poiDetails').on('change', '#source', function(){
-		var action = #{jsAction @generatorMethod(':source', ':poiId') /};
+		var action = #{jsAction @getMethodHtmlCode(':source', ':poiId') /};
 		$('#generatorType').empty();
 		if ($("#source").val() == "") {
 			$('#generatorMethod').empty();
@@ -40,7 +40,7 @@
 	});
 	
 	$('#poiDetails').on('change', '#method', function(){
-		var action = #{jsAction @generatorType(':source', ':method', ':poiId') /};
+		var action = #{jsAction @getTypeHtmlCode(':source', ':method', ':poiId') /};
 		if ($("#method").val() == "") {
 			$('#generatorType').empty();
 		}

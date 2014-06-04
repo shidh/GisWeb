@@ -68,7 +68,7 @@ public class Application extends Controller {
 		return getHtmlCode(fields, object, "", "");
 	}
 
-	public static String generatorMethod(String source, String poiId)
+	public static String getMethodHtmlCode(String source, String poiId)
 			throws IllegalArgumentException, IllegalAccessException,
 			NoSuchFieldException, SecurityException, ClassNotFoundException,
 			NoSuchMethodException, InvocationTargetException {
@@ -79,7 +79,7 @@ public class Application extends Controller {
 		return getHtmlCode(fields, object, source, "");
 	}
 
-	public static String generatorType(String source, String method, String poiId)
+	public static String getTypeHtmlCode(String source, String method, String poiId)
 			throws IllegalArgumentException, IllegalAccessException,
 			NoSuchFieldException, SecurityException, ClassNotFoundException,
 			NoSuchMethodException, InvocationTargetException {
