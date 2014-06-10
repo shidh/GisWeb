@@ -189,7 +189,7 @@ public class Application extends Controller {
 					output += "<label for='" + name + "'>" + name + "</label>";
 					output += "<input type='text' id='" + name + "' name='"
 							+ name + "' value='" + value
-							+ "' class='submitPoiDataField' readonly>";
+							+ "' class='submitPoiDataField'/>";
 					output += "</p>";
 				}
 			} else if (field.toString().equals(

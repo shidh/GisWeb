@@ -25,6 +25,14 @@
 			action({poiId: ${poiId}})
 		);
 	});
+
+	$("body").on('click', "input.submitPoiDataField", function(){
+		$("#submitPoiDataButton").css("display","inline");
+	});
+
+	$("body").on('change', "select.submitPoiDataField", function(){
+		$("#submitPoiDataButton").css("display","inline");
+	});
 	
 	$('#powerTagDetails').on('change', '#source', function(){
 		var action = #{jsAction @getMethodHtmlCode(':source', ':poiId') /};
