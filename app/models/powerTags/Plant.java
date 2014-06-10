@@ -4,17 +4,22 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import models.powerTags.types.Operator;
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
+import models.types.Operator;
 
 @Entity
-public class Plant extends Model {
+public class Plant extends PowerTag {
 
 	public LanduseEnum landuse;
 	public String name;
 	public Operator operator;
 	public OutputEnum output;
 	public Date start_date;
+
+	public Plant(Poi poi) {
+		super(poi);
+	}
 
 	public enum LanduseEnum {
 		INDUSTRIAL("industrial"), WIND_FARM("wind farm");

@@ -14,9 +14,9 @@
 			<option value="${powerTag.camelCase()}">${powerTag}</option>
 		#{/list}
 	</select>
-	<div id="poiDetails"></div>
+	<div id="powerTagDetails"></div>
 	<input type="text" id="poiId" name="poiId" value="${poiId}" readonly="true" style="display: none;">
-	<input id="submitPoiDataButton" type="submit" value="Save"/>
+	<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;"/>
 #{/form}
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -26,20 +26,31 @@
 		);
 	});
 	
-	$('#poiDetails').on('change', '#source', function(){
+	$('#powerTagDetails').on('change', '#source', function(){
 		var action = #{jsAction @getMethodHtmlCode(':source', ':poiId') /};
 		$('#generatorType').empty();
 		if ($("#source").val() == "") {
 			$('#generatorMethod').empty();
 		}
 		else {
-			$('#generatorMethod').load(
-				action({source: $("#source").val(), poiId: ${poiId}})
+			$.get(action({source: $("#source").val(), poiId: ${poiId}}), function(htmlContent) {
+			if (htmlContent == "") {
+				$('#generatorMethod').empty();
+				action = #{jsAction @getTypeHtmlCode(':source', ':method', ':poiId') /};
+				$('#generatorType').load(
+					action({source: $("#source").val(), method: "NULL", poiId: ${poiId}})
+				);
+			}
+			else {
+			$('#generatorMethod').html(
+				htmlContent
 			);
+			};
+			});
 		};
 	});
 	
-	$('#poiDetails').on('change', '#method', function(){
+	$('#powerTagDetails').on('change', '#method', function(){
 		var action = #{jsAction @getTypeHtmlCode(':source', ':method', ':poiId') /};
 		if ($("#method").val() == "") {
 			$('#generatorType').empty();
@@ -52,12 +63,12 @@
 	});
 	
 	$("#powerTag").change(function(){
-		var action = #{jsAction @poiDetails(':powerTag', ':poiId') /};
+		var action = #{jsAction @powerTagDetails(':powerTag', ':poiId') /};
 		if ($("#powerTag").val() == "") {
-			$('#poiDetails').empty();
+			$('#powerTagDetails').empty();
 		}
 		else {
-			$('#poiDetails').load(
+			$('#powerTagDetails').load(
 				action({powerTag: $("#powerTag").val(), poiId: ${poiId}})
 			);
 		};

@@ -2,10 +2,11 @@ package models.powerTags;
 
 import javax.persistence.Entity;
 
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
 
 @Entity
-public class Transformer extends Model {
+public class Transformer extends PowerTag {
 
 	public Float frequency;
 	public LocationEnum location;
@@ -13,6 +14,10 @@ public class Transformer extends Model {
 	public int rating;
 	public TransformerEnum transformerType;
 	public int voltage;
+
+	public Transformer(Poi poi) {
+		super(poi);
+	}
 
 	public enum LocationEnum {
 		INDOOR("indoor"), OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(

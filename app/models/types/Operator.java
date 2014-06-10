@@ -1,4 +1,4 @@
-package models.powerTags.types;
+package models.types;
 
 import javax.persistence.Entity;
 

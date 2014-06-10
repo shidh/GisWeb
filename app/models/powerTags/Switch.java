@@ -2,9 +2,13 @@ package models.powerTags;
 
 import javax.persistence.Entity;
 
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
 
 @Entity
-public class Switch extends Model {
+public class Switch extends PowerTag {
 
+	public Switch(Poi poi) {
+		super(poi);
+	}
 }

@@ -4,10 +4,11 @@ import java.awt.Color;
 
 import javax.persistence.Entity;
 
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
 
 @Entity
-public class Tower extends Model {
+public class Tower extends PowerTag {
 
 	public Color color;
 	public DesignEnum design;
@@ -16,6 +17,10 @@ public class Tower extends Model {
 	public String ref;
 	public StructureEnum structure;
 	public TypeEnum type;
+
+	public Tower(Poi poi) {
+		super(poi);
+	}
 
 	public enum DesignEnum {
 		ASYMMETRIC("asymmetric"), BARREL("barrel"), BIPOLE("bipole"), DELTA(

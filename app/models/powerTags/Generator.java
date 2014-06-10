@@ -4,11 +4,12 @@ import java.util.Arrays;
 
 import javax.persistence.Entity;
 
-import models.powerTags.types.Operator;
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
+import models.types.Operator;
 
 @Entity
-public class Generator extends Model {
+public class Generator extends PowerTag {
 
 	public String name;
 	public Operator operator;
@@ -17,6 +18,10 @@ public class Generator extends Model {
 	public SourceEnum source;
 	public MethodEnum method;
 	public TypeEnum type;
+
+	public Generator(Poi poi) {
+		super(poi);
+	}
 
 	public static MethodEnum[] getMethods(SourceEnum source) {
 
@@ -192,7 +197,9 @@ public class Generator extends Model {
 				"fusion"), GASIFICATION("gasification"), PHOTOVOLTAIC(
 				"photovoltaic"), RUN_OF_THE_RIVER("run of the river"), STREAM(
 				"stream"), THERMAL("thermal"), WATER_PUMPED_STORAGE(
-				"water pumped storage"), WATER_STORAGE("water storage");
+				"water pumped storage"), WATER_STORAGE("water storage"), NULL(
+				"null");
+		;
 
 		public final String name;
 
@@ -213,7 +220,7 @@ public class Generator extends Model {
 				"solar photovoltaic panel"), SOLAR_THERMAL_COLLECTOR(
 				"solar thermal collector"), STEAM_GENERATOR("steam generator"), STEAM_TURBINE(
 				"steam turbine"), STELLARATOR("stellarator"), TOKAMAK("tokamak"), VERTICAL_AXIS(
-				"vertical axis"), VVER("VVER");
+				"vertical axis"), VVER("VVER"), NULL("null");
 
 		public final String name;
 

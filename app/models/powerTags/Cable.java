@@ -2,11 +2,12 @@ package models.powerTags;
 
 import javax.persistence.Entity;
 
-import models.powerTags.types.Operator;
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
+import models.types.Operator;
 
 @Entity
-public class Cable extends Model {
+public class Cable extends PowerTag {
 
 	public String cables;
 	public byte circuits;
@@ -15,6 +16,10 @@ public class Cable extends Model {
 	public Operator operator;
 	public String ref;
 	public int voltage;
+
+	public Cable(Poi poi) {
+		super(poi);
+	}
 
 	public enum LocationEnum {
 		OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(

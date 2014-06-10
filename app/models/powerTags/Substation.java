@@ -2,11 +2,12 @@ package models.powerTags;
 
 import javax.persistence.Entity;
 
-import models.powerTags.types.Operator;
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
+import models.types.Operator;
 
 @Entity
-public class Substation extends Model {
+public class Substation extends PowerTag {
 
 	public Boolean gas_insulated;
 	public LocationEnum location;
@@ -15,6 +16,10 @@ public class Substation extends Model {
 	public String ref;
 	public SubstationTypeEnum substationType;
 	public int voltage;
+
+	public Substation(Poi poi) {
+		super(poi);
+	}
 
 	public enum LocationEnum {
 		INDOOR("indoor"), KIOSK("kiosk"), OUTDOOR("outdoor"), PLATFORM(

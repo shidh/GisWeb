@@ -2,10 +2,15 @@ package models.powerTags;
 
 import javax.persistence.Entity;
 
-import play.db.jpa.Model;
+import models.Poi;
+import models.PowerTag;
 
 @Entity
-public class Pole extends Model {
+public class Pole extends PowerTag {
 
 	public String ref;
+
+	public Pole(Poi poi) {
+		super(poi);
+	}
 }

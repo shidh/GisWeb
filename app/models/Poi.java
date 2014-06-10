@@ -1,13 +1,16 @@
 package models;
 
-import java.lang.reflect.Field;
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
-import models.powerTags.*;
 import play.db.jpa.Blob;
 import play.db.jpa.Model;
 
@@ -25,37 +28,10 @@ public class Poi extends Model {
 	public String provider;
 	public long time;
 
-	public Cable powerTagCable;
-	public CableDistributionCabinet powerTagCableDistributionCabinet;
-	public Converter powerTagConverter;
-	public Generator powerTagGenerator;
-	public Line powerTagLine;
-	public MinorLine powerTagMinorLine;
-	public Plant powerTagPlant;
-	public Pole powerTagPole;
-	public Substation powerTagSubstation;
-	public Switch powerTagSwitch;
-	public Tower powerTagTower;
-	public Transformer powerTagTransformer;
+	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
+	public PowerTag powerTag;
 
-	public static ArrayList<String> getPowerTagFields() {
-		Field[] fields = Poi.class.getFields();
-		ArrayList<String> list = new ArrayList<String>();
-
-		for (Field field : fields) {
-			String fieldName = field.getName();
-
-			if (fieldName.contains("powerTag")) {
-				list.add(fieldName.replace("powerTag", "")
-						.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2")
-						.toLowerCase());
-			}
-		}
-
-		return list;
-	}
-
-	public void setPoi(String accuracy, String altitude, String bearing,
+	public Poi(String accuracy, String altitude, String bearing,
 			String latitude, String longitude, String provider, String time) {
 		this.accuracy = Float.parseFloat(accuracy);
 		this.altitude = Double.parseDouble(altitude);
@@ -64,5 +40,30 @@ public class Poi extends Model {
 		this.longitude = Double.parseDouble(longitude);
 		this.provider = provider;
 		this.time = Long.parseLong(time);
+		this.photos = new ArrayList<Blob>();
+	}
+
+	/**
+	 * Based on the work of Mike B.
+	 * (http://mike.shannonandmike.net/2009/09/02/java
+	 * -reflecting-to-get-all-classes-in-a-package/)
+	 * 
+	 * @return
+	 */
+	public static ArrayList<String> getPowerTagFields() {
+		ArrayList<String> list = new ArrayList<String>();
+		String packageName = "/models/powerTags";
+		URL directoryURL = Thread.currentThread().getContextClassLoader()
+				.getResource(packageName);
+		String directoryString = directoryURL.getFile();
+		File directory = new File(directoryString);
+		String[] files = directory.list();
+
+		for (String fileName : files) {
+			list.add(fileName.replace(".java", "")
+					.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2").toLowerCase());
+		}
+		Collections.sort(list);
+		return list;
 	}
 }
