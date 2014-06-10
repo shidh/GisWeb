@@ -8,7 +8,7 @@
 #{form @Application.updatePoi(), method:"POST", id:"submitPoiData"}
 	<div id="poi"></div>
 	<label for="powerTag">power tag</label>
-	<select name="powerTag" id="powerTag">
+	<select name="powerTag" id="powerTag" class='submitPoiDataField'>
 		<option value=""> </option>
 		#{list items:models.Poi.getPowerTagFields(), as:"powerTag"}
 			<option value="${powerTag.camelCase()}">${powerTag}</option>

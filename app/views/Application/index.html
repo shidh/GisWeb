@@ -34,7 +34,7 @@
 								#{/list}
 								'</div>' +
 								'#{CustomTag.form @Application.editPoi(), method:"POST", id:"editPoi"}' +
-									'<input type="text" id="poiId" name="poiId" value="${poi.id}" readonly="true" style="display: none;">' +
+									'<input type="text" id="poiId" name="poiId" value="${poi.id}" readonly style="display: none;"/>' +
 									'<input id="editPoiDataButton" type="submit" value="Edit" />\#{/CustomTag.form}';
 				marker.bindPopup(content);
 				marker.on('click', function(){

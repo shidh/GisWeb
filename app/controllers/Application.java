@@ -118,7 +118,7 @@ public class Application extends Controller {
 
 				String select = "<label for='" + name + "'>" + name
 						+ "</label>";
-				select += "<select name='" + name + "' id='" + name + "'>";
+				select += "<select name='" + name + "' id='" + name + "' class='submitPoiDataField'>";
 				select += "<option value=''> </option>";
 
 				if (type.contains("Generator$MethodEnum") && fields.length == 1) {
