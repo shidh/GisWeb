@@ -119,7 +119,7 @@ public class Application extends Controller {
 				String select = "<label for='" + name + "'>" + name
 						+ "</label>";
 				select += "<select name='" + name + "' id='" + name + "'>";
-				select += "<option value=''></option>";
+				select += "<option value=''> </option>";
 
 				if (type.contains("Generator$MethodEnum") && fields.length == 1) {
 					MethodEnum[] methods = Generator.getMethods(SourceEnum
@@ -189,7 +189,7 @@ public class Application extends Controller {
 					output += "<label for='" + name + "'>" + name + "</label>";
 					output += "<input type='text' id='" + name + "' name='"
 							+ name + "' value='" + value
-							+ "' class='submitPoiDataField' readonly='true'>";
+							+ "' class='submitPoiDataField' readonly>";
 					output += "</p>";
 				}
 			} else if (field.toString().equals(
@@ -197,11 +197,11 @@ public class Application extends Controller {
 				ArrayList list = new ArrayList((List) field.get(poiPowerTag));
 
 				for (int i = 0; i < list.size(); i++) {
-					output += "<img width='200px' src='/application/getpicture?position="
+					output += "<img width='200' src='/application/getpicture?position="
 							+ i
 							+ "&id="
 							+ ((Poi) poiPowerTag).id.toString()
-							+ "'/>";
+							+ "' alt='image of poi with id " + ((Poi) poiPowerTag).id.toString() + " on position " + i + "'/>";
 				}
 			}
 		}

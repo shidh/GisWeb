@@ -9,13 +9,13 @@
 	<div id="poi"></div>
 	<label for="powerTag">power tag</label>
 	<select name="powerTag" id="powerTag">
-		<option value=""></option>
+		<option value=""> </option>
 		#{list items:models.Poi.getPowerTagFields(), as:"powerTag"}
 			<option value="${powerTag.camelCase()}">${powerTag}</option>
 		#{/list}
 	</select>
 	<div id="powerTagDetails"></div>
-	<input type="text" id="poiId" name="poiId" value="${poiId}" readonly="true" style="display: none;">
+	<input type="text" id="poiId" name="poiId" value="${poiId}" readonly style="display: none;"/>
 	<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;"/>
 #{/form}
 <script type="text/javascript">
