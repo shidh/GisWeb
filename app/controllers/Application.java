@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import models.*;
@@ -117,7 +119,7 @@ public class Application extends Controller {
 					&& !name.equals("willBeSaved")
 					&& !name.contains("powerTag")) {
 
-				String select = "<label for='" + name + "'>" + name
+				String select = "<label for='" + name + "'>" + name.replace("_", " ").replace("T", " t")
 						+ "</label>";
 				select += "<select name='" + name + "' id='" + name
 						+ "' class='submitPoiDataField'>";
@@ -198,12 +200,39 @@ public class Application extends Controller {
 								operator, source, method);
 						output += "<p>Operator END</p>";
 					} else {
+						String lowerCaseType = type.toLowerCase();
+						String parsleyValidator = "";
+						if (lowerCaseType.equals("byte") || 
+								lowerCaseType.equals("double") || 
+								lowerCaseType.equals("class java.lang.float") || 
+								lowerCaseType.equals("float") || 
+								lowerCaseType.equals("int") || 
+								lowerCaseType.equals("long")) {
+							parsleyValidator="data-parsley-type='number'";
+						}
 						output += "<p>";
-						output += "<label for='" + name + "'>" + name
+						output += "<label for='" + name + "'>" + name.replace("_", " ").replace("T", " t")
 								+ "</label>";
-						output += "<input type='text' id='" + name + "' name='"
+						if (name.toLowerCase().contains("time") || name.toLowerCase().contains("date")) {
+							DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+							String date;
+							try {
+								date = dateFormat.format(new Date(Long.parseLong(value))).toString();
+							} catch (Exception e) {
+								date = dateFormat.format(new Date()).toString();
+							}
+							String id = "";
+							if (objectWithValues != null && objectWithValues.getClass() == Poi.class) {
+								id = "poiTime";
+							} else {
+								id = "powerTagTime";
+							}
+							output += "<input id='" + id + "' type='text' value='" + date + "'/>";
+						} else {
+						output += "<input type='text' " + parsleyValidator + " id='" + name + "' name='"
 								+ name + "' value='" + value
 								+ "' class='submitPoiDataField'/>";
+						}
 						output += "</p>";
 					}
 				}

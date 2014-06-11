@@ -1,8 +1,12 @@
 #{extends 'main.html'/}
 #{set title:'GisWeb' /}
 #{set 'moreStyles'}
+	<link rel="stylesheet" href="@{'/public/stylesheets/jquery.datetimepicker.css'}" />
 #{/set}
 #{set 'moreScripts'}
+	<script type="text/javascript" src="@{'/public/javascripts/jquery.slides.min.js'}"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/parsley.min.js'}"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/jquery.datetimepicker.js'}"></script>
 #{/set}
 
 #{form @Application.updatePoi(), method:"POST", id:"submitPoiData"}
@@ -19,6 +23,8 @@
 	<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;"/>
 #{/form}
 <script type="text/javascript">
+	$('#submitPoiData').parsley();
+
 	$(document).ready(function(){
 		var action = #{jsAction @poi(':poiId') /};
 		$('#poi').load(
@@ -26,6 +32,14 @@
 		);
 	});
 
+	$('#poi').on('click', '#poiTime', function(){
+		$('#poiTime').datetimepicker({format:'Y/m/d H:i:s'});
+	});
+
+	$('#powerTagDetails').on('click', '#powerTagTime', function(){
+		$('#powerTagTime').datetimepicker({format:'Y/m/d H:i:s'});
+	});
+	
 	$("body").on('click', "input.submitPoiDataField", function(){
 		$("#submitPoiDataButton").css("display","inline");
 	});
