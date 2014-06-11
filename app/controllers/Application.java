@@ -17,6 +17,7 @@ import models.powerTags.*;
 import models.powerTags.Generator.MethodEnum;
 import models.powerTags.Generator.TypeEnum;
 import models.powerTags.Generator.SourceEnum;
+import models.types.Operator;
 
 public class Application extends Controller {
 
@@ -118,7 +119,8 @@ public class Application extends Controller {
 
 				String select = "<label for='" + name + "'>" + name
 						+ "</label>";
-				select += "<select name='" + name + "' id='" + name + "' class='submitPoiDataField'>";
+				select += "<select name='" + name + "' id='" + name
+						+ "' class='submitPoiDataField'>";
 				select += "<option value=''> </option>";
 
 				if (type.contains("Generator$MethodEnum") && fields.length == 1) {
@@ -181,27 +183,43 @@ public class Application extends Controller {
 						&& !type.contains("class models.Poi")) {
 					String value = "";
 
-					if (objectWithValues != null && field.get(objectWithValues) != null) {
+					if (objectWithValues != null
+							&& field.get(objectWithValues) != null) {
 						value = field.get(objectWithValues).toString();
 					}
 
-					output += "<p>";
-					output += "<label for='" + name + "'>" + name + "</label>";
-					output += "<input type='text' id='" + name + "' name='"
-							+ name + "' value='" + value
-							+ "' class='submitPoiDataField'/>";
-					output += "</p>";
+					if (type.equals("class models.types.Operator")) {
+						Object operator = null;
+						if (objectWithValues != null) {
+							operator = field.get(objectWithValues);
+						}
+						output += "<p>Operator START</p>";
+						output += getHtmlCode(Operator.class.getFields(),
+								operator, source, method);
+						output += "<p>Operator END</p>";
+					} else {
+						output += "<p>";
+						output += "<label for='" + name + "'>" + name
+								+ "</label>";
+						output += "<input type='text' id='" + name + "' name='"
+								+ name + "' value='" + value
+								+ "' class='submitPoiDataField'/>";
+						output += "</p>";
+					}
 				}
 			} else if (field.toString().equals(
 					"public java.util.List models.Poi.photos")) {
-				ArrayList list = new ArrayList((List) field.get(objectWithValues));
+				ArrayList list = new ArrayList(
+						(List) field.get(objectWithValues));
 
 				for (int i = 0; i < list.size(); i++) {
 					output += "<img width='200' src='/application/getpicture?position="
 							+ i
 							+ "&id="
 							+ ((Poi) objectWithValues).id.toString()
-							+ "' alt='image of poi with id " + ((Poi) objectWithValues).id.toString() + " on position " + i + "'/>";
+							+ "' alt='image of poi with id "
+							+ ((Poi) objectWithValues).id.toString()
+							+ " on position " + i + "'/>";
 				}
 			}
 		}
