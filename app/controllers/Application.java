@@ -101,7 +101,7 @@ public class Application extends Controller {
 		return getHtmlCode(fields, poiPowerTag, source, method);
 	}
 
-	private static String getHtmlCode(Field[] fields, Object poiPowerTag,
+	private static String getHtmlCode(Field[] fields, Object objectWithValues,
 			String source, String method) throws IllegalArgumentException,
 			IllegalAccessException, ClassNotFoundException,
 			NoSuchMethodException, SecurityException,
@@ -181,8 +181,8 @@ public class Application extends Controller {
 						&& !type.contains("class models.Poi")) {
 					String value = "";
 
-					if (poiPowerTag != null && field.get(poiPowerTag) != null) {
-						value = field.get(poiPowerTag).toString();
+					if (objectWithValues != null && field.get(objectWithValues) != null) {
+						value = field.get(objectWithValues).toString();
 					}
 
 					output += "<p>";
@@ -194,14 +194,14 @@ public class Application extends Controller {
 				}
 			} else if (field.toString().equals(
 					"public java.util.List models.Poi.photos")) {
-				ArrayList list = new ArrayList((List) field.get(poiPowerTag));
+				ArrayList list = new ArrayList((List) field.get(objectWithValues));
 
 				for (int i = 0; i < list.size(); i++) {
 					output += "<img width='200' src='/application/getpicture?position="
 							+ i
 							+ "&id="
-							+ ((Poi) poiPowerTag).id.toString()
-							+ "' alt='image of poi with id " + ((Poi) poiPowerTag).id.toString() + " on position " + i + "'/>";
+							+ ((Poi) objectWithValues).id.toString()
+							+ "' alt='image of poi with id " + ((Poi) objectWithValues).id.toString() + " on position " + i + "'/>";
 				}
 			}
 		}
