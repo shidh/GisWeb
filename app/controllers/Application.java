@@ -189,7 +189,7 @@ public class Application extends Controller {
 								id = "powerTagTime";
 							}
 							output += "<input id='" + id + "' type='text' value='" + date + "'/>";
-						} if (type.toLowerCase().equals("class java.awt.color")) {
+						} else if (type.toLowerCase().equals("class java.awt.color")) {
 							output = "<p>";
 							output += "<span>" + name + "</span>";
 							output += "<span class='color-box' style='background-color: #ff8800;'></span>";
