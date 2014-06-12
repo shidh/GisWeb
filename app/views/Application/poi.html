@@ -2,11 +2,22 @@
 #{set title:'GisWeb' /}
 #{set 'moreStyles'}
 	<link rel="stylesheet" href="@{'/public/stylesheets/jquery.datetimepicker.css'}" />
+	<link rel="stylesheet" href="@{'/public/stylesheets/colpick.css'}" />
+	<style type="text/css">
+		.color-box {
+			border: 1px solid black;
+			display: inline-flex;
+			height:10px;
+			margin:5px;
+			width:30px;
+		}
+	</style>
 #{/set}
 #{set 'moreScripts'}
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.slides.min.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/parsley.min.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.datetimepicker.js'}"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/colpick.js'}"></script>
 #{/set}
 
 #{form @Application.updatePoi(), method:"POST", id:"submitPoiData"}
@@ -23,6 +34,8 @@
 	<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;"/>
 #{/form}
 <script type="text/javascript">
+
+
 	$('#submitPoiData').parsley();
 
 	$(document).ready(function(){
@@ -30,6 +43,15 @@
 		$('#poi').load(
 			action({poiId: ${poiId}})
 		);
+	});
+	
+	$('#powerTagDetails').on('click', '.color-box', function(){
+		$('.color-box').colpick({colorScheme:'dark',
+													layout:'rgbhex',
+													color:'ff8800',
+													onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);
+																																	$(el).colpickHide();}})
+													.css('background-color', '#ff8800');
 	});
 
 	$('#poi').on('click', '#poiTime', function(){
