@@ -22,8 +22,7 @@ public class Cable extends PowerTag {
 	}
 
 	public enum LocationEnum {
-		OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(
-				"underwater");
+		OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER("underwater");
 
 		public final String name;
 

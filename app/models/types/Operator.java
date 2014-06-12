@@ -11,8 +11,7 @@ public class Operator extends Model {
 	public TypeEnum type;
 
 	public enum TypeEnum {
-		COMMUNITY("community"), GOVERNMENT("government"), NGO("ngo"), PRIVATE(
-				"private"), PUBLIC("public"), RELIGIOUS("religious");
+		COMMUNITY("community"), GOVERNMENT("government"), NGO("ngo"), PRIVATE("private"), PUBLIC("public"), RELIGIOUS("religious");
 
 		public final String name;
 

@@ -31,8 +31,7 @@ public class Poi extends Model {
 	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
 	public PowerTag powerTag;
 
-	public Poi(String accuracy, String altitude, String bearing,
-			String latitude, String longitude, String provider, String time) {
+	public Poi(String accuracy, String altitude, String bearing, String latitude, String longitude, String provider, String time) {
 		this.accuracy = Float.parseFloat(accuracy);
 		this.altitude = Double.parseDouble(altitude);
 		this.bearing = Float.parseFloat(bearing);
@@ -53,15 +52,13 @@ public class Poi extends Model {
 	public static ArrayList<String> getPowerTagFields() {
 		ArrayList<String> list = new ArrayList<String>();
 		String packageName = "/models/powerTags";
-		URL directoryURL = Thread.currentThread().getContextClassLoader()
-				.getResource(packageName);
+		URL directoryURL = Thread.currentThread().getContextClassLoader().getResource(packageName);
 		String directoryString = directoryURL.getFile();
 		File directory = new File(directoryString);
 		String[] files = directory.list();
 
 		for (String fileName : files) {
-			list.add(fileName.replace(".java", "")
-					.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2").toLowerCase());
+			list.add(fileName.replace(".java", "").replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2").toLowerCase());
 		}
 		Collections.sort(list);
 		return list;

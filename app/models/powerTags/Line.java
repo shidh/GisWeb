@@ -20,8 +20,7 @@ public class Line extends PowerTag {
 	}
 
 	public enum WiresEnum {
-		SINGLE("single"), DOUBLE("double"), TRIPLE("triple"), QUAD("quad"), FIVEFOLD(
-				"fivefold"), SIXFOLD("sixfold"), EIGHTFOLD("eightfold");
+		SINGLE("single"), DOUBLE("double"), TRIPLE("triple"), QUAD("quad"), FIVEFOLD("fivefold"), SIXFOLD("sixfold"), EIGHTFOLD("eightfold");
 
 		public final String name;
 
