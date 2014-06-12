@@ -31,7 +31,8 @@ public class Application extends Controller {
 	}
 
 	public static void editPoi(String poiId) {
-		renderTemplate("/Application/poi.html", poiId);
+		Poi poi = Poi.findById(Long.parseLong(poiId));
+		renderTemplate("/Application/poi.html", poi);
 	}
 
 	public static void getPicture(long id, int position) {

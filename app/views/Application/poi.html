@@ -3,6 +3,7 @@
 #{set 'moreStyles'}
 	<link rel="stylesheet" href="@{'/public/stylesheets/jquery.datetimepicker.css'}" />
 	<link rel="stylesheet" href="@{'/public/stylesheets/colpick.css'}" />
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
 	<style type="text/css">
 		.color-box {
 			border: 1px solid black;
@@ -11,6 +12,10 @@
 			margin:5px;
 			width:30px;
 		}
+		#map {
+			height: 400px;
+			width: 600px;
+		}
 	</style>
 #{/set}
 #{set 'moreScripts'}
@@ -18,10 +23,12 @@
 	<script type="text/javascript" src="@{'/public/javascripts/parsley.min.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.datetimepicker.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/colpick.js'}"></script>
+	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 #{/set}
 
 #{form @Application.updatePoi(), method:"POST", id:"submitPoiData"}
 	<div id="poi"></div>
+	<div id="map"></div>
 	<label for="powerTag">power tag</label>
 	<select name="powerTag" id="powerTag" class='submitPoiDataField'>
 		<option value=""> </option>
@@ -30,18 +37,50 @@
 		#{/list}
 	</select>
 	<div id="powerTagDetails"></div>
-	<input type="text" id="poiId" name="poiId" value="${poiId}" readonly style="display: none;"/>
+	<input type="text" id="poiId" name="poiId" value="${poi.id}" readonly style="display: none;"/>
 	<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;"/>
 #{/form}
 <script type="text/javascript">
+	// set up the map
+	var map = new L.Map('map');
 
+	// create the tile layer with correct attribution
+	var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+	var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 19, attribution: osmAttrib});
 
+	// start the map
+	map.setView(new L.LatLng(${poi.latitude}, ${poi.longitude}),12);
+	map.addLayer(osm);
+
+	var marker = L.marker([${poi.latitude}, ${poi.longitude}], {draggable:'true'}).addTo(map);
+
+	marker.on('dragend', function(event){
+		var marker = event.target;
+		var position = marker.getLatLng();
+		$('#latitude').val(position.lat);
+		$('#longitude').val(position.lng);
+	});
+
+	$('#poi').on('change', '#latitude', function(){
+		var latLng = L.latLng($('#latitude').val(), $('#longitude').val());
+		marker.setLatLng(latLng);
+		map.setView(latLng,12);
+	});
+
+	$('#poi').on('change', '#longitude', function(){
+		var latLng = L.latLng($('#latitude').val(), $('#longitude').val());
+		marker.setLatLng(latLng);
+		map.setView(latLng,12);
+	});
+</script>
+<script type="text/javascript">
 	$('#submitPoiData').parsley();
 
 	$(document).ready(function(){
 		var action = #{jsAction @poi(':poiId') /};
 		$('#poi').load(
-			action({poiId: ${poiId}})
+			action({poiId: ${poi.id}})
 		);
 	});
 	
@@ -77,12 +116,12 @@
 			$('#generatorMethod').empty();
 		}
 		else {
-			$.get(action({source: $("#source").val(), poiId: ${poiId}}), function(htmlContent) {
+			$.get(action({source: $("#source").val(), poiId: ${poi.id}}), function(htmlContent) {
 			if (htmlContent == "") {
 				$('#generatorMethod').empty();
 				action = #{jsAction @getTypeHtmlCode(':source', ':method', ':poiId') /};
 				$('#generatorType').load(
-					action({source: $("#source").val(), method: "NULL", poiId: ${poiId}})
+					action({source: $("#source").val(), method: "NULL", poiId: ${poi.id}})
 				);
 			}
 			else {
@@ -101,7 +140,7 @@
 		}
 		else {
 			$('#generatorType').load(
-				action({source: $("#source").val(), method: $("#method").val(), poiId: ${poiId}})
+				action({source: $("#source").val(), method: $("#method").val(), poiId: ${poi.id}})
 			);
 		};
 	});
@@ -113,7 +152,7 @@
 		}
 		else {
 			$('#powerTagDetails').load(
-				action({powerTag: $("#powerTag").val(), poiId: ${poiId}})
+				action({powerTag: $("#powerTag").val(), poiId: ${poi.id}})
 			);
 		};
 	});
