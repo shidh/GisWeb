@@ -15,7 +15,7 @@ public class Plant extends PowerTag {
 	public String name;
 	public Operator operator;
 	public OutputEnum output;
-	public Date start_date;
+	public Long start_date;
 
 	public Plant(Poi poi) {
 		super(poi);

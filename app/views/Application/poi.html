@@ -26,20 +26,20 @@
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 #{/set}
 
-#{form @Application.updatePoi(), method:"POST", id:"submitPoiData"}
+<form id="submitPoiData">
 	<div id="poi"></div>
 	<div id="map"></div>
 	<label for="powerTag">power tag</label>
 	<select name="powerTag" id="powerTag" class='submitPoiDataField'>
 		<option value=""> </option>
 		#{list items:models.Poi.getPowerTagFields(), as:"powerTag"}
-			<option value="${powerTag.camelCase()}">${powerTag}</option>
+			<option #{if poi.powerTag != null && poi.powerTag.getClass().getName().toLowerCase().contains(powerTag.camelCase().toLowerCase()) } selected="true" #{/if} value="${powerTag.camelCase()}">${powerTag}</option>
 		#{/list}
 	</select>
 	<div id="powerTagDetails"></div>
 	<input type="text" id="poiId" name="poiId" value="${poi.id}" readonly style="display: none;"/>
 	<input id="submitPoiDataButton" type="submit" value="Save" style="display: none;"/>
-#{/form}
+</form>
 <script type="text/javascript">
 	// set up the map
 	var map = new L.Map('map');
@@ -58,47 +58,257 @@
 	marker.on('dragend', function(event){
 		var marker = event.target;
 		var position = marker.getLatLng();
-		$('#latitude').val(position.lat);
-		$('#longitude').val(position.lng);
+		$('#Poi_latitude').val(position.lat);
+		$('#Poi_longitude').val(position.lng);
 	});
 
-	$('#poi').on('change', '#latitude', function(){
-		var latLng = L.latLng($('#latitude').val(), $('#longitude').val());
+	$('#poi').on('change', '#Poi_latitude', function(){
+		var latLng = L.latLng($('#Poi_latitude').val(), $('#Poi_longitude').val());
 		marker.setLatLng(latLng);
 		map.setView(latLng,12);
 	});
 
-	$('#poi').on('change', '#longitude', function(){
-		var latLng = L.latLng($('#latitude').val(), $('#longitude').val());
+	$('#poi').on('change', '#Poi_longitude', function(){
+		var latLng = L.latLng($('#Poi_latitude').val(), $('#Poi_longitude').val());
 		marker.setLatLng(latLng);
 		map.setView(latLng,12);
 	});
 </script>
 <script type="text/javascript">
-	$('#submitPoiData').parsley();
+	$(document).ready(function () {
+		$('#submitPoiData').parsley().subscribe('parsley:form:validated', function (formInstance) {
+			var action;
+
+			if (formInstance.isValid()){
+				var powerTag = $('#powerTag').val();
+
+				switch (powerTag) {
+					case 'Cable':
+						action = #{jsAction @createPowerTagCable(
+										':poiId',
+										':powerTags_Cable_cables',
+										':powerTags_Cable_circuits',
+										':powerTags_Cable_location',
+										':powerTags_Cable_name',
+										':types_Operator_name',
+										':types_Operator_type',
+										':powerTags_Cable_ref',
+										':powerTags_Cable_voltage') /};
+						$.post(action({	poiId:						$('#poiId').val(),
+										powerTags_Cable_cables:		$('#powerTags_Cable_cables').val(),
+										powerTags_Cable_circuits:	$('#powerTags_Cable_circuits').val(),
+										powerTags_Cable_location:	$('#powerTags_Cable_location').val(),
+										powerTags_Cable_name:		$('#powerTags_Cable_name').val(),
+										types_Operator_name:		$('#types_Operator_name').val(),
+										types_Operator_type:		$('#types_Operator_type').val(),
+										powerTags_Cable_ref:		$('#powerTags_Cable_ref').val(),
+										powerTags_Cable_voltage:	$('#powerTags_Cable_voltage').val()}));
+						break;
+					case 'CableDistributionCabinet':
+						action = #{jsAction @createPowerTagCableDistributionCabinet(
+										':poiId',
+										':types_Operator_name',
+										':types_Operator_type',
+										':powerTags_CableDistributionCabinet_ref',
+										':powerTags_CableDistributionCabinet_voltage') /};
+						$.post(action({	poiId:										$('#poiId').val(),
+										types_Operator_name:						$('#types_Operator_name').val(),
+										types_Operator_type:						$('#types_Operator_type').val(),
+										powerTags_CableDistributionCabinet_ref:		$('#powerTags_CableDistributionCabinet_ref').val(),
+										powerTags_CableDistributionCabinet_voltage:	$('#powerTags_CableDistributionCabinet_voltage').val()}));
+						break;
+					case 'Converter':
+						action = #{jsAction @createPowerTagConverter(
+										':poiId',
+										':powerTags_Converter_converter',
+										':powerTags_Converter_poles',
+										':powerTags_Converter_rating',
+										':powerTags_Converter_voltage') /};
+						$.post(action({	poiId:							$('#poiId').val(),
+										powerTags_Converter_converter:	$('#powerTags_Converter_converter').val(),
+										powerTags_Converter_poles:		$('#powerTags_Converter_poles').val(),
+										powerTags_Converter_rating:		$('#powerTags_Converter_rating').val(),
+										powerTags_Converter_voltage:	$('#powerTags_Converter_voltage').val()}));
+						break;
+					case 'Generator':
+						action = #{jsAction @createPowerTagGenerator(
+										':poiId',
+										':powerTags_Generator_name',
+										':types_Operator_name',
+										':types_Operator_type',
+										':powerTags_Generator_output',
+										':powerTags_Generator_plant',
+										':powerTags_Generator_source',
+										':powerTags_Generator_method',
+										':powerTags_Generator_type') /};
+						$.post(action({	poiId:							$('#poiId').val(),
+										powerTags_Generator_name:	$('#powerTags_Generator_name').val(),
+										types_Operator_name:		$('#types_Operator_name').val(),
+										types_Operator_type:		$('#types_Operator_type').val(),
+										powerTags_Generator_output:	$('#powerTags_Generator_output').val(),
+										powerTags_Generator_plant:	$('#powerTags_Generator_plant').val(),
+										powerTags_Generator_source:	$('#powerTags_Generator_source').val(),
+										powerTags_Generator_method:	$('#powerTags_Generator_method').val(),
+										powerTags_Generator_type:	$('#powerTags_Generator_type').val()}));
+						break;
+					case 'Line':
+						action = #{jsAction @createPowerTagLine(
+										':poiId',
+										':powerTags_Line_cables',
+										':types_Operator_name',
+										':types_Operator_type',
+										':powerTags_Line_ref',
+										':powerTags_Line_voltage',
+										':powerTags_Line_wires') /};
+						$.post(action({	poiId:							$('#poiId').val(),
+										powerTags_Line_cables:		$('#powerTags_Line_cables').val(),
+										types_Operator_name:		$('#types_Operator_name').val(),
+										types_Operator_type:		$('#types_Operator_type').val(),
+										powerTags_Line_ref:			$('#powerTags_Line_ref').val(),
+										powerTags_Line_voltage:		$('#powerTags_Line_voltage').val(),
+										powerTags_Line_wires:		$('#powerTags_Line_wires').val()}));
+						break;
+					case 'MinorLine':
+						action = #{jsAction @createPowerTagMinorLine(
+										':poiId',
+										':powerTags_MinorLine_cables',
+										':powerTags_MinorLine_name',
+										':types_Operator_name',
+										':types_Operator_type',
+										':powerTags_MinorLine_ref',
+										':powerTags_MinorLine_voltage') /};
+						$.post(action({	poiId:							$('#poiId').val(),
+										powerTags_MinorLine_cables:		$('#powerTags_MinorLine_cables').val(),
+										powerTags_MinorLine_name:		$('#powerTags_MinorLine_name').val(),
+										types_Operator_name:			$('#types_Operator_name').val(),
+										types_Operator_type:			$('#types_Operator_type').val(),
+										powerTags_MinorLine_ref:		$('#powerTags_MinorLine_ref').val(),
+										powerTags_MinorLine_voltage:	$('#powerTags_MinorLine_voltage').val()}));
+						break;
+					case 'Plant':
+						action = #{jsAction @createPowerTagPlant(
+										':poiId',
+										':powerTags_Plant_landuse',
+										':powerTags_Plant_name',
+										':types_Operator_name',
+										':types_Operator_type',
+										':powerTags_Plant_output',
+										':powerTags_Plant_start_date') /};
+						$.post(action({	poiId:						$('#poiId').val(),
+										powerTags_Plant_landuse:	$('#powerTags_Plant_landuse').val(),
+										powerTags_Plant_name:		$('#powerTags_Plant_name').val(),
+										types_Operator_name:		$('#types_Operator_name').val(),
+										types_Operator_type:		$('#types_Operator_type').val(),
+										powerTags_Plant_output:		$('#powerTags_Plant_output').val(),
+										powerTags_Plant_start_date:	$('#powerTags_Plant_start_date').val()}));
+						break;
+					case 'Pole':
+						action = #{jsAction @createPowerTagPole(
+										':poiId',
+										':powerTags_Pole_ref') /};
+						$.post(action({	poiId:				$('#poiId').val(),
+										powerTags_Pole_ref:	$('#powerTags_Pole_ref').val()}));
+						break;
+					case 'Substation':
+						action = #{jsAction @createPowerTagSubstation(
+										':poiId',
+										':powerTags_Substation_gas_insulated',
+										':powerTags_Substation_location',
+										':powerTags_Substation_name',
+										':types_Operator_name',
+										':types_operator_type',
+										':powerTags_Substation_ref',
+										':powerTags_Substation_substationType',
+										':powerTags_Substation_voltage') /};
+						$.post(action({	poiId:									$('#poiId').val(),
+										powerTags_Substation_gas_insulated:		$('#powerTags_Substation_gas_insulated').val(),
+										powerTags_Substation_location:			$('#powerTags_Substation_location').val(),
+										powerTags_Substation_name:				$('#powerTags_Substation_name').val(),
+										types_Operator_name:					$('#types_Operator_name').val(),
+										types_Operator_type:					$('#types_Operator_type').val(),
+										powerTags_Substation_ref:				$('#powerTags_Substation_ref'),
+										powerTags_Substation_substationType:	$('#powerTags_Substation_substationType').val(),
+										powerTags_Substation_voltage:			$('#powerTags_Substation_voltage').val()}));
+						break;
+					case 'Switch':
+						action = #{jsAction @createPowerTagSwitch(
+										':poiId') /};
+						$.post(action({	poiId:	$('#poiId').val(),}));
+						break;
+					case 'Tower':
+						action = #{jsAction @createPowerTagSubstation(
+										':poiId',
+										':powerTags_Tower_color',
+										':powerTags_Tower_design',
+										':powerTags_Tower_height',
+										':powerTags_Tower_material',
+										':powerTags_Tower_ref',
+										':powerTags_Tower_structure',
+										':powerTags_Tower_type') /};
+						$.post(action({	poiId:						$('#poiId').val(),
+										powerTags_Tower_color:		$('#powerTags_Tower_color').val(),
+										powerTags_Tower_design:		$('#powerTags_Tower_design').val(),
+										powerTags_Tower_height:		$('#powerTags_Tower_height').val(),
+										powerTags_Tower_material:	$('#powerTags_Tower_material').val(),
+										powerTags_Tower_ref:		$('#powerTags_Tower_ref'),
+										powerTags_Tower_structure:	$('#powerTags_Tower_structure').val(),
+										powerTags_Tower_type:		$('#powerTags_Tower_type').val()}));
+						break;
+					case 'Transformer':
+						action = #{jsAction @createPowerTagTransformer(
+										':poiId',
+										':powerTags_Transformer_frequency',
+										':powerTags_Transformer_location',
+										':powerTags_Transformer_phases',
+										':powerTags_Transformer_rating',
+										':powerTags_Transformer_transformerType',
+										':powerTags_Transformer_voltage') /};
+						$.post(action({	poiId:									$('#poiId').val(),
+										powerTags_Transformer_frequency:		$('#powerTags_Transformer_frequency').val(),
+										powerTags_Transformer_location:			$('#powerTags_Transformer_location').val(),
+										powerTags_Transformer_phases:			$('#powerTags_Transformer_phases').val(),
+										powerTags_Transformer_rating:			$('#powerTags_Transformer_rating').val(),
+										powerTags_Transformer_transformerType:	$('#powerTags_Transformer_transformerType'),
+										powerTags_Transformer_voltage:			$('#powerTags_Transformer_voltage').val()}));
+						break;
+				}
+			};
+			action = #{jsAction @updatePoi(	':Poi_accuracy',
+											':Poi_altitude',
+											':Poi_bearing',
+											':poiId',
+											':Poi_latitude',
+											':Poi_longitude',
+											':Poi_provider',
+											':Poi_time') /};
+			$.post(action({	Poi_accuracy:	$('#Poi_accuracy').val(),
+							Poi_altitude:	$('#Poi_altitude').val(),
+							Poi_bearing:	$('#Poi_bearing').val(),
+							poiId:			$('#poiId').val(),
+							Poi_latitude:	$('#Poi_latitude').val(),
+							Poi_longitude:	$('#Poi_longitude').val(),
+							Poi_provider:	$('#Poi_provider').val(),
+							Poi_time:		$('#Poi_time').val()}));
+			formInstance.submitEvent.preventDefault();
+		})
+	});
 
 	$(document).ready(function(){
-		var action = #{jsAction @poi(':poiId') /};
+		var action = #{jsAction @getHtmlPoi(':poiId') /};
 		$('#poi').load(
 			action({poiId: ${poi.id}})
 		);
 	});
 	
 	$('#powerTagDetails').on('click', '.color-box', function(){
-		$('.color-box').colpick({colorScheme:'dark',
-													layout:'rgbhex',
-													color:'ff8800',
-													onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);
-																																	$(el).colpickHide();}})
-													.css('background-color', '#ff8800');
+		$(this).colpick({layout:'rgbhex',
+						color:'ff8800',
+						onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);																																	$(el).colpickHide();}})
+																.css('background-color', '#ff8800');
 	});
 
-	$('#poi').on('click', '#poiTime', function(){
-		$('#poiTime').datetimepicker({format:'Y/m/d H:i:s'});
-	});
-
-	$('#powerTagDetails').on('click', '#powerTagTime', function(){
-		$('#powerTagTime').datetimepicker({format:'Y/m/d H:i:s'});
+	$('body').on('click', '.datetimepicker', function(){
+		$(this).datetimepicker({format:'Y/m/d H:i:s'});
 	});
 	
 	$("body").on('click', "input.submitPoiDataField", function(){
@@ -109,19 +319,19 @@
 		$("#submitPoiDataButton").css("display","inline");
 	});
 	
-	$('#powerTagDetails').on('change', '#source', function(){
-		var action = #{jsAction @getMethodHtmlCode(':source', ':poiId') /};
+	$('#powerTagDetails').on('change', '#powerTags_Generator_source', function(){
+		var action = #{jsAction @getHtmlMethods(':source', ':poiId') /};
 		$('#generatorType').empty();
-		if ($("#source").val() == "") {
+		if ($("#powerTags_Generator_source").val() == "") {
 			$('#generatorMethod').empty();
 		}
 		else {
-			$.get(action({source: $("#source").val(), poiId: ${poi.id}}), function(htmlContent) {
+			$.get(action({source: $("#powerTags_Generator_source").val(), poiId: ${poi.id}}), function(htmlContent) {
 			if (htmlContent == "") {
 				$('#generatorMethod').empty();
-				action = #{jsAction @getTypeHtmlCode(':source', ':method', ':poiId') /};
+				action = #{jsAction @getHtmlTypes(':source', ':method', ':poiId') /};
 				$('#generatorType').load(
-					action({source: $("#source").val(), method: "NULL", poiId: ${poi.id}})
+					action({source: $("#powerTags_Generator_source").val(), method: "NULL", poiId: ${poi.id}})
 				);
 			}
 			else {
@@ -133,27 +343,32 @@
 		};
 	});
 	
-	$('#powerTagDetails').on('change', '#method', function(){
-		var action = #{jsAction @getTypeHtmlCode(':source', ':method', ':poiId') /};
-		if ($("#method").val() == "") {
+	$('#powerTagDetails').on('change', '#powerTags_Generator_method', function(){
+		var action = #{jsAction @getHtmlTypes(':source', ':method', ':poiId') /};
+		if ($("#powerTags_Generator_method").val() == "") {
 			$('#generatorType').empty();
 		}
 		else {
 			$('#generatorType').load(
-				action({source: $("#source").val(), method: $("#method").val(), poiId: ${poi.id}})
+				action({source: $("#powerTags_Generator_source").val(), method: $("#powerTags_Generator_method").val(), poiId: ${poi.id}})
 			);
 		};
+	});
+
+	jQuery.fn.extend({
+		getPowerTagDetails: function (){
+			var action = #{jsAction @getHtmlPowerTagDetails(':powerTag', ':poiId') /};
+			if ($("#powerTag").val() == "") {
+				$('#powerTagDetails').empty();
+			}
+			else {
+				$('#powerTagDetails').load(
+					action({powerTag: $("#powerTag").val(), poiId: ${poi.id}})
+				);
+			};
+		}
 	});
 	
-	$("#powerTag").change(function(){
-		var action = #{jsAction @powerTagDetails(':powerTag', ':poiId') /};
-		if ($("#powerTag").val() == "") {
-			$('#powerTagDetails').empty();
-		}
-		else {
-			$('#powerTagDetails').load(
-				action({powerTag: $("#powerTag").val(), poiId: ${poi.id}})
-			);
-		};
-	});
+	$(document).ready(function(){$("#powerTag").getPowerTagDetails()});
+	$('#powerTag').change(function(){$("#powerTag").getPowerTagDetails()});
 </script>
