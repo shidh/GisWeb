@@ -12,7 +12,7 @@ import models.types.Operator;
 public class Line extends PowerTag {
 
 	public Byte cables;
-	
+
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
 

@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -640,7 +639,7 @@ public class Application extends Controller {
 			} else {
 				String fieldValue = "";
 				String parsleyValidator = "";
-				
+
 				if (fieldType.equals("java.awt.Color")) {
 
 					if (objectWithValues != null && field.get(objectWithValues) != null) {
@@ -674,18 +673,19 @@ public class Application extends Controller {
 					} else if (objectWithValues != null && field.get(objectWithValues) != null) {
 						fieldValue = field.get(objectWithValues).toString();
 					}
-					
+
 					output.append("<p>" + newLine);
 					output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
-					output.append("   <input class='submitPoiDataField" + additionalClass + "' id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " " + readonly + " type='" + inputType + "' value='" + fieldValue + "'/>" + newLine);
+					output.append("   <input class='submitPoiDataField" + additionalClass + "' id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " " + readonly + " type='"
+							+ inputType + "' value='" + fieldValue + "'/>" + newLine);
 					output.append("</p>" + newLine);
 				} else {
 					String inputType = "text";
-					
+
 					if (objectWithValues != null && field.get(objectWithValues) != null) {
 						fieldValue = field.get(objectWithValues).toString();
 					}
-					
+
 					if (fieldType.equals("java.lang.Byte") || fieldType.equals("java.lang.Integer")) {
 						inputType = "number";
 						parsleyValidator = "data-parsley-type='integer'";
@@ -693,7 +693,8 @@ public class Application extends Controller {
 
 					output.append("<p>" + newLine);
 					output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
-					output.append("   <input class='submitPoiDataField'                         id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " type='" + inputType + "' value='" + fieldValue + "'/>" + newLine);
+					output.append("   <input class='submitPoiDataField'                         id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " type='" + inputType + "' value='"
+							+ fieldValue + "'/>" + newLine);
 					output.append("</p>" + newLine);
 				}
 			}

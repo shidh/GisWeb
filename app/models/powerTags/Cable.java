@@ -15,10 +15,10 @@ public class Cable extends PowerTag {
 	public Byte circuits;
 	public LocationEnum location;
 	public String name;
-	
+
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
-	
+
 	public String ref;
 	public Integer voltage;
 

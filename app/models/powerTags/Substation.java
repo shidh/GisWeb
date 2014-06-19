@@ -14,10 +14,10 @@ public class Substation extends PowerTag {
 	public Boolean gas_insulated;
 	public LocationEnum location;
 	public String name;
-	
+
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
-	
+
 	public String ref;
 	public SubstationTypeEnum substationType;
 	public Integer voltage;

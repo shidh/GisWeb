@@ -14,7 +14,7 @@ import models.types.Operator;
 public class Generator extends PowerTag {
 
 	public String name;
-	
+
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
 

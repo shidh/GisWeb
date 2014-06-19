@@ -3,7 +3,6 @@ package models.types;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-import models.Poi;
 import models.PowerTag;
 import play.db.jpa.Model;
 
@@ -12,7 +11,7 @@ public class Operator extends Model {
 
 	@OneToOne
 	public PowerTag powerTag;
-	
+
 	public String name;
 	public TypeEnum type;
 
@@ -25,7 +24,7 @@ public class Operator extends Model {
 			this.name = name;
 		}
 	}
-	
+
 	public Operator(PowerTag powerTag) {
 		this.powerTag = powerTag;
 	}

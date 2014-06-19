@@ -13,7 +13,7 @@ public class CableDistributionCabinet extends PowerTag {
 
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
-	
+
 	public String ref;
 	public Integer voltage;
 
