@@ -2,7 +2,9 @@ package models.powerTags;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import models.Poi;
 import models.PowerTag;
@@ -13,7 +15,10 @@ public class Plant extends PowerTag {
 
 	public LanduseEnum landuse;
 	public String name;
+
+	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
+
 	public OutputEnum output;
 	public Long start_date;
 

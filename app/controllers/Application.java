@@ -4,16 +4,20 @@ import play.db.jpa.Blob;
 import play.libs.MimeTypes;
 import play.mvc.*;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import models.*;
 import models.powerTags.*;
@@ -40,18 +44,37 @@ public class Application extends Controller {
 		}
 		Cable cable = (Cable) poi.powerTag;
 		cable.cables = powerTags_Cable_cables;
-		cable.circuits = Byte.parseByte(powerTags_Cable_circuits);
-		cable.location = Cable.LocationEnum.valueOf(powerTags_Cable_location);
+
+		if (powerTags_Cable_circuits.equals("")) {
+			cable.circuits = null;
+		} else {
+			cable.circuits = Byte.parseByte(powerTags_Cable_circuits);
+		}
+
+		if (powerTags_Cable_location.equals("")) {
+			cable.location = null;
+		} else {
+			cable.location = Cable.LocationEnum.valueOf(powerTags_Cable_location);
+		}
 		cable.name = powerTags_Cable_name;
 
 		if (cable.operator == null) {
-			cable.operator = new Operator();
+			cable.operator = new Operator(poi.powerTag);
 		}
 		cable.operator.name = types_Operator_name;
-		cable.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
-		cable.operator.save();
+
+		if (types_Operator_type.equals("")) {
+			cable.operator.type = null;
+		} else {
+			cable.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
+		}
 		cable.ref = powerTags_Cable_ref;
-		cable.voltage = Integer.parseInt(powerTags_Cable_voltage);
+
+		if (powerTags_Cable_voltage.equals("")) {
+			cable.voltage = null;
+		} else {
+			cable.voltage = Integer.parseInt(powerTags_Cable_voltage);
+		}
 		poi.powerTag.save();
 	}
 
@@ -68,13 +91,22 @@ public class Application extends Controller {
 		CableDistributionCabinet cableDistributionCabinet = (CableDistributionCabinet) poi.powerTag;
 
 		if (cableDistributionCabinet.operator == null) {
-			cableDistributionCabinet.operator = new Operator();
+			cableDistributionCabinet.operator = new Operator(poi.powerTag);
 		}
 		cableDistributionCabinet.operator.name = types_Operator_name;
-		cableDistributionCabinet.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
-		cableDistributionCabinet.operator.save();
+
+		if (types_Operator_type.equals("")) {
+			cableDistributionCabinet.operator.type = null;
+		} else {
+			cableDistributionCabinet.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
+		}
 		cableDistributionCabinet.ref = powerTags_CableDistributionCabinet_ref;
-		cableDistributionCabinet.voltage = Integer.parseInt(powerTags_CableDistributionCabinet_voltage);
+
+		if (powerTags_CableDistributionCabinet_voltage.equals("")) {
+			cableDistributionCabinet.voltage = null;
+		} else {
+			cableDistributionCabinet.voltage = Integer.parseInt(powerTags_CableDistributionCabinet_voltage);
+		}
 		poi.powerTag.save();
 	}
 
@@ -89,10 +121,30 @@ public class Application extends Controller {
 			poi.powerTag = new Converter(poi);
 		}
 		Converter converterObject = (Converter) poi.powerTag;
-		converterObject.converter = Converter.ConverterEnum.valueOf(powerTags_Converter_converter);
-		converterObject.poles = Byte.parseByte(powerTags_Converter_poles);
-		converterObject.rating = Integer.parseInt(powerTags_Converter_rating);
-		converterObject.voltage = Integer.parseInt(powerTags_Converter_voltage);
+
+		if (powerTags_Converter_converter.equals("")) {
+			converterObject.converter = null;
+		} else {
+			converterObject.converter = Converter.ConverterEnum.valueOf(powerTags_Converter_converter);
+		}
+
+		if (powerTags_Converter_poles.equals("")) {
+			converterObject.poles = null;
+		} else {
+			converterObject.poles = Byte.parseByte(powerTags_Converter_poles);
+		}
+
+		if (powerTags_Converter_rating.equals("")) {
+			converterObject.rating = null;
+		} else {
+			converterObject.rating = Integer.parseInt(powerTags_Converter_rating);
+		}
+
+		if (powerTags_Converter_voltage.equals("")) {
+			converterObject.voltage = null;
+		} else {
+			converterObject.voltage = Integer.parseInt(powerTags_Converter_voltage);
+		}
 		poi.powerTag.save();
 	}
 
@@ -110,18 +162,45 @@ public class Application extends Controller {
 		generator.name = powerTags_Generator_name;
 
 		if (generator.operator == null) {
-			generator.operator = new Operator();
+			generator.operator = new Operator(poi.powerTag);
 		}
 		generator.operator.name = types_Operator_name;
-		generator.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
-		generator.operator.save();
-		generator.output = Generator.OutputEnum.valueOf(powerTags_Generator_output);
-		generator.plant = Generator.PlantEnum.valueOf(powerTags_Generator_plant);
-		generator.source = Generator.SourceEnum.valueOf(powerTags_Generator_source);
-		poi.powerTag.save();
-		generator.setMethod(Generator.MethodEnum.valueOf(powerTags_Generator_method));
-		poi.powerTag.save();
-		generator.setType(Generator.TypeEnum.valueOf(powerTags_Generator_type));
+
+		if (types_Operator_type.equals("")) {
+			generator.operator.type = null;
+		} else {
+			generator.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
+		}
+
+		if (powerTags_Generator_output.equals("")) {
+			generator.output = null;
+		} else {
+			generator.output = Generator.OutputEnum.valueOf(powerTags_Generator_output);
+		}
+
+		if (powerTags_Generator_plant.equals("")) {
+			generator.plant = null;
+		} else {
+			generator.plant = Generator.PlantEnum.valueOf(powerTags_Generator_plant);
+		}
+
+		if (powerTags_Generator_source.equals("")) {
+			generator.source = null;
+		} else {
+			generator.source = Generator.SourceEnum.valueOf(powerTags_Generator_source);
+		}
+
+		if (powerTags_Generator_method.equals("")) {
+			generator.method = null;
+		} else {
+			generator.setMethodEnum(Generator.MethodEnum.valueOf(powerTags_Generator_method));
+		}
+
+		if (powerTags_Generator_type.equals("")) {
+			generator.type = null;
+		} else {
+			generator.setTypeEnum(Generator.TypeEnum.valueOf(powerTags_Generator_type));
+		}
 		poi.powerTag.save();
 	}
 
@@ -136,17 +215,36 @@ public class Application extends Controller {
 			poi.powerTag = new Line(poi);
 		}
 		Line line = (Line) poi.powerTag;
-		line.cables = Byte.parseByte(powerTags_Line_cables);
+
+		if (powerTags_Line_cables.equals("")) {
+			line.cables = null;
+		} else {
+			line.cables = Byte.parseByte(powerTags_Line_cables);
+		}
 
 		if (line.operator == null) {
-			line.operator = new Operator();
+			line.operator = new Operator(poi.powerTag);
 		}
 		line.operator.name = types_Operator_name;
-		line.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
-		line.operator.save();
+
+		if (types_Operator_type.equals("")) {
+			line.operator.type = null;
+		} else {
+			line.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
+		}
 		line.ref = powerTags_Line_ref;
-		line.voltage = Integer.parseInt(powerTags_Line_voltage);
-		line.wires = Line.WiresEnum.valueOf(powerTags_Line_wires);
+
+		if (powerTags_Line_voltage.equals("")) {
+			line.voltage = null;
+		} else {
+			line.voltage = Integer.parseInt(powerTags_Line_voltage);
+		}
+
+		if (powerTags_Line_wires.equals("")) {
+			line.wires = null;
+		} else {
+			line.wires = Line.WiresEnum.valueOf(powerTags_Line_wires);
+		}
 		poi.powerTag.save();
 	}
 
@@ -161,17 +259,31 @@ public class Application extends Controller {
 			poi.powerTag = new MinorLine(poi);
 		}
 		MinorLine minorLine = (MinorLine) poi.powerTag;
-		minorLine.cables = Byte.parseByte(powerTags_MinorLine_cables);
+
+		if (powerTags_MinorLine_cables.equals("")) {
+			minorLine.cables = null;
+		} else {
+			minorLine.cables = Byte.parseByte(powerTags_MinorLine_cables);
+		}
 		minorLine.name = powerTags_MinorLine_name;
 
 		if (minorLine.operator == null) {
-			minorLine.operator = new Operator();
+			minorLine.operator = new Operator(poi.powerTag);
 		}
 		minorLine.operator.name = types_Operator_name;
-		minorLine.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
-		minorLine.operator.save();
+
+		if (types_Operator_type.equals("")) {
+			minorLine.operator.type = null;
+		} else {
+			minorLine.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
+		}
 		minorLine.ref = powerTags_MinorLine_ref;
-		minorLine.voltage = Integer.parseInt(powerTags_MinorLine_voltage);
+
+		if (powerTags_MinorLine_voltage.equals("")) {
+			minorLine.voltage = null;
+		} else {
+			minorLine.voltage = Integer.parseInt(powerTags_MinorLine_voltage);
+		}
 		poi.powerTag.save();
 	}
 
@@ -186,16 +298,30 @@ public class Application extends Controller {
 			poi.powerTag = new Plant(poi);
 		}
 		Plant plant = (Plant) poi.powerTag;
-		plant.landuse = Plant.LanduseEnum.valueOf(powerTags_Plant_landuse);
+
+		if (powerTags_Plant_landuse.equals("")) {
+			plant.landuse = null;
+		} else {
+			plant.landuse = Plant.LanduseEnum.valueOf(powerTags_Plant_landuse);
+		}
 		plant.name = powerTags_Plant_name;
 
 		if (plant.operator == null) {
-			plant.operator = new Operator();
+			plant.operator = new Operator(poi.powerTag);
 		}
 		plant.operator.name = types_Operator_name;
-		plant.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
-		plant.operator.save();
-		plant.output = Plant.OutputEnum.valueOf(powerTags_Plant_output);
+
+		if (types_Operator_type.equals("")) {
+			plant.operator.type = null;
+		} else {
+			plant.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
+		}
+
+		if (powerTags_Plant_output.equals("")) {
+			plant.output = null;
+		} else {
+			plant.output = Plant.OutputEnum.valueOf(powerTags_Plant_output);
+		}
 		plant.start_date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(powerTags_Plant_start_date).getTime();
 		poi.powerTag.save();
 	}
@@ -225,19 +351,43 @@ public class Application extends Controller {
 			poi.powerTag = new Substation(poi);
 		}
 		Substation substation = (Substation) poi.powerTag;
-		substation.gas_insulated = Boolean.valueOf(powerTags_Substation_gas_insulated);
-		substation.location = Substation.LocationEnum.valueOf(powerTags_Substation_location);
+
+		if (powerTags_Substation_gas_insulated.equals("")) {
+			substation.gas_insulated = null;
+		} else {
+			substation.gas_insulated = Boolean.valueOf(powerTags_Substation_gas_insulated);
+		}
+
+		if (powerTags_Substation_location.equals("")) {
+			substation.location = null;
+		} else {
+			substation.location = Substation.LocationEnum.valueOf(powerTags_Substation_location);
+		}
 		substation.name = powerTags_Substation_name;
 
 		if (substation.operator == null) {
-			substation.operator = new Operator();
+			substation.operator = new Operator(poi.powerTag);
 		}
 		substation.operator.name = types_Operator_name;
-		substation.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
-		substation.operator.save();
+
+		if (types_Operator_type.equals("")) {
+			substation.operator.type = null;
+		} else {
+			substation.operator.type = Operator.TypeEnum.valueOf(types_Operator_type);
+		}
 		substation.ref = powerTags_Substation_ref;
-		substation.substationType = Substation.SubstationTypeEnum.valueOf(powerTags_Substation_substationType);
-		substation.voltage = Integer.parseInt(powerTags_Substation_voltage);
+
+		if (powerTags_Substation_substationType.equals("")) {
+			substation.substationType = null;
+		} else {
+			substation.substationType = Substation.SubstationTypeEnum.valueOf(powerTags_Substation_substationType);
+		}
+
+		if (powerTags_Substation_voltage.equals("")) {
+			substation.voltage = null;
+		} else {
+			substation.voltage = Integer.parseInt(powerTags_Substation_voltage);
+		}
 		poi.powerTag.save();
 	}
 
@@ -264,13 +414,44 @@ public class Application extends Controller {
 			poi.powerTag = new Tower(poi);
 		}
 		Tower tower = (Tower) poi.powerTag;
-		System.out.println(powerTags_Tower_color);
-		tower.design = Tower.DesignEnum.valueOf(powerTags_Tower_design);
-		tower.height = Integer.parseInt(powerTags_Tower_height);
-		tower.material = Tower.MaterialEnum.valueOf(powerTags_Tower_material);
+		Pattern pattern = Pattern.compile(" *([0-9]+), *([0-9]+), *([0-9]+), *([0-9]+) *");
+		Matcher matcher = pattern.matcher(powerTags_Tower_color);
+		if (matcher.matches()) {
+			tower.color = new Color(Integer.valueOf(matcher.group(1)), Integer.valueOf(matcher.group(2)), Integer.valueOf(matcher.group(3)));
+		} else {
+			tower.color = null;
+		}
+
+		if (powerTags_Tower_design.equals("")) {
+			tower.design = null;
+		} else {
+			tower.design = Tower.DesignEnum.valueOf(powerTags_Tower_design);
+		}
+
+		if (powerTags_Tower_height.equals("")) {
+			tower.height = null;
+		} else {
+			tower.height = Integer.parseInt(powerTags_Tower_height);
+		}
+
+		if (powerTags_Tower_material.equals("")) {
+			tower.material = null;
+		} else {
+			tower.material = Tower.MaterialEnum.valueOf(powerTags_Tower_material);
+		}
 		tower.ref = powerTags_Tower_ref;
-		tower.structure = Tower.StructureEnum.valueOf(powerTags_Tower_structure);
-		tower.type = Tower.TypeEnum.valueOf(powerTags_Tower_type);
+
+		if (powerTags_Tower_structure.equals("")) {
+			tower.structure = null;
+		} else {
+			tower.structure = Tower.StructureEnum.valueOf(powerTags_Tower_structure);
+		}
+
+		if (powerTags_Tower_type.equals("")) {
+			tower.type = null;
+		} else {
+			tower.type = Tower.TypeEnum.valueOf(powerTags_Tower_type);
+		}
 		poi.powerTag.save();
 	}
 
@@ -285,18 +466,67 @@ public class Application extends Controller {
 			poi.powerTag = new Transformer(poi);
 		}
 		Transformer transformer = (Transformer) poi.powerTag;
-		transformer.frequency = Float.parseFloat(powerTags_Transformer_frequency);
-		transformer.location = Transformer.LocationEnum.valueOf(powerTags_Transformer_location);
-		transformer.phases = Integer.parseInt(powerTags_Transformer_phases);
-		transformer.rating = Integer.parseInt(powerTags_Transformer_rating);
-		transformer.transformerType = Transformer.TransformerEnum.valueOf(powerTags_Transformer_transformerType);
-		transformer.voltage = Integer.parseInt(powerTags_Transformer_voltage);
+
+		if (powerTags_Transformer_frequency.equals("")) {
+			transformer.frequency = null;
+		} else {
+			transformer.frequency = Float.parseFloat(powerTags_Transformer_frequency);
+		}
+
+		if (powerTags_Transformer_location.equals("")) {
+			transformer.location = null;
+		} else {
+			transformer.location = Transformer.LocationEnum.valueOf(powerTags_Transformer_location);
+		}
+
+		if (powerTags_Transformer_phases.equals("")) {
+			transformer.phases = null;
+		} else {
+			transformer.phases = Integer.parseInt(powerTags_Transformer_phases);
+		}
+
+		if (powerTags_Transformer_rating.equals("")) {
+			transformer.rating = null;
+		} else {
+			transformer.rating = Integer.parseInt(powerTags_Transformer_rating);
+		}
+
+		if (powerTags_Transformer_transformerType.equals("")) {
+			transformer.transformerType = null;
+		} else {
+			transformer.transformerType = Transformer.TransformerEnum.valueOf(powerTags_Transformer_transformerType);
+		}
+
+		if (powerTags_Transformer_voltage.equals("")) {
+			transformer.voltage = null;
+		} else {
+			transformer.voltage = Integer.parseInt(powerTags_Transformer_voltage);
+		}
 		poi.powerTag.save();
+	}
+
+	public static void deletePowerTag(String poiId) {
+		Poi poi = Poi.findById(Long.parseLong(poiId));
+
+		if (poi.powerTag != null) {
+			poi.powerTag.delete();
+		}
 	}
 
 	public static void editPoi(String poiId) {
 		Poi poi = Poi.findById(Long.parseLong(poiId));
 		renderTemplate("/Application/poi.html", poi);
+	}
+
+	public static String getColor(String poiId) {
+		Poi poi = Poi.findById(Long.parseLong(poiId));
+
+		if (poi.powerTag != null && poi.powerTag.getClass() == Tower.class && ((Tower) poi.powerTag).color != null) {
+			String hexColor = Integer.toHexString(((Tower) poi.powerTag).color.getRGB());
+			return hexColor.substring(2, hexColor.length());
+		} else {
+			return "ffffff";
+		}
 	}
 
 	private static String getHtmlCode(Field[] objectFields, Object objectWithValues, String source, String method) throws IllegalArgumentException, IllegalAccessException, ClassNotFoundException,
@@ -325,11 +555,12 @@ public class Application extends Controller {
 			String fieldAbsoluteName = fieldDeclaringClass + "." + fieldName;
 
 			StringBuffer select = new StringBuffer();
-			select.append("<label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
-			select.append("<select name='" + fieldId + "' id='" + fieldId + "' class='submitPoiDataField'>" + newLine);
-			select.append("<option value=''> </option>" + newLine);
+			select.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
+			select.append("   <select name='" + fieldId + "' id='" + fieldId + "' class='submitPoiDataField'>" + newLine);
+			select.append("      <option value=''> </option>" + newLine);
 
-			if (fieldName.equals("id") || fieldName.equals("willBeSaved") || fieldAbsoluteName.equals("models.Poi.powerTag") || fieldAbsoluteName.equals("models.PowerTag.poi")) {
+			if (fieldName.equals("id") || fieldName.equals("willBeSaved") || fieldAbsoluteName.equals("models.Poi.powerTag") || fieldAbsoluteName.equals("models.types.Operator.powerTag")
+					|| fieldAbsoluteName.equals("models.PowerTag.poi")) {
 				continue;
 			}
 
@@ -361,13 +592,17 @@ public class Application extends Controller {
 							for (int i = 0; i < enums.length; i++) {
 								enumArrayFieldName = (String) getName.invoke(enums[i]);
 								enumArrayFieldType = (String) getType.invoke(enums[i]);
-								output.append("<option value='" + enumArrayFieldType + "'>" + enumArrayFieldName + "</option>" + newLine);
+								output.append("      <option value='" + enumArrayFieldType + "'>" + enumArrayFieldName + "</option>" + newLine);
 							}
 							output.append("</select>" + newLine);
 						} else {
 							enumArrayFieldName = (String) getName.invoke(enums[0]);
 							enumArrayFieldType = (String) getType.invoke(enums[0]);
-							output.append("<p>" + fieldLabel + ": " + enumArrayFieldName + "</p>" + newLine);
+							output.append("<p>" + newLine);
+							output.append("   <span>" + fieldLabel + ":</span>" + newLine);
+							output.append("   <span id='" + fieldId + "' style='display:none;'>" + enumArrayFieldType + "</span>" + newLine);
+							output.append("   <span                                           >" + enumArrayFieldName + "</span>" + newLine);
+							output.append("</p>");
 						}
 					}
 				}
@@ -380,7 +615,12 @@ public class Application extends Controller {
 				for (Object enumConstant : enumClass.getEnumConstants()) {
 					String enumName = (String) getName.invoke(enumConstant);
 					String enumType = (String) getType.invoke(enumConstant);
-					output.append("<option value='" + enumType + "'>" + enumName + "</option>" + newLine);
+					String selected = "";
+					if (objectWithValues != null && field.get(objectWithValues) != null && field.get(objectWithValues).equals(enumConstant)) {
+						selected = "selected=''";
+					}
+
+					output.append("      <option value='" + enumType + "' " + selected + ">" + enumName + "</option>" + newLine);
 				}
 				output.append("</select>" + newLine);
 
@@ -388,51 +628,72 @@ public class Application extends Controller {
 					output.append("<div id='generatorMethod'></div>" + newLine);
 					output.append("<div id='generatorType'></div>" + newLine);
 				}
+			} else if (fieldType.equals("models.types.Operator")) {
+				Object operator = null;
+
+				if (objectWithValues != null) {
+					operator = field.get(objectWithValues);
+				}
+				output.append("<p>Operator START</p>" + newLine);
+				output.append(getHtmlCode(Operator.class.getFields(), operator, source, method) + newLine);
+				output.append("<p>Operator END</p>" + newLine);
 			} else {
 				String fieldValue = "";
+				String parsleyValidator = "";
+				
+				if (fieldType.equals("java.awt.Color")) {
 
-				if (objectWithValues != null && field.get(objectWithValues) != null) {
-					fieldValue = field.get(objectWithValues).toString();
-				}
-
-				if (fieldType.equals("models.types.Operator")) {
-					Object operator = null;
-
-					if (objectWithValues != null) {
-						operator = field.get(objectWithValues);
-					}
-					output.append("<p>Operator START</p>" + newLine);
-					output.append(getHtmlCode(Operator.class.getFields(), operator, source, method) + newLine);
-					output.append("<p>Operator END</p>" + newLine);
-				} else {
-					String lowerCaseFieldName = fieldName.toLowerCase();
-					String lowerCaseFieldType = fieldType.toLowerCase();
-					String parsleyValidator = "";
-
-					if (lowerCaseFieldType.equals("byte") || lowerCaseFieldType.equals("double") || lowerCaseFieldType.equals("class java.lang.float") || lowerCaseFieldType.equals("float")
-							|| lowerCaseFieldType.equals("int") || lowerCaseFieldType.equals("long")) {
-						parsleyValidator = "data-parsley-type='number'";
-					}
-					output.append("<p>" + newLine);
-					output.append("<label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
-
-					if (lowerCaseFieldName.contains("time") || lowerCaseFieldName.contains("date")) {
-						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-						String date;
-
-						try {
-							date = dateFormat.format(new Date(Long.parseLong(fieldValue))).toString();
-						} catch (Exception e) {
-							date = "";
-						}
-						output.append("<input id='" + fieldId + "' class='datetimepicker' type='text' value='" + date + "'/>" + newLine);
-					} else if (lowerCaseFieldType.equals("java.awt.color")) {
-						output.append("<p>" + newLine);
-						output.append("<span>" + fieldLabel + "</span>" + newLine);
-						output.append("<span id='" + fieldId + "' class='color-box' style='background-color: #ff8800;'></span>" + newLine);
+					if (objectWithValues != null && field.get(objectWithValues) != null) {
+						String hexColor = Integer.toHexString(((Color) field.get(objectWithValues)).getRGB());
+						fieldValue = hexColor.substring(2, hexColor.length());
 					} else {
-						output.append("<input type='text' " + parsleyValidator + " id='" + fieldId + "' name='" + fieldId + "' value='" + fieldValue + "' class='submitPoiDataField'/>" + newLine);
+						fieldValue = "ffffff";
 					}
+
+					output.append("<p>" + newLine);
+					output.append("   <span>" + fieldLabel + "</span>" + newLine);
+					output.append("   <span class='color-box' id='" + fieldId + "' style='background-color:#" + fieldValue + ";'></span>" + newLine);
+					output.append("</p>" + newLine);
+				} else if (fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float") || fieldType.equals("java.lang.Long")) {
+					String additionalClass = "";
+					String inputType = "text";
+					parsleyValidator = "data-parsley-type='number'";
+					String readonly = "";
+
+					if (fieldName.toLowerCase().contains("time") || fieldName.toLowerCase().contains("date")) {
+						additionalClass = " datetimepicker";
+						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+						parsleyValidator = "";
+						readonly = "readonly";
+
+						if (objectWithValues != null && field.get(objectWithValues) != null) {
+							fieldValue = dateFormat.format(new Date(Long.parseLong(field.get(objectWithValues).toString()))).toString();
+						} else {
+							fieldValue = dateFormat.format(new Date()).toString();
+						}
+					} else if (objectWithValues != null && field.get(objectWithValues) != null) {
+						fieldValue = field.get(objectWithValues).toString();
+					}
+					
+					output.append("<p>" + newLine);
+					output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
+					output.append("   <input class='submitPoiDataField" + additionalClass + "' id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " " + readonly + " type='" + inputType + "' value='" + fieldValue + "'/>" + newLine);
+					output.append("</p>" + newLine);
+				} else {
+					String inputType = "text";
+					
+					if (objectWithValues != null && field.get(objectWithValues) != null) {
+						fieldValue = field.get(objectWithValues).toString();
+					}
+					
+					if (fieldType.equals("java.lang.Byte") || fieldType.equals("java.lang.Integer")) {
+						inputType = "number";
+						parsleyValidator = "data-parsley-type='integer'";
+					}
+
+					output.append("<p>" + newLine);
+					output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
+					output.append("   <input class='submitPoiDataField'                         id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " type='" + inputType + "' value='" + fieldValue + "'/>" + newLine);
 					output.append("</p>" + newLine);
 				}
 			}
@@ -446,7 +707,7 @@ public class Application extends Controller {
 		Poi poi = Poi.findById(Long.valueOf(poiId));
 		Object poiPowerTag = Poi.class.getField("powerTag").get(poi);
 
-		if (poiPowerTag.getClass() != Generator.class) {
+		if (poiPowerTag != null && poiPowerTag.getClass() != Generator.class) {
 			poiPowerTag = null;
 		}
 
@@ -467,7 +728,7 @@ public class Application extends Controller {
 		Object poiPowerTag = Poi.class.getField("powerTag").get(poi);
 
 		Class powerTagClass = Class.forName("models.powerTags." + powerTag);
-		if (poiPowerTag.getClass() != powerTagClass) {
+		if (poiPowerTag != null && poiPowerTag.getClass() != powerTagClass) {
 			poiPowerTag = null;
 		}
 
@@ -480,7 +741,7 @@ public class Application extends Controller {
 		Poi poi = Poi.findById(Long.valueOf(poiId));
 		Object poiPowerTag = Poi.class.getField("powerTag").get(poi);
 
-		if (poiPowerTag.getClass() != Generator.class) {
+		if (poiPowerTag != null && poiPowerTag.getClass() != Generator.class) {
 			poiPowerTag = null;
 		}
 

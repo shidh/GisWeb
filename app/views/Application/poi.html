@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="@{'/public/javascripts/parsley.min.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.datetimepicker.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/colpick.js'}"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/jquery.color-2.1.0.min.js'}"></script>
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 #{/set}
 
@@ -33,7 +34,7 @@
 	<select name="powerTag" id="powerTag" class='submitPoiDataField'>
 		<option value=""> </option>
 		#{list items:models.Poi.getPowerTagFields(), as:"powerTag"}
-			<option #{if poi.powerTag != null && poi.powerTag.getClass().getName().toLowerCase().contains(powerTag.camelCase().toLowerCase()) } selected="true" #{/if} value="${powerTag.camelCase()}">${powerTag}</option>
+			<option #{if poi.powerTag != null && poi.powerTag.getClass().getName().toLowerCase().contains(powerTag.camelCase().toLowerCase()) } selected="" #{/if} value="${powerTag.camelCase()}">${powerTag}</option>
 		#{/list}
 	</select>
 	<div id="powerTagDetails"></div>
@@ -63,15 +64,25 @@
 	});
 
 	$('#poi').on('change', '#Poi_latitude', function(){
-		var latLng = L.latLng($('#Poi_latitude').val(), $('#Poi_longitude').val());
-		marker.setLatLng(latLng);
-		map.setView(latLng,12);
+		var lat = $('#Poi_latitude').val();
+		var lng = $('#Poi_longitude').val();
+	
+		if ($.isNumeric(lat) && $.isNumeric(lng)) {
+			var latLng = L.latLng(lat, lng);
+			marker.setLatLng(latLng);
+			map.setView(latLng,12);
+		}
 	});
 
 	$('#poi').on('change', '#Poi_longitude', function(){
-		var latLng = L.latLng($('#Poi_latitude').val(), $('#Poi_longitude').val());
-		marker.setLatLng(latLng);
-		map.setView(latLng,12);
+		var lat = $('#Poi_latitude').val();
+		var lng = $('#Poi_longitude').val();
+	
+		if ($.isNumeric(lat) && $.isNumeric(lng)) {
+			var latLng = L.latLng(lat, lng);
+			marker.setLatLng(latLng);
+			map.setView(latLng,12);
+		}
 	});
 </script>
 <script type="text/javascript">
@@ -141,15 +152,27 @@
 										':powerTags_Generator_source',
 										':powerTags_Generator_method',
 										':powerTags_Generator_type') /};
-						$.post(action({	poiId:							$('#poiId').val(),
+						var method;
+						var type;
+						if ($('#powerTags_Generator_method').is('span')) {
+							method = $('#powerTags_Generator_method').text();
+						} else {
+							method = $('#powerTags_Generator_method').val();
+						}
+						if ($('#powerTags_Generator_type').is('span')) {
+							type = $('#powerTags_Generator_type').text();
+						} else {
+							type = $('#powerTags_Generator_type').val();
+						}
+						$.post(action({	poiId:						$('#poiId').val(),
 										powerTags_Generator_name:	$('#powerTags_Generator_name').val(),
 										types_Operator_name:		$('#types_Operator_name').val(),
 										types_Operator_type:		$('#types_Operator_type').val(),
 										powerTags_Generator_output:	$('#powerTags_Generator_output').val(),
 										powerTags_Generator_plant:	$('#powerTags_Generator_plant').val(),
 										powerTags_Generator_source:	$('#powerTags_Generator_source').val(),
-										powerTags_Generator_method:	$('#powerTags_Generator_method').val(),
-										powerTags_Generator_type:	$('#powerTags_Generator_type').val()}));
+										powerTags_Generator_method:	method,
+										powerTags_Generator_type:	type}));
 						break;
 					case 'Line':
 						action = #{jsAction @createPowerTagLine(
@@ -236,7 +259,7 @@
 						$.post(action({	poiId:	$('#poiId').val(),}));
 						break;
 					case 'Tower':
-						action = #{jsAction @createPowerTagSubstation(
+						action = #{jsAction @createPowerTagTower(
 										':poiId',
 										':powerTags_Tower_color',
 										':powerTags_Tower_design',
@@ -246,7 +269,7 @@
 										':powerTags_Tower_structure',
 										':powerTags_Tower_type') /};
 						$.post(action({	poiId:						$('#poiId').val(),
-										powerTags_Tower_color:		$('#powerTags_Tower_color').val(),
+										powerTags_Tower_color:		jQuery.Color($('#powerTags_Tower_color').css('background-color')).rgba(),
 										powerTags_Tower_design:		$('#powerTags_Tower_design').val(),
 										powerTags_Tower_height:		$('#powerTags_Tower_height').val(),
 										powerTags_Tower_material:	$('#powerTags_Tower_material').val(),
@@ -271,24 +294,29 @@
 										powerTags_Transformer_transformerType:	$('#powerTags_Transformer_transformerType'),
 										powerTags_Transformer_voltage:			$('#powerTags_Transformer_voltage').val()}));
 						break;
-				}
+					default:
+						action = #{jsAction @deletePowerTag(':poiId') /};
+						$.post(action({poiId: $('#poiId').val()}));
+						break;
+				};
+				
+				action = #{jsAction @updatePoi(	':Poi_accuracy',
+												':Poi_altitude',
+												':Poi_bearing',
+												':poiId',
+												':Poi_latitude',
+												':Poi_longitude',
+												':Poi_provider',
+												':Poi_time') /};
+				$.post(action({	Poi_accuracy:	$('#Poi_accuracy').val(),
+								Poi_altitude:	$('#Poi_altitude').val(),
+								Poi_bearing:	$('#Poi_bearing').val(),
+								poiId:			$('#poiId').val(),
+								Poi_latitude:	$('#Poi_latitude').val(),
+								Poi_longitude:	$('#Poi_longitude').val(),
+								Poi_provider:	$('#Poi_provider').val(),
+								Poi_time:		$('#Poi_time').val()}));
 			};
-			action = #{jsAction @updatePoi(	':Poi_accuracy',
-											':Poi_altitude',
-											':Poi_bearing',
-											':poiId',
-											':Poi_latitude',
-											':Poi_longitude',
-											':Poi_provider',
-											':Poi_time') /};
-			$.post(action({	Poi_accuracy:	$('#Poi_accuracy').val(),
-							Poi_altitude:	$('#Poi_altitude').val(),
-							Poi_bearing:	$('#Poi_bearing').val(),
-							poiId:			$('#poiId').val(),
-							Poi_latitude:	$('#Poi_latitude').val(),
-							Poi_longitude:	$('#Poi_longitude').val(),
-							Poi_provider:	$('#Poi_provider').val(),
-							Poi_time:		$('#Poi_time').val()}));
 			formInstance.submitEvent.preventDefault();
 		})
 	});
@@ -301,10 +329,16 @@
 	});
 	
 	$('#powerTagDetails').on('click', '.color-box', function(){
-		$(this).colpick({layout:'rgbhex',
-						color:'ff8800',
-						onSubmit:function(hsb,hex,rgb,el) {$(el).css('background-color', '#'+hex);																																	$(el).colpickHide();}})
-																.css('background-color', '#ff8800');
+		var action = #{jsAction @getColor(':poiId') /};
+		var currentElement = this;
+		$.get(action({poiId: ${poi.id}}), function(currentColor) {
+			$(currentElement).colpick({layout:'rgbhex',
+										color:currentColor,
+										onSubmit:function(hsb,hex,rgb,el) {
+												$(el).css('background-color', '#'+hex);
+												$(el).colpickHide();}
+										}).css('background-color', '#'+currentColor);
+		});
 	});
 
 	$('body').on('click', '.datetimepicker', function(){
@@ -335,9 +369,16 @@
 				);
 			}
 			else {
-			$('#generatorMethod').html(
-				htmlContent
-			);
+				$('#generatorMethod').html(
+					htmlContent
+				);
+				
+				if ($('#powerTags_Generator_method').is('span')) {
+					action = #{jsAction @getHtmlTypes(':source', ':method', ':poiId') /};
+					$('#generatorType').load(
+						action({source: $("#powerTags_Generator_source").val(), method: $("#powerTags_Generator_method").text(), poiId: ${poi.id}})
+				);
+				};
 			};
 			});
 		};

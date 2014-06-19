@@ -10,10 +10,10 @@ public class Transformer extends PowerTag {
 
 	public Float frequency;
 	public LocationEnum location;
-	public int phases;
-	public int rating;
+	public Integer phases;
+	public Integer rating;
 	public TransformerEnum transformerType;
-	public int voltage;
+	public Integer voltage;
 
 	public Transformer(Poi poi) {
 		super(poi);

@@ -9,9 +9,9 @@ import models.PowerTag;
 public class Converter extends PowerTag {
 
 	public ConverterEnum converter;
-	public byte poles;
-	public int rating;
-	public int voltage;
+	public Byte poles;
+	public Integer rating;
+	public Integer voltage;
 
 	public Converter(Poi poi) {
 		super(poi);

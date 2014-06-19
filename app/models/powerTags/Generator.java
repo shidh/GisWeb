@@ -2,7 +2,9 @@ package models.powerTags;
 
 import java.util.Arrays;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import models.Poi;
 import models.PowerTag;
@@ -12,7 +14,10 @@ import models.types.Operator;
 public class Generator extends PowerTag {
 
 	public String name;
+	
+	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
+
 	public OutputEnum output;
 	public PlantEnum plant;
 	public SourceEnum source;
@@ -142,7 +147,7 @@ public class Generator extends PowerTag {
 		return types;
 	}
 
-	public void setMethod(MethodEnum method) {
+	public void setMethodEnum(MethodEnum method) {
 		MethodEnum[] methods = getMethods(this.source);
 
 		if (Arrays.asList(methods).contains(method)) {
@@ -150,7 +155,7 @@ public class Generator extends PowerTag {
 		}
 	}
 
-	public void setType(TypeEnum type) {
+	public void setTypeEnum(TypeEnum type) {
 		TypeEnum[] types = getTypes(this.source, this.method);
 
 		if (Arrays.asList(types).contains(type)) {

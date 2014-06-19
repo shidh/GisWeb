@@ -1,6 +1,8 @@
 package models.powerTags;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import models.Poi;
 import models.PowerTag;
@@ -9,10 +11,13 @@ import models.types.Operator;
 @Entity
 public class Line extends PowerTag {
 
-	public byte cables;
+	public Byte cables;
+	
+	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
+
 	public String ref;
-	public int voltage;
+	public Integer voltage;
 	public WiresEnum wires;
 
 	public Line(Poi poi) {

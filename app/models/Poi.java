@@ -20,13 +20,13 @@ public class Poi extends Model {
 	@ElementCollection
 	public List<Blob> photos;
 
-	public float accuracy;
-	public double altitude;
-	public float bearing;
-	public double latitude;
-	public double longitude;
+	public Float accuracy;
+	public Double altitude;
+	public Float bearing;
+	public Double latitude;
+	public Double longitude;
 	public String provider;
-	public long time;
+	public Long time;
 
 	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
 	public PowerTag powerTag;

@@ -1,6 +1,8 @@
 package models.powerTags;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import models.Poi;
 import models.PowerTag;
@@ -12,10 +14,13 @@ public class Substation extends PowerTag {
 	public Boolean gas_insulated;
 	public LocationEnum location;
 	public String name;
+	
+	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
+	
 	public String ref;
 	public SubstationTypeEnum substationType;
-	public int voltage;
+	public Integer voltage;
 
 	public Substation(Poi poi) {
 		super(poi);
