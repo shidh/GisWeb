@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import models.*;
 import models.powerTags.*;
+import models.powerTags.Generator.SourceEnum;
 import models.types.Operator;
 
 public class Application extends Controller {
@@ -321,7 +322,12 @@ public class Application extends Controller {
 		} else {
 			plant.output = Plant.OutputEnum.valueOf(powerTags_Plant_output);
 		}
-		plant.start_date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(powerTags_Plant_start_date).getTime();
+		
+		if (powerTags_Plant_start_date.equals("")) {
+			plant.start_date = null;
+		} else {
+			plant.start_date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse(powerTags_Plant_start_date).getTime();
+		}
 		poi.powerTag.save();
 	}
 
@@ -591,7 +597,12 @@ public class Application extends Controller {
 							for (int i = 0; i < enums.length; i++) {
 								enumArrayFieldName = (String) getName.invoke(enums[i]);
 								enumArrayFieldType = (String) getType.invoke(enums[i]);
-								output.append("      <option value='" + enumArrayFieldType + "'>" + enumArrayFieldName + "</option>" + newLine);
+								String selected = "";
+
+								if (objectWithValues != null && field.get(objectWithValues) != null && field.get(objectWithValues).toString().equals(enumArrayFieldType)) {
+									selected = "selected=''";
+								}
+								output.append("      <option " + selected + " value='" + enumArrayFieldType + "'>" + enumArrayFieldName + "</option>" + newLine);
 							}
 							output.append("</select>" + newLine);
 						} else {
@@ -624,8 +635,22 @@ public class Application extends Controller {
 				output.append("</select>" + newLine);
 
 				if (fieldType.equals("models.powerTags.Generator$SourceEnum")) {
-					output.append("<div id='generatorMethod'></div>" + newLine);
-					output.append("<div id='generatorType'></div>" + newLine);
+					String htmlMethods = "";
+					String htmlTypes = "";
+					
+					if (objectWithValues != null && ((Generator) objectWithValues).source != null) {
+						String poiId = ((Generator) objectWithValues).poi.id.toString();
+						String sourceName = ((Generator) objectWithValues).source.name();
+						htmlMethods = getHtmlMethods(sourceName, poiId);
+					
+						if (((Generator) objectWithValues).method != null) {
+							String methodName = ((Generator) objectWithValues).method.name();
+							htmlTypes = getHtmlTypes(sourceName, methodName, poiId);
+						}
+					}
+					
+					output.append("<div id='generatorMethod'>" + htmlMethods + "</div>" + newLine);
+					output.append("<div id='generatorType'>" + htmlTypes + "</div>" + newLine);
 				}
 			} else if (fieldType.equals("models.types.Operator")) {
 				Object operator = null;
@@ -667,8 +692,6 @@ public class Application extends Controller {
 
 						if (objectWithValues != null && field.get(objectWithValues) != null) {
 							fieldValue = dateFormat.format(new Date(Long.parseLong(field.get(objectWithValues).toString()))).toString();
-						} else {
-							fieldValue = dateFormat.format(new Date()).toString();
 						}
 					} else if (objectWithValues != null && field.get(objectWithValues) != null) {
 						fieldValue = field.get(objectWithValues).toString();
