@@ -520,7 +520,7 @@ public class Application extends Controller {
 
 	public static void editPoi(String poiId) {
 		Poi poi = Poi.findById(Long.parseLong(poiId));
-		renderTemplate("/Application/poi.html", poi);
+		renderTemplate("/Application/editPoi.html", poi);
 	}
 
 	public static String getColor(String poiId) {
