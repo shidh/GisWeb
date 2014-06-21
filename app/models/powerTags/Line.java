@@ -11,13 +11,13 @@ import models.types.Operator;
 @Entity
 public class Line extends PowerTag {
 
-	public Byte cables;
+	public String cables;
 
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
 
 	public String ref;
-	public Integer voltage;
+	public Float voltage;
 	public WiresEnum wires;
 
 	public Line(Poi poi) {

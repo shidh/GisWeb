@@ -321,25 +321,57 @@
 		
 		$.validator.addClassRules({
 			byte: {
-				digits: true,
-				range: [-128, 127],
-				required: false
-			},
+				negOrPosDigit: true,
+				range: [-128, 127]},
 			doubleOrFloat: {
-				number: true,
-				required: false
-			},
+				number: true},
 			integer: {
-				digits: true,
-				range: [-2147483648, 2147483647],
-				required: false
-			},
+				negOrPosDigit: true,
+				range: [-2147483648, 2147483647]},
 			long: {
+				negOrPosDigit: true,
+				range: [-9223372036854775808, 9223372036854775807]},
+			accuracy: {
+				number: true,
+				min: 0},
+			bearing: {
+				number: true,
+				range: [0, 360]},
+			cables: {
+				cables: true},
+			circuits: {
 				digits: true,
-				range: [-9223372036854775808, 9223372036854775807],
-				required: false
-			}
+				min: 0},
+			frequency: {
+				number: true,
+				min: 0},
+			height: {
+				number: true,
+				min: 0},
+			latitude: {
+				number: true,
+				range: [-90, 90]},
+			longitude: {
+				number: true,
+				range: [-180, 180]},
+			phases: {
+				digits: true,
+				min: 0},
+			poles: {
+				digits: true,
+				min: 0},
+			rating: {
+				number: true,
+				min: 0}
 		});
+		
+		$.validator.addMethod("negOrPosDigit", function(value, element) {
+			return this.optional(element) || /^-?\d+$/.test(value);
+		}, "Please enter only digits with(out) negative sign.");
+		
+		$.validator.addMethod("cables", function( value, element ) {
+			return this.optional(element) || /^\d+((;\d+)+)?$/.test(value);
+		}, "Please enter only non-decimal number(s), separated by semicolons (e.g. '6;3;2')");
 	});
 
 	$(document).ready(function(){

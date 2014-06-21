@@ -74,7 +74,7 @@ public class Application extends Controller {
 		if (powerTags_Cable_voltage.equals("")) {
 			cable.voltage = null;
 		} else {
-			cable.voltage = Integer.parseInt(powerTags_Cable_voltage);
+			cable.voltage = Float.parseFloat(powerTags_Cable_voltage);
 		}
 		poi.powerTag.save();
 	}
@@ -106,7 +106,7 @@ public class Application extends Controller {
 		if (powerTags_CableDistributionCabinet_voltage.equals("")) {
 			cableDistributionCabinet.voltage = null;
 		} else {
-			cableDistributionCabinet.voltage = Integer.parseInt(powerTags_CableDistributionCabinet_voltage);
+			cableDistributionCabinet.voltage = Float.parseFloat(powerTags_CableDistributionCabinet_voltage);
 		}
 		poi.powerTag.save();
 	}
@@ -144,7 +144,7 @@ public class Application extends Controller {
 		if (powerTags_Converter_voltage.equals("")) {
 			converterObject.voltage = null;
 		} else {
-			converterObject.voltage = Integer.parseInt(powerTags_Converter_voltage);
+			converterObject.voltage = Float.parseFloat(powerTags_Converter_voltage);
 		}
 		poi.powerTag.save();
 	}
@@ -216,12 +216,7 @@ public class Application extends Controller {
 			poi.powerTag = new Line(poi);
 		}
 		Line line = (Line) poi.powerTag;
-
-		if (powerTags_Line_cables.equals("")) {
-			line.cables = null;
-		} else {
-			line.cables = Byte.parseByte(powerTags_Line_cables);
-		}
+		line.cables = powerTags_Line_cables;
 
 		if (line.operator == null) {
 			line.operator = new Operator(poi.powerTag);
@@ -238,7 +233,7 @@ public class Application extends Controller {
 		if (powerTags_Line_voltage.equals("")) {
 			line.voltage = null;
 		} else {
-			line.voltage = Integer.parseInt(powerTags_Line_voltage);
+			line.voltage = Float.parseFloat(powerTags_Line_voltage);
 		}
 
 		if (powerTags_Line_wires.equals("")) {
@@ -260,12 +255,7 @@ public class Application extends Controller {
 			poi.powerTag = new MinorLine(poi);
 		}
 		MinorLine minorLine = (MinorLine) poi.powerTag;
-
-		if (powerTags_MinorLine_cables.equals("")) {
-			minorLine.cables = null;
-		} else {
-			minorLine.cables = Byte.parseByte(powerTags_MinorLine_cables);
-		}
+		minorLine.cables = powerTags_MinorLine_cables;
 		minorLine.name = powerTags_MinorLine_name;
 
 		if (minorLine.operator == null) {
@@ -283,7 +273,7 @@ public class Application extends Controller {
 		if (powerTags_MinorLine_voltage.equals("")) {
 			minorLine.voltage = null;
 		} else {
-			minorLine.voltage = Integer.parseInt(powerTags_MinorLine_voltage);
+			minorLine.voltage = Float.parseFloat(powerTags_MinorLine_voltage);
 		}
 		poi.powerTag.save();
 	}
@@ -392,7 +382,7 @@ public class Application extends Controller {
 		if (powerTags_Substation_voltage.equals("")) {
 			substation.voltage = null;
 		} else {
-			substation.voltage = Integer.parseInt(powerTags_Substation_voltage);
+			substation.voltage = Float.parseFloat(powerTags_Substation_voltage);
 		}
 		poi.powerTag.save();
 	}
@@ -437,7 +427,7 @@ public class Application extends Controller {
 		if (powerTags_Tower_height.equals("")) {
 			tower.height = null;
 		} else {
-			tower.height = Integer.parseInt(powerTags_Tower_height);
+			tower.height = Float.parseFloat(powerTags_Tower_height);
 		}
 
 		if (powerTags_Tower_material.equals("")) {
@@ -506,7 +496,7 @@ public class Application extends Controller {
 		if (powerTags_Transformer_voltage.equals("")) {
 			transformer.voltage = null;
 		} else {
-			transformer.voltage = Integer.parseInt(powerTags_Transformer_voltage);
+			transformer.voltage = Float.parseFloat(powerTags_Transformer_voltage);
 		}
 		poi.powerTag.save();
 	}
@@ -687,32 +677,42 @@ public class Application extends Controller {
 				output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
 				output.append("   <input class='datetimepicker submitPoiDataField' id='" + fieldId + "' name='" + fieldId + "' type='text' value='" + fieldValue + "'/>" + newLine);
 				output.append("</p>" + newLine);
-			} else if (fieldType.equals("java.lang.Byte") || fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float") || fieldType.equals("java.lang.Integer") || fieldType.equals("java.lang.Long")) {
+			} else if (fieldType.equals("java.lang.Byte") || fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float") || fieldType.equals("java.lang.Integer") || fieldType.equals("java.lang.Long") || (fieldType.equals("java.lang.String") && fieldName.equals("cables"))) {
 				String additionalClass = "";
 				String fieldValue = "";
-				String step = "";;
+				List<String> restrictedFields = Arrays.asList("accuracy", "bearing", "cables", "circuits", "frequency", "height", "latitude", "longitude", "phases", "poles", "rating");
+				String step = "";
+				String type = "number";
 
 				if (objectWithValues != null && field.get(objectWithValues) != null) {
 					fieldValue = field.get(objectWithValues).toString();
 				}
-				
-				if (fieldType.equals("java.lang.Byte")) {
+
+				if (restrictedFields.contains(fieldName)) {
+					additionalClass = fieldName;
+				} else if (fieldType.equals("java.lang.Byte")) {
 					additionalClass = "byte";
 				} else if (fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float")) {
 					additionalClass = "doubleOrFloat";
-
-					if (!fieldValue.equals("")) {
-						step = BigDecimal.valueOf(Math.pow(10, -new BigDecimal(fieldValue).scale())).stripTrailingZeros().toPlainString();
-					}
 				} else if (fieldType.equals("java.lang.Integer")) {
 					additionalClass = "integer";
 				} else if (fieldType.equals("java.lang.Long")) {
 					additionalClass = "long";
 				}
 				
+				if (fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float")) {
+					if (!fieldValue.equals("")) {
+						step = "step='" + BigDecimal.valueOf(Math.pow(10, -new BigDecimal(fieldValue).scale())).stripTrailingZeros().toPlainString() + "'";
+					}
+				}
+				
+				if (fieldType.equals("java.lang.String")) {
+					type = "text";
+				}
+
 				output.append("<p>" + newLine);
 				output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
-				output.append("   <input class='" + additionalClass + " submitPoiDataField' id='" + fieldId + "' name='" + fieldId + "' step='" + step + "' type='number' value='" + fieldValue + "'/>" + newLine);
+				output.append("   <input class='" + additionalClass + " submitPoiDataField' id='" + fieldId + "' name='" + fieldId + "' " + step + " type='" + type + "' value='" + fieldValue + "'/>" + newLine);
 				output.append("</p>" + newLine);
 			} else {
 				String fieldValue = "";

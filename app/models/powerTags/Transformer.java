@@ -13,7 +13,7 @@ public class Transformer extends PowerTag {
 	public Integer phases;
 	public Integer rating;
 	public TransformerEnum transformerType;
-	public Integer voltage;
+	public Float voltage;
 
 	public Transformer(Poi poi) {
 		super(poi);

@@ -11,7 +11,7 @@ public class Converter extends PowerTag {
 	public ConverterEnum converter;
 	public Byte poles;
 	public Integer rating;
-	public Integer voltage;
+	public Float voltage;
 
 	public Converter(Poi poi) {
 		super(poi);

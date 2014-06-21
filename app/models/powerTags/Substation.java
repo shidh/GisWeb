@@ -20,7 +20,7 @@ public class Substation extends PowerTag {
 
 	public String ref;
 	public SubstationTypeEnum substationType;
-	public Integer voltage;
+	public Float voltage;
 
 	public Substation(Poi poi) {
 		super(poi);

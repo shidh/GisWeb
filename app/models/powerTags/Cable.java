@@ -20,7 +20,7 @@ public class Cable extends PowerTag {
 	public Operator operator;
 
 	public String ref;
-	public Integer voltage;
+	public Float voltage;
 
 	public Cable(Poi poi) {
 		super(poi);

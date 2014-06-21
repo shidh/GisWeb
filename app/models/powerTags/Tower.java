@@ -12,7 +12,7 @@ public class Tower extends PowerTag {
 
 	public Color color;
 	public DesignEnum design;
-	public Integer height;
+	public Float height;
 	public MaterialEnum material;
 	public String ref;
 	public StructureEnum structure;

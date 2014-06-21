@@ -11,14 +11,14 @@ import models.types.Operator;
 @Entity
 public class MinorLine extends PowerTag {
 
-	public Byte cables;
+	public String cables;
 	public String name;
 
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
 	public Operator operator;
 
 	public String ref;
-	public Integer voltage;
+	public Float voltage;
 
 	public MinorLine(Poi poi) {
 		super(poi);

@@ -15,7 +15,7 @@ public class CableDistributionCabinet extends PowerTag {
 	public Operator operator;
 
 	public String ref;
-	public Integer voltage;
+	public Float voltage;
 
 	public CableDistributionCabinet(Poi poi) {
 		super(poi);
