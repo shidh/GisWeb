@@ -677,6 +677,25 @@ public class Application extends Controller {
 				output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
 				output.append("   <input class='datetimepicker submitPoiDataField' id='" + fieldId + "' name='" + fieldId + "' type='text' value='" + fieldValue + "'/>" + newLine);
 				output.append("</p>" + newLine);
+			} else if (fieldType.equals("java.lang.Boolean")) {
+				Boolean fieldValue;
+				output.append(select + newLine);
+
+				if (objectWithValues != null && field.get(objectWithValues) != null) {
+					fieldValue = (Boolean) field.get(objectWithValues);
+					
+					if (fieldValue) {
+						output.append("      <option value='false'>false</option>" + newLine);
+						output.append("      <option selected='' value='true'>true</option>" + newLine);
+					} else {
+						output.append("      <option selected='' value='false'>false</option>" + newLine);
+						output.append("      <option value='true'>true</option>" + newLine);	
+					}
+				} else {
+					output.append("      <option value='false'>false</option>" + newLine);
+					output.append("      <option value='true'>true</option>" + newLine);	
+				}
+				output.append("</select>" + newLine);
 			} else if (fieldType.equals("java.lang.Byte") || fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float") || fieldType.equals("java.lang.Integer") || fieldType.equals("java.lang.Long") || (fieldType.equals("java.lang.String") && fieldName.equals("cables"))) {
 				String additionalClass = "";
 				String fieldValue = "";
