@@ -405,7 +405,11 @@
 	$("body").on('change', "select.submitPoiDataField", function(){
 		$("#submitPoiDataButton").css("display","inline");
 	});
-	
+
+	$("body").on('click', "span.submitPoiDataField", function(){
+		$("#submitPoiDataButton").css("display","inline");
+	});
+
 	$('#powerTagDetails').on('change', '#powerTags_Generator_source', function(){
 		var action = #{jsAction @getHtmlMethods(':source', ':poiId') /};
 		$('#generatorType').empty();

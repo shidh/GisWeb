@@ -664,7 +664,7 @@ public class Application extends Controller {
 
 				output.append("<p>" + newLine);
 				output.append("   <span>" + fieldLabel + "</span>" + newLine);
-				output.append("   <span class='color-box' id='" + fieldId + "' style='background-color:#" + fieldValue + ";'></span>" + newLine);
+				output.append("   <span class='color-box submitPoiDataField' id='" + fieldId + "' style='background-color:#" + fieldValue + ";'></span>" + newLine);
 				output.append("</p>" + newLine);
 			} else if (fieldName.toLowerCase().contains("time") || fieldName.toLowerCase().contains("date")) {
 				String fieldValue = "";
