@@ -20,11 +20,11 @@
 #{/set}
 #{set 'moreScripts'}
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.slides.min.js'}"></script>
-	<script type="text/javascript" src="@{'/public/javascripts/parsley.min.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.datetimepicker.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/colpick.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.color-2.1.0.min.js'}"></script>
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/jquery.validate.js'}"></script>
 #{/set}
 
 <form id="submitPoiData">
@@ -87,10 +87,10 @@
 </script>
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('#submitPoiData').parsley().subscribe('parsley:form:validated', function (formInstance) {
-			var action;
-
-			if (formInstance.isValid()){
+		$('#submitPoiData').validate({
+			debug: true,
+			submitHandler: function(form) {
+				var action;
 				var powerTag = $('#powerTag').val();
 
 				switch (powerTag) {
@@ -316,9 +316,30 @@
 								Poi_longitude:	$('#Poi_longitude').val(),
 								Poi_provider:	$('#Poi_provider').val(),
 								Poi_time:		$('#Poi_time').val()}));
-			};
-			formInstance.submitEvent.preventDefault();
-		})
+			}
+		});
+		
+		$.validator.addClassRules({
+			byte: {
+				digits: true,
+				range: [-128, 127],
+				required: false
+			},
+			doubleOrFloat: {
+				number: true,
+				required: false
+			},
+			integer: {
+				digits: true,
+				range: [-2147483648, 2147483647],
+				required: false
+			},
+			long: {
+				digits: true,
+				range: [-9223372036854775808, 9223372036854775807],
+				required: false
+			}
+		});
 	});
 
 	$(document).ready(function(){

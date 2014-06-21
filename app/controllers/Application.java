@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -661,65 +662,68 @@ public class Application extends Controller {
 				output.append("<p>Operator START</p>" + newLine);
 				output.append(getHtmlCode(Operator.class.getFields(), operator, source, method) + newLine);
 				output.append("<p>Operator END</p>" + newLine);
+			} else if (fieldType.equals("java.awt.Color")) {
+				String fieldValue;
+
+				if (objectWithValues != null && field.get(objectWithValues) != null) {
+					String hexColor = Integer.toHexString(((Color) field.get(objectWithValues)).getRGB());
+					fieldValue = hexColor.substring(2, hexColor.length());
+				} else {
+					fieldValue = "ffffff";
+				}
+
+				output.append("<p>" + newLine);
+				output.append("   <span>" + fieldLabel + "</span>" + newLine);
+				output.append("   <span class='color-box' id='" + fieldId + "' style='background-color:#" + fieldValue + ";'></span>" + newLine);
+				output.append("</p>" + newLine);
+			} else if (fieldName.toLowerCase().contains("time") || fieldName.toLowerCase().contains("date")) {
+				String fieldValue = "";
+
+				if (objectWithValues != null && field.get(objectWithValues) != null && fieldType.equals("java.lang.Long")) {
+					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+					fieldValue = dateFormat.format(new Date(Long.parseLong(field.get(objectWithValues).toString()))).toString();
+				}
+				output.append("<p>" + newLine);
+				output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
+				output.append("   <input class='datetimepicker submitPoiDataField' id='" + fieldId + "' name='" + fieldId + "' type='text' value='" + fieldValue + "'/>" + newLine);
+				output.append("</p>" + newLine);
+			} else if (fieldType.equals("java.lang.Byte") || fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float") || fieldType.equals("java.lang.Integer") || fieldType.equals("java.lang.Long")) {
+				String additionalClass = "";
+				String fieldValue = "";
+				String step = "";;
+
+				if (objectWithValues != null && field.get(objectWithValues) != null) {
+					fieldValue = field.get(objectWithValues).toString();
+				}
+				
+				if (fieldType.equals("java.lang.Byte")) {
+					additionalClass = "byte";
+				} else if (fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float")) {
+					additionalClass = "doubleOrFloat";
+
+					if (!fieldValue.equals("")) {
+						step = BigDecimal.valueOf(Math.pow(10, -new BigDecimal(fieldValue).scale())).stripTrailingZeros().toPlainString();
+					}
+				} else if (fieldType.equals("java.lang.Integer")) {
+					additionalClass = "integer";
+				} else if (fieldType.equals("java.lang.Long")) {
+					additionalClass = "long";
+				}
+				
+				output.append("<p>" + newLine);
+				output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
+				output.append("   <input class='" + additionalClass + " submitPoiDataField' id='" + fieldId + "' name='" + fieldId + "' step='" + step + "' type='number' value='" + fieldValue + "'/>" + newLine);
+				output.append("</p>" + newLine);
 			} else {
 				String fieldValue = "";
-				String parsleyValidator = "";
 
-				if (fieldType.equals("java.awt.Color")) {
-
-					if (objectWithValues != null && field.get(objectWithValues) != null) {
-						String hexColor = Integer.toHexString(((Color) field.get(objectWithValues)).getRGB());
-						fieldValue = hexColor.substring(2, hexColor.length());
-					} else {
-						fieldValue = "ffffff";
-					}
-
-					output.append("<p>" + newLine);
-					output.append("   <span>" + fieldLabel + "</span>" + newLine);
-					output.append("   <span class='color-box' id='" + fieldId + "' style='background-color:#" + fieldValue + ";'></span>" + newLine);
-					output.append("</p>" + newLine);
-				} else if (fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float") || fieldType.equals("java.lang.Long")) {
-					String additionalClass = "";
-					String inputType = "text";
-					parsleyValidator = "data-parsley-type='number'";
-					String readonly = "";
-
-					if (fieldName.toLowerCase().contains("time") || fieldName.toLowerCase().contains("date")) {
-						additionalClass = " datetimepicker";
-						DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-						parsleyValidator = "";
-						readonly = "readonly";
-
-						if (objectWithValues != null && field.get(objectWithValues) != null) {
-							fieldValue = dateFormat.format(new Date(Long.parseLong(field.get(objectWithValues).toString()))).toString();
-						}
-					} else if (objectWithValues != null && field.get(objectWithValues) != null) {
-						fieldValue = field.get(objectWithValues).toString();
-					}
-
-					output.append("<p>" + newLine);
-					output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
-					output.append("   <input class='submitPoiDataField" + additionalClass + "' id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " " + readonly + " type='"
-							+ inputType + "' value='" + fieldValue + "'/>" + newLine);
-					output.append("</p>" + newLine);
-				} else {
-					String inputType = "text";
-
-					if (objectWithValues != null && field.get(objectWithValues) != null) {
-						fieldValue = field.get(objectWithValues).toString();
-					}
-
-					if (fieldType.equals("java.lang.Byte") || fieldType.equals("java.lang.Integer")) {
-						inputType = "number";
-						parsleyValidator = "data-parsley-type='integer'";
-					}
-
-					output.append("<p>" + newLine);
-					output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
-					output.append("   <input class='submitPoiDataField'                         id='" + fieldId + "' name='" + fieldId + "' " + parsleyValidator + " type='" + inputType + "' value='"
-							+ fieldValue + "'/>" + newLine);
-					output.append("</p>" + newLine);
+				if (objectWithValues != null && field.get(objectWithValues) != null) {
+					fieldValue = field.get(objectWithValues).toString();
 				}
+				output.append("<p>" + newLine);
+				output.append("   <label for='" + fieldId + "'>" + fieldLabel + "</label>" + newLine);
+				output.append("   <input class='submitPoiDataField' id='" + fieldId + "' name='" + fieldId + "' type='text' value='" + fieldValue + "'/>" + newLine);
+				output.append("</p>" + newLine);
 			}
 		}
 
