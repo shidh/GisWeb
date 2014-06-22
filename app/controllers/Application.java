@@ -711,8 +711,10 @@ public class Application extends Controller {
 					additionalClass = fieldName;
 				} else if (fieldType.equals("java.lang.Byte")) {
 					additionalClass = "byte";
-				} else if (fieldType.equals("java.lang.Double") || fieldType.equals("java.lang.Float")) {
-					additionalClass = "doubleOrFloat";
+				} else if (fieldType.equals("java.lang.Double")) {
+					additionalClass = "double";
+				} else if (fieldType.equals("java.lang.Float")) {
+					additionalClass = "float";
 				} else if (fieldType.equals("java.lang.Integer")) {
 					additionalClass = "integer";
 				} else if (fieldType.equals("java.lang.Long")) {
