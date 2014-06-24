@@ -3,7 +3,7 @@
 #{set 'moreStyles'}
 	<link rel="stylesheet" href="@{'/public/stylesheets/jquery.datetimepicker.css'}" />
 	<link rel="stylesheet" href="@{'/public/stylesheets/colpick.css'}" />
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+	<link rel="stylesheet" href="@{'/public/stylesheets/leaflet.css'}" />
 	<style type="text/css">
 		.color-box {
 			border: 1px solid black;
@@ -23,7 +23,7 @@
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.datetimepicker.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/colpick.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.color-2.1.0.min.js'}"></script>
-	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/leaflet.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.validate.js'}"></script>
 #{/set}
 
@@ -44,9 +44,16 @@
 <script type="text/javascript">
 	// set up the map
 	var map = new L.Map('map');
+	var customIcon = L.icon({
+			iconUrl: '/public/images/marker-icon.png',
+			shadownUrl: '/public/iamges/marker-shadow.png',
+			iconSize:[25,41],
+			iconAnchor:[12,41],
+			popupAnchor:[1,-34],
+			shadowSize:[41,41]});
 
 	// create the tile layer with correct attribution
-	var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	var osmUrl='//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 	var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
 	var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 19, attribution: osmAttrib});
 
@@ -54,7 +61,7 @@
 	map.setView(new L.LatLng(${poi.latitude}, ${poi.longitude}),12);
 	map.addLayer(osm);
 
-	var marker = L.marker([${poi.latitude}, ${poi.longitude}], {draggable:'true'}).addTo(map);
+	var marker = L.marker([${poi.latitude}, ${poi.longitude}], {draggable:'true', icon: customIcon}).addTo(map);
 
 	marker.on('dragend', function(event){
 		var marker = event.target;
@@ -337,7 +344,7 @@
 				range: [-9223372036854775808, 9223372036854775807]},
 			accuracy: {
 				number: true,
-				min: 0},
+				range: [0, 340282346638528859811704183484516925440]},
 			bearing: {
 				number: true,
 				range: [0, 360]},
@@ -345,13 +352,13 @@
 				cables: true},
 			circuits: {
 				digits: true,
-				min: 0},
+				range: [0, 127]},
 			frequency: {
 				number: true,
-				min: 0},
+				range: [0, 340282346638528859811704183484516925440]},
 			height: {
 				number: true,
-				min: 0},
+				range: [0, 340282346638528859811704183484516925440]},
 			latitude: {
 				number: true,
 				range: [-90, 90]},
@@ -360,13 +367,13 @@
 				range: [-180, 180]},
 			phases: {
 				digits: true,
-				min: 0},
+				range: [0, 2147483647]},
 			poles: {
 				digits: true,
-				min: 0},
+				range: [0, 127]},
 			rating: {
 				number: true,
-				min: 0}
+				range: [0, 9223372036854775807]}
 		});
 		
 		$.validator.addMethod("negOrPosDigit", function(value, element) {

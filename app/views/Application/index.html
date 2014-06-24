@@ -1,11 +1,11 @@
 #{extends 'main.html'/}
 #{set title:'GisWeb' /}
 #{set 'moreStyles'}
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+	<link rel="stylesheet" href="@{'/public/stylesheets/leaflet.css'}" />
 	<link rel="stylesheet" href="@{'/public/stylesheets/osm2leaflet.css'}" />
 #{/set}
 #{set 'moreScripts'}
-	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+	<script type="text/javascript" src="@{'/public/javascripts/leaflet.js'}"></script>
 	<script type="text/javascript" src="@{'/public/javascripts/jquery.slides.min.js'}"></script>
 	<script type="text/javascript">
 		var map;
@@ -16,10 +16,17 @@
 		function initmap() {
 			// set up the map
 			map = new L.Map('map');
+			var customIcon = L.icon({
+				iconUrl: '/public/images/marker-icon.png',
+				shadownUrl: '/public/iamges/marker-shadow.png',
+				iconSize:[25,41],
+				iconAnchor:[12,41],
+				popupAnchor:[1,-34],
+				shadowSize: [41, 41]});
 
 			// create the tile layer with correct attribution
-			var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-			var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+			var osmUrl='//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var osmAttrib='Map data © <a href="//openstreetmap.org">OpenStreetMap</a> contributors';
 			var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 19, attribution: osmAttrib});		
 
 			// start the map
@@ -27,7 +34,7 @@
 			map.addLayer(osm);
 
 			#{list items:models.Poi.findAll(), as:'poi'}
-				var marker = L.marker([${poi.latitude}, ${poi.longitude}]).addTo(map);
+				var marker = L.marker([${poi.latitude}, ${poi.longitude}], {icon: customIcon}).addTo(map);
 				var content =	'<div id="slides${poi.id}">' +
 								#{list items:0..poi.photos.size()-1, as:'index'}
 									'<img width="200px" src="@{Application.getPicture(poi.id, index)}"/>' +

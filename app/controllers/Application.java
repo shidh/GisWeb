@@ -138,7 +138,7 @@ public class Application extends Controller {
 		if (powerTags_Converter_rating.equals("")) {
 			converterObject.rating = null;
 		} else {
-			converterObject.rating = Integer.parseInt(powerTags_Converter_rating);
+			converterObject.rating = Long.parseLong(powerTags_Converter_rating);
 		}
 
 		if (powerTags_Converter_voltage.equals("")) {
@@ -192,13 +192,13 @@ public class Application extends Controller {
 		}
 
 		if (powerTags_Generator_method.equals("")) {
-			generator.method = null;
+			generator.method = Generator.MethodEnum.NULL;
 		} else {
 			generator.setMethodEnum(Generator.MethodEnum.valueOf(powerTags_Generator_method));
 		}
 
 		if (powerTags_Generator_type.equals("")) {
-			generator.type = null;
+			generator.type = Generator.TypeEnum.NULL;
 		} else {
 			generator.setTypeEnum(Generator.TypeEnum.valueOf(powerTags_Generator_type));
 		}
@@ -484,7 +484,7 @@ public class Application extends Controller {
 		if (powerTags_Transformer_rating.equals("")) {
 			transformer.rating = null;
 		} else {
-			transformer.rating = Integer.parseInt(powerTags_Transformer_rating);
+			transformer.rating = Long.parseLong(powerTags_Transformer_rating);
 		}
 
 		if (powerTags_Transformer_transformerType.equals("")) {
@@ -591,7 +591,11 @@ public class Application extends Controller {
 								String selected = "";
 
 								if (objectWithValues != null && field.get(objectWithValues) != null && field.get(objectWithValues).toString().equals(enumArrayFieldType)) {
-									selected = "selected=''";
+									if (((Generator) objectWithValues).source.name().equals(source) && fieldType.equals("models.powerTags.Generator$MethodEnum")) {
+										selected = "selected=''";
+									} else if (((Generator) objectWithValues).source.name().equals(source) && ((Generator) objectWithValues).method.name().equals(method) && fieldType.equals("models.powerTags.Generator$TypeEnum")) {
+										selected = "selected=''";
+									}
 								}
 								output.append("      <option " + selected + " value='" + enumArrayFieldType + "'>" + enumArrayFieldName + "</option>" + newLine);
 							}
