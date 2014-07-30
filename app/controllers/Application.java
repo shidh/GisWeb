@@ -19,6 +19,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+
 import models.*;
 import models.powerTags.*;
 import models.powerTags.Generator.SourceEnum;
@@ -26,28 +28,39 @@ import models.types.Operator;
 
 public class Application extends Controller {
 
+	private static final String audience = "889611969164-ujvohn299csu833avfmcsun3k6fna30s.apps.googleusercontent.com";
+	private static final String[] clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
+
 	public static void createPoi(String accuracy, String altitude,
 			String bearing, String latitude, String longitude, String provider,
-			String time) throws FileNotFoundException {
-		Poi poi = new Poi(accuracy, altitude, bearing, latitude, longitude,
-				provider, time);
-		File photoFile;
-		int index = 0;
-		while (true) {
-			photoFile = params.get("photo" + index, File.class);
-			if (photoFile == null) {
-				break;
-			} else {
-				Blob photoBlob = new Blob();
-				String photoName = photoFile.getName();
-				photoBlob.set(new FileInputStream(photoFile),
-						MimeTypes.getContentType(photoName));
-				poi.photos.add(photoBlob);
-				index++;
+			String time, String token) throws FileNotFoundException {
+
+		Checker checker = new Checker(clientId, audience);
+		Payload payload = checker.check(token);
+
+		if (payload != null) {
+			Poi poi = new Poi(accuracy, altitude, bearing, latitude, longitude,
+					provider, time);
+			File photoFile;
+			int index = 0;
+			while (true) {
+				photoFile = params.get("photo" + index, File.class);
+				if (photoFile == null) {
+					break;
+				} else {
+					Blob photoBlob = new Blob();
+					String photoName = photoFile.getName();
+					photoBlob.set(new FileInputStream(photoFile),
+							MimeTypes.getContentType(photoName));
+					poi.photos.add(photoBlob);
+					index++;
+				}
 			}
+			poi.save();
+			ok();
+		} else {
+			unauthorized();
 		}
-		poi.save();
-		index();
 	}
 
 	public static void createPowerTagCable(String poiId,
