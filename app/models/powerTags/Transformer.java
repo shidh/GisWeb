@@ -20,7 +20,8 @@ public class Transformer extends PowerTag {
 	}
 
 	public enum LocationEnum {
-		INDOOR("indoor"), OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER("underwater");
+		INDOOR("indoor"), OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(
+				"underwater");
 
 		public final String name;
 
@@ -30,7 +31,9 @@ public class Transformer extends PowerTag {
 	}
 
 	public enum TransformerEnum {
-		AUTO("auto"), CONVERTER("converter"), DISTRIBUTION("distribution"), GENERATOR("generator"), PHASE_ANGLE_REGULATOR("phase angle regulator"), TRACTION("traction"), YES("yes");
+		AUTO("auto"), CONVERTER("converter"), DISTRIBUTION("distribution"), GENERATOR(
+				"generator"), PHASE_ANGLE_REGULATOR("phase angle regulator"), TRACTION(
+				"traction"), YES("yes");
 
 		public final String name;
 

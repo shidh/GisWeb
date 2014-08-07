@@ -35,7 +35,10 @@ public class Plant extends PowerTag {
 	}
 
 	public enum OutputEnum {
-		COLD_AIR("cold air"), COLD_WATER("cold water"), COMPRESSED_AIR("compressed air"), ELECTRICITY("electricity"), HOT_AIR("hot air"), HOT_WATER("hot water"), STEAM("steam"), VACUUM("vacuum");
+		COLD_AIR("cold air"), COLD_WATER("cold water"), COMPRESSED_AIR(
+				"compressed air"), ELECTRICITY("electricity"), HOT_AIR(
+				"hot air"), HOT_WATER("hot water"), STEAM("steam"), VACUUM(
+				"vacuum");
 
 		public final String name;
 

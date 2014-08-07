@@ -27,7 +27,8 @@ public class Substation extends PowerTag {
 	}
 
 	public enum LocationEnum {
-		INDOOR("indoor"), KIOSK("kiosk"), OUTDOOR("outdoor"), PLATFORM("platform"), ROOFTOP("rooftop"), UNDERGROUND("underground");
+		INDOOR("indoor"), KIOSK("kiosk"), OUTDOOR("outdoor"), PLATFORM(
+				"platform"), ROOFTOP("rooftop"), UNDERGROUND("underground");
 
 		public final String name;
 
@@ -37,7 +38,9 @@ public class Substation extends PowerTag {
 	}
 
 	public enum SubstationTypeEnum {
-		COMPENSATION("compensation"), CONVERTER("converter"), DISTRIBUTION("distribution"), INDUSTRIAL("industrial"), MINOR_DISTRIBUTION("minor distribution"), TRACTION("traction"), TRANSITION(
+		COMPENSATION("compensation"), CONVERTER("converter"), DISTRIBUTION(
+				"distribution"), INDUSTRIAL("industrial"), MINOR_DISTRIBUTION(
+				"minor distribution"), TRACTION("traction"), TRANSITION(
 				"transition"), TRANSMISSION("transmission");
 
 		public final String name;
