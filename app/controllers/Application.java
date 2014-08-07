@@ -888,8 +888,9 @@ public class Application extends Controller {
 				String additionalClass = "";
 				String fieldValue = "";
 				List<String> restrictedFields = Arrays.asList("accuracy",
-						"bearing", "cables", "circuits", "frequency", "height",
-						"latitude", "longitude", "phases", "poles", "rating");
+						"altitude", "bearing", "cables", "circuits",
+						"frequency", "height", "latitude", "longitude",
+						"phases", "poles", "rating");
 				String step = "";
 				String type = "number";
 
@@ -1029,9 +1030,21 @@ public class Application extends Controller {
 			String Poi_longitude, String Poi_provider, String Poi_time)
 			throws ParseException {
 		Poi poi = Poi.findById(Long.valueOf(poiId));
-		poi.accuracy = Float.parseFloat(Poi_accuracy);
-		poi.altitude = Double.parseDouble(Poi_altitude);
-		poi.bearing = Float.parseFloat(Poi_bearing);
+		try {
+			poi.accuracy = Float.parseFloat(Poi_accuracy);
+		} catch (Exception e) {
+			poi.accuracy = null;
+		}
+		try {
+			poi.altitude = Double.parseDouble(Poi_altitude);
+		} catch (Exception e) {
+			poi.altitude = null;
+		}
+		try {
+			poi.bearing = Float.parseFloat(Poi_bearing);
+		} catch (Exception e) {
+			poi.bearing = null;
+		}
 		poi.latitude = Double.parseDouble(Poi_latitude);
 		poi.longitude = Double.parseDouble(Poi_longitude);
 		poi.provider = Poi_provider;

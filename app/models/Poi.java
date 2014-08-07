@@ -33,9 +33,21 @@ public class Poi extends Model {
 
 	public Poi(String accuracy, String altitude, String bearing,
 			String latitude, String longitude, String provider, String time) {
-		this.accuracy = Float.parseFloat(accuracy);
-		this.altitude = Double.parseDouble(altitude);
-		this.bearing = Float.parseFloat(bearing);
+		if (accuracy == null) {
+			this.accuracy = null;
+		} else {
+			this.accuracy = Float.parseFloat(accuracy);
+		}
+		if (altitude == null) {
+			this.altitude = null;
+		} else {
+			this.altitude = Double.parseDouble(altitude);
+		}
+		if (bearing == null) {
+			this.bearing = null;
+		} else {
+			this.bearing = Float.parseFloat(bearing);
+		}
 		this.latitude = Double.parseDouble(latitude);
 		this.longitude = Double.parseDouble(longitude);
 		this.provider = provider;
