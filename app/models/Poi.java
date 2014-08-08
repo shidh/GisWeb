@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import play.db.jpa.Blob;
@@ -16,9 +17,6 @@ import play.db.jpa.Model;
 
 @Entity
 public class Poi extends Model {
-
-	@ElementCollection
-	public List<Blob> photos;
 
 	public Float accuracy;
 	public Double altitude;
@@ -28,32 +26,11 @@ public class Poi extends Model {
 	public String provider;
 	public Long time;
 
+	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
+	public List<Photo> photos;
+
 	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
 	public PowerTag powerTag;
-
-	public Poi(String accuracy, String altitude, String bearing,
-			String latitude, String longitude, String provider, String time) {
-		if (accuracy == null) {
-			this.accuracy = null;
-		} else {
-			this.accuracy = Float.parseFloat(accuracy);
-		}
-		if (altitude == null) {
-			this.altitude = null;
-		} else {
-			this.altitude = Double.parseDouble(altitude);
-		}
-		if (bearing == null) {
-			this.bearing = null;
-		} else {
-			this.bearing = Float.parseFloat(bearing);
-		}
-		this.latitude = Double.parseDouble(latitude);
-		this.longitude = Double.parseDouble(longitude);
-		this.provider = provider;
-		this.time = Long.parseLong(time);
-		this.photos = new ArrayList<Blob>();
-	}
 
 	/**
 	 * Based on the work of Mike B.

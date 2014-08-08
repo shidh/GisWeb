@@ -31,33 +31,44 @@ public class Application extends Controller {
 	private static final String audience = "889611969164-ujvohn299csu833avfmcsun3k6fna30s.apps.googleusercontent.com";
 	private static final String[] clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
 
-	public static void createPoi(String accuracy, String altitude,
-			String bearing, String latitude, String longitude, String provider,
-			String time, String token) throws FileNotFoundException {
+	public static void createPoi(String token) throws FileNotFoundException {
 
 		Checker checker = new Checker(clientId, audience);
 		Payload payload = checker.check(token);
 
 		if (payload != null) {
-			Poi poi = new Poi(accuracy, altitude, bearing, latitude, longitude,
-					provider, time);
-			File photoFile;
-			int index = 0;
-			while (true) {
-				photoFile = params.get("photo" + index, File.class);
-				if (photoFile == null) {
-					break;
-				} else {
-					Blob photoBlob = new Blob();
-					String photoName = photoFile.getName();
-					photoBlob.set(new FileInputStream(photoFile),
-							MimeTypes.getContentType(photoName));
-					poi.photos.add(photoBlob);
+			Poi poi = new Poi();
+			poi.photos = new ArrayList<Photo>();
+				int index = 0;
+				while (true) {
+					File photoFile = params.get("photo" + index, File.class);
+					if (photoFile == null) {
+						break;
+					} else {
+						Photo photo = new Photo();
+						photo.accuracy = params.get("accuracy" + index, Float.class);
+						photo.altitude = params.get("altitude" + index, Double.class);
+						photo.bearing = params.get("bearing" + index, Float.class);
+						photo.latitude = params.get("latitude" + index, Double.class);
+						photo.longitude = params.get("longitude" + index, Double.class);
+						photo.provider = params.get("provider" + index, String.class);
+						photo.time = params.get("time" + index, Long.class);
+						Blob photoBlob = new Blob();
+						String photoName = photoFile.getName();
+						photoBlob.set(new FileInputStream(photoFile),
+								MimeTypes.getContentType(photoName));
+						photo.photoBlob = photoBlob;
+						photo.poi = poi;
+						poi.photos.add(photo);
 					index++;
 				}
 			}
-			poi.save();
-			ok();
+			if (!poi.photos.isEmpty()) {
+				poi.save();
+				ok();
+			} else {
+				badRequest();
+			}
 		} else {
 			unauthorized();
 		}
@@ -1017,8 +1028,8 @@ public class Application extends Controller {
 
 	public static void getPicture(long id, int position) {
 		Poi poi = Poi.findById(id);
-		response.setContentTypeIfNotSet(poi.photos.get(position).type());
-		renderBinary(poi.photos.get(position).get());
+		response.setContentTypeIfNotSet(poi.photos.get(position).photoBlob.type());
+		renderBinary(poi.photos.get(position).photoBlob.get());
 	}
 
 	public static void index() {
