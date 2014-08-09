@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 import play.db.jpa.Blob;
 
 @Entity
-public class Photo {
+public class LocationTrace {
 
 	@ManyToOne
 	public Poi poi;
@@ -24,7 +24,6 @@ public class Photo {
 	public Float bearing;
 	public Double latitude;
 	public Double longitude;
-	public Blob photoBlob;
 	public String provider;
 	public Long time;
 }

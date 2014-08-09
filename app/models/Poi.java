@@ -27,6 +27,9 @@ public class Poi extends Model {
 	public Long time;
 
 	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
+	public List<LocationTrace> locationTrace;
+
+	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
 	public List<Photo> photos;
 
 	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)

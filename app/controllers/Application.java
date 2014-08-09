@@ -38,32 +38,67 @@ public class Application extends Controller {
 
 		if (payload != null) {
 			Poi poi = new Poi();
+			poi.locationTrace = new ArrayList<LocationTrace>();
 			poi.photos = new ArrayList<Photo>();
-				int index = 0;
-				while (true) {
-					File photoFile = params.get("photo" + index, File.class);
-					if (photoFile == null) {
-						break;
-					} else {
-						Photo photo = new Photo();
-						photo.accuracy = params.get("accuracy" + index, Float.class);
-						photo.altitude = params.get("altitude" + index, Double.class);
-						photo.bearing = params.get("bearing" + index, Float.class);
-						photo.latitude = params.get("latitude" + index, Double.class);
-						photo.longitude = params.get("longitude" + index, Double.class);
-						photo.provider = params.get("provider" + index, String.class);
-						photo.time = params.get("time" + index, Long.class);
-						Blob photoBlob = new Blob();
-						String photoName = photoFile.getName();
-						photoBlob.set(new FileInputStream(photoFile),
-								MimeTypes.getContentType(photoName));
-						photo.photoBlob = photoBlob;
-						photo.poi = poi;
-						poi.photos.add(photo);
+			int index = 0;
+			while (true) {
+				File photoFile = params.get("photo_" + index + "_file",
+						File.class);
+				if (photoFile == null) {
+					break;
+				} else {
+					Photo photo = new Photo();
+					photo.accuracy = params.get("photo_" + index + "_accuracy",
+							Float.class);
+					photo.altitude = params.get("photo_" + index + "_altitude",
+							Double.class);
+					photo.bearing = params.get("photo_" + index + "_bearing",
+							Float.class);
+					photo.latitude = params.get("photo_" + index + "_latitude",
+							Double.class);
+					photo.longitude = params.get("photo_" + index
+							+ "_longitude", Double.class);
+					photo.provider = params.get("photo_" + index + "_provider",
+							String.class);
+					photo.time = params.get("photo_" + index + "_time",
+							Long.class);
+					Blob photoBlob = new Blob();
+					String photoName = photoFile.getName();
+					photoBlob.set(new FileInputStream(photoFile),
+							MimeTypes.getContentType(photoName));
+					photo.photoBlob = photoBlob;
+					photo.poi = poi;
+					poi.photos.add(photo);
 					index++;
 				}
 			}
 			if (!poi.photos.isEmpty()) {
+				index = 0;
+				while (true) {
+					LocationTrace trace = new LocationTrace();
+					trace.latitude = params.get("trace_" + index + "_latitude",
+							Double.class);
+					if (trace.latitude == null) {
+						break;
+					}
+
+					trace.accuracy = params.get("trace_" + index + "_accuracy",
+							Float.class);
+					trace.altitude = params.get("trace_" + index + "_altitude",
+							Double.class);
+					trace.bearing = params.get("trace_" + index + "_bearing",
+							Float.class);
+					trace.longitude = params.get("trace_" + index
+							+ "_longitude", Double.class);
+					trace.provider = params.get("trace_" + index + "_provider",
+							String.class);
+					trace.time = params.get("trace_" + index + "_time",
+							Long.class);
+					trace.poi = poi;
+					poi.locationTrace.add(trace);
+					index++;
+				}
+
 				poi.save();
 				ok();
 			} else {
@@ -1028,7 +1063,8 @@ public class Application extends Controller {
 
 	public static void getPicture(long id, int position) {
 		Poi poi = Poi.findById(id);
-		response.setContentTypeIfNotSet(poi.photos.get(position).photoBlob.type());
+		response.setContentTypeIfNotSet(poi.photos.get(position).photoBlob
+				.type());
 		renderBinary(poi.photos.get(position).photoBlob.get());
 	}
 
