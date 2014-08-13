@@ -1,7 +1,9 @@
 # Ignore Play! working directory #
 bin/
 /db
+.classpath
 .eclipse
+eclipse
 /lib/
 /logs/
 /modules
@@ -10,8 +12,10 @@ bin/
 /target
 tmp/
 test-result
+.settings
 server.pid
 *.iml
 *.eml
 /dist/
 .cache
+/data/attachments/
