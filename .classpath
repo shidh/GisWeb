@@ -2,9 +2,8 @@
 <classpath>
 	<classpathentry excluding="views/**" kind="src" path="app"/>
 	<classpathentry kind="src" path="test"/>
-	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/play-1.2.7.jar" sourcepath="/opt/play-1.2.7/framework/src" />
+	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/play-1.2.7.jar" sourcepath="/opt/play-1.2.7/framework/src"/>
 	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/lib/ezmorph-1.0.3.jar"/>
 	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/lib/async-http-client-1.7.8.jar"/>
 	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/lib/gson-2.2.jar"/>
@@ -72,6 +71,9 @@
 	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/lib/mail-1.4.3.jar"/>
 	<classpathentry kind="lib" path="/opt/play-1.2.7/framework/lib/javassist-3.9.0.GA.jar"/>
-	
+	<classpathentry kind="lib" path="libs/google-api-client-1.17.0-rc.jar"/>
+	<classpathentry kind="lib" path="libs/google-http-client-1.17.0-rc.jar"/>
+	<classpathentry kind="lib" path="libs/google-http-client-gson-1.17.0-rc.jar"/>
+	<classpathentry kind="lib" path="libs/google-oauth-client-1.17.0-rc.jar"/>
 	<classpathentry kind="output" path="eclipse/classes"/>
 </classpath>
