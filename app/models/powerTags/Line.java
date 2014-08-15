@@ -11,6 +11,17 @@ import models.types.Operator;
 @Entity
 public class Line extends PowerTag {
 
+	public enum WiresEnum {
+		SINGLE("single"), DOUBLE("double"), TRIPLE("triple"), QUAD("quad"), FIVEFOLD(
+				"fivefold"), SIXFOLD("sixfold"), EIGHTFOLD("eightfold");
+
+		public final String name;
+
+		WiresEnum(String name) {
+			this.name = name;
+		}
+	}
+
 	public String cables;
 
 	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
@@ -22,16 +33,5 @@ public class Line extends PowerTag {
 
 	public Line(Poi poi) {
 		super(poi);
-	}
-
-	public enum WiresEnum {
-		SINGLE("single"), DOUBLE("double"), TRIPLE("triple"), QUAD("quad"), FIVEFOLD(
-				"fivefold"), SIXFOLD("sixfold"), EIGHTFOLD("eightfold");
-
-		public final String name;
-
-		WiresEnum(String name) {
-			this.name = name;
-		}
 	}
 }

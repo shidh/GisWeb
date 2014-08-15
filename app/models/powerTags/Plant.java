@@ -11,19 +11,6 @@ import models.types.Operator;
 @Entity
 public class Plant extends PowerTag {
 
-	public LanduseEnum landuse;
-	public String name;
-
-	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
-	public Operator operator;
-
-	public OutputEnum output;
-	public Long start_date;
-
-	public Plant(Poi poi) {
-		super(poi);
-	}
-
 	public enum LanduseEnum {
 		INDUSTRIAL("industrial"), WIND_FARM("wind farm");
 
@@ -45,5 +32,18 @@ public class Plant extends PowerTag {
 		OutputEnum(String name) {
 			this.name = name;
 		}
+	}
+
+	public LanduseEnum landuse;
+	public String name;
+
+	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
+	public Operator operator;
+
+	public OutputEnum output;
+	public Long start_date;
+
+	public Plant(Poi poi) {
+		super(poi);
 	}
 }

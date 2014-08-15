@@ -7,33 +7,14 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import play.db.jpa.Blob;
 import play.db.jpa.Model;
 
 @Entity
 public class Poi extends Model {
-
-	public Float accuracy;
-	public Double altitude;
-	public Float bearing;
-	public Double latitude;
-	public Double longitude;
-	public String provider;
-	public Long time;
-
-	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
-	public List<LocationTrace> locationTrace;
-
-	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
-	public List<Photo> photos;
-
-	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
-	public PowerTag powerTag;
 
 	/**
 	 * Based on the work of Mike B.
@@ -57,5 +38,46 @@ public class Poi extends Model {
 		}
 		Collections.sort(list);
 		return list;
+	}
+
+	public Float accuracy;
+	public Double altitude;
+	public Float bearing;
+	public Double latitude;
+	public Double longitude;
+	public String provider;
+	public Long time;
+
+	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
+	public List<LocationTrace> locationTrace;
+
+	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
+	public List<Photo> photos;
+
+	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
+	public PowerTag powerTag;
+
+	public double derivePoiLatitude() {
+		if (latitude != null) {
+			return latitude;
+		} else {
+			double lat = 0;
+			for (Photo photo : photos) {
+				lat += photo.latitude;
+			}
+			return lat / photos.size();
+		}
+	}
+
+	public double derivePoiLongitude() {
+		if (longitude != null) {
+			return longitude;
+		} else {
+			double lng = 0;
+			for (Photo photo : photos) {
+				lng += photo.longitude;
+			}
+			return lng / photos.size();
+		}
 	}
 }

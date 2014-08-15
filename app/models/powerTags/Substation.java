@@ -11,21 +11,6 @@ import models.types.Operator;
 @Entity
 public class Substation extends PowerTag {
 
-	public Boolean gas_insulated;
-	public LocationEnum location;
-	public String name;
-
-	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
-	public Operator operator;
-
-	public String ref;
-	public SubstationTypeEnum substationType;
-	public Float voltage;
-
-	public Substation(Poi poi) {
-		super(poi);
-	}
-
 	public enum LocationEnum {
 		INDOOR("indoor"), KIOSK("kiosk"), OUTDOOR("outdoor"), PLATFORM(
 				"platform"), ROOFTOP("rooftop"), UNDERGROUND("underground");
@@ -48,5 +33,20 @@ public class Substation extends PowerTag {
 		SubstationTypeEnum(String name) {
 			this.name = name;
 		}
+	}
+
+	public Boolean gas_insulated;
+	public LocationEnum location;
+	public String name;
+
+	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
+	public Operator operator;
+
+	public String ref;
+	public SubstationTypeEnum substationType;
+	public Float voltage;
+
+	public Substation(Poi poi) {
+		super(poi);
 	}
 }

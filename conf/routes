@@ -12,6 +12,7 @@ GET     /favicon.ico                            404
 GET     /public/                                staticDir:public
 
 POST    /createPoi/                             Application.createPoi
+WS      /webSocket/                             WebSocket.join
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

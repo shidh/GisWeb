@@ -11,6 +11,17 @@ import models.types.Operator;
 @Entity
 public class Cable extends PowerTag {
 
+	public enum LocationEnum {
+		OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(
+				"underwater");
+
+		public final String name;
+
+		LocationEnum(String name) {
+			this.name = name;
+		}
+	}
+
 	public String cables;
 	public Byte circuits;
 	public LocationEnum location;
@@ -24,16 +35,5 @@ public class Cable extends PowerTag {
 
 	public Cable(Poi poi) {
 		super(poi);
-	}
-
-	public enum LocationEnum {
-		OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(
-				"underwater");
-
-		public final String name;
-
-		LocationEnum(String name) {
-			this.name = name;
-		}
 	}
 }

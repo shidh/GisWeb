@@ -87,6 +87,8 @@ public class Application extends Controller {
 				}
 
 				poi.save();
+				WebSocket.publishAddMarkerEvent(poi.derivePoiLatitude(),
+						poi.derivePoiLongitude(), poi.id);
 				ok();
 			} else {
 				badRequest();

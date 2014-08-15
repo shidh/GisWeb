@@ -10,18 +10,6 @@ import models.PowerTag;
 @Entity
 public class Tower extends PowerTag {
 
-	public Color color;
-	public DesignEnum design;
-	public Float height;
-	public MaterialEnum material;
-	public String ref;
-	public StructureEnum structure;
-	public TypeEnum type;
-
-	public Tower(Poi poi) {
-		super(poi);
-	}
-
 	public enum DesignEnum {
 		ASYMMETRIC("asymmetric"), BARREL("barrel"), BIPOLE("bipole"), DELTA(
 				"delta"), DELTA_TWO_LEVEL("delta and two-level"), DONAU("donau"), DONAU_ONE_LEVEL(
@@ -71,5 +59,17 @@ public class Tower extends PowerTag {
 		TypeEnum(String name) {
 			this.name = name;
 		}
+	}
+
+	public Color color;
+	public DesignEnum design;
+	public Float height;
+	public MaterialEnum material;
+	public String ref;
+	public StructureEnum structure;
+	public TypeEnum type;
+
+	public Tower(Poi poi) {
+		super(poi);
 	}
 }

@@ -8,15 +8,6 @@ import models.PowerTag;
 @Entity
 public class Converter extends PowerTag {
 
-	public ConverterEnum converter;
-	public Byte poles;
-	public Long rating;
-	public Float voltage;
-
-	public Converter(Poi poi) {
-		super(poi);
-	}
-
 	public enum ConverterEnum {
 		BACK_TO_BACK("back-to-back"), LCC("lcc"), VSC("vsc");
 
@@ -25,5 +16,14 @@ public class Converter extends PowerTag {
 		ConverterEnum(String name) {
 			this.name = name;
 		}
+	}
+
+	public ConverterEnum converter;
+	public Byte poles;
+	public Long rating;
+	public Float voltage;
+
+	public Converter(Poi poi) {
+		super(poi);
 	}
 }

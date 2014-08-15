@@ -8,17 +8,6 @@ import models.PowerTag;
 @Entity
 public class Transformer extends PowerTag {
 
-	public Float frequency;
-	public LocationEnum location;
-	public Integer phases;
-	public Long rating;
-	public TransformerEnum transformerType;
-	public Float voltage;
-
-	public Transformer(Poi poi) {
-		super(poi);
-	}
-
 	public enum LocationEnum {
 		INDOOR("indoor"), OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(
 				"underwater");
@@ -40,5 +29,16 @@ public class Transformer extends PowerTag {
 		TransformerEnum(String name) {
 			this.name = name;
 		}
+	}
+
+	public Float frequency;
+	public LocationEnum location;
+	public Integer phases;
+	public Long rating;
+	public TransformerEnum transformerType;
+	public Float voltage;
+
+	public Transformer(Poi poi) {
+		super(poi);
 	}
 }

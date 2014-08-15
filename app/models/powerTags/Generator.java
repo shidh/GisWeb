@@ -13,19 +13,78 @@ import models.types.Operator;
 @Entity
 public class Generator extends PowerTag {
 
-	public String name;
+	public enum MethodEnum {
+		BARRAGE("barrage"), COMBUSTION("combustion"), FISSION("fission"), FUSION(
+				"fusion"), GASIFICATION("gasification"), PHOTOVOLTAIC(
+				"photovoltaic"), RUN_OF_THE_RIVER("run of the river"), STREAM(
+				"stream"), THERMAL("thermal"), WATER_PUMPED_STORAGE(
+				"water pumped storage"), WATER_STORAGE("water storage"), NULL(
+				"null");
+		;
 
-	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
-	public Operator operator;
+		public final String name;
 
-	public OutputEnum output;
-	public PlantEnum plant;
-	public SourceEnum source;
-	public MethodEnum method;
-	public TypeEnum type;
+		MethodEnum(String name) {
+			this.name = name;
+		}
+	}
 
-	public Generator(Poi poi) {
-		super(poi);
+	public enum OutputEnum {
+		COLD_AIR("cold air"), COLD_WATER("cold water"), COMPRESSED_AIR(
+				"compressed air"), ELECTRICITY("electricity"), HOT_AIR(
+				"hot air"), HOT_WATER("hot water"), STEAM("steam"), VACUUM(
+				"vacuum");
+
+		public final String name;
+
+		OutputEnum(String name) {
+			this.name = name;
+		}
+	}
+
+	public enum PlantEnum {
+		INTERMEDIATE("intermediate"), OUTPUT("output");
+
+		public final String name;
+
+		PlantEnum(String name) {
+			this.name = name;
+		}
+	}
+
+	public enum SourceEnum {
+		BIOFUEL("biofuel"), BIOGAS("biogas"), BIOMASS("biomass"), COAL("coal"), DIESEL(
+				"diesel"), GAS("gas"), GASOLINE("gasoline"), GEOTHERMAL(
+				"geothermal"), HYDRO("hydro"), NUCLEAR("nuclear"), OIL("oil"), SOLAR(
+				"solar"), TIDAL("tidal"), WASTE("waste"), WAVE("wave"), WIND(
+				"wind");
+
+		public final String name;
+
+		SourceEnum(String name) {
+			this.name = name;
+		}
+	}
+
+	public enum TypeEnum {
+		BWR_1("BWR-1"), BWR_2("BWR-2"), BWR_3("BWR-3"), BWR_4("BWR-4"), BWR_5(
+				"BWR-5"), BWR_6("BWR-6"), COLD_FUSION("cold fusion"), COMBINED_CYCLE(
+				"combined cycle"), CANDU("CANDU"), CPR_1000("CPR-1000"), EPR(
+				"EPR"), FRANCIS_TURBINE("francis turbine"), GAS_TURBINE(
+				"gas turbine"), HEAT_PUMP("heat pump"), HORIZONTAL_AXIS(
+				"horizontal axis"), ICF("ICF"), KAPLAN_TURBINE("kaplan turbine"), PELTON_TURBINE(
+				"pelton turbine"), PWR("PWR"), RBMK_1000("RBMK-1000"), RBMK_1500(
+				"RBMK-1500"), RECIPROCATING_ENGINE("reciprocating engine"), SOLAR_PHOTOVOLTAIC_PANEL(
+				"solar photovoltaic panel"), SOLAR_THERMAL_COLLECTOR(
+				"solar thermal collector"), STEAM_GENERATOR("steam generator"), STEAM_TURBINE(
+				"steam turbine"), STELLARATOR("stellarator"), TOKAMAK("tokamak"), VERTICAL_AXIS(
+				"vertical axis"), VVER("VVER"), NULL("null");
+
+		public final String name;
+
+		TypeEnum(String name) {
+			this.name = name;
+		}
 	}
 
 	public static MethodEnum[] getMethods(SourceEnum source) {
@@ -167,6 +226,21 @@ public class Generator extends PowerTag {
 		return types;
 	}
 
+	public String name;
+
+	@OneToOne(mappedBy = "powerTag", cascade = CascadeType.ALL)
+	public Operator operator;
+
+	public OutputEnum output;
+	public PlantEnum plant;
+	public SourceEnum source;
+	public MethodEnum method;
+	public TypeEnum type;
+
+	public Generator(Poi poi) {
+		super(poi);
+	}
+
 	public void setMethodEnum(MethodEnum method) {
 		MethodEnum[] methods = getMethods(this.source);
 
@@ -180,80 +254,6 @@ public class Generator extends PowerTag {
 
 		if (Arrays.asList(types).contains(type)) {
 			this.type = type;
-		}
-	}
-
-	public enum SourceEnum {
-		BIOFUEL("biofuel"), BIOGAS("biogas"), BIOMASS("biomass"), COAL("coal"), DIESEL(
-				"diesel"), GAS("gas"), GASOLINE("gasoline"), GEOTHERMAL(
-				"geothermal"), HYDRO("hydro"), NUCLEAR("nuclear"), OIL("oil"), SOLAR(
-				"solar"), TIDAL("tidal"), WASTE("waste"), WAVE("wave"), WIND(
-				"wind");
-
-		public final String name;
-
-		SourceEnum(String name) {
-			this.name = name;
-		}
-	}
-
-	public enum MethodEnum {
-		BARRAGE("barrage"), COMBUSTION("combustion"), FISSION("fission"), FUSION(
-				"fusion"), GASIFICATION("gasification"), PHOTOVOLTAIC(
-				"photovoltaic"), RUN_OF_THE_RIVER("run of the river"), STREAM(
-				"stream"), THERMAL("thermal"), WATER_PUMPED_STORAGE(
-				"water pumped storage"), WATER_STORAGE("water storage"), NULL(
-				"null");
-		;
-
-		public final String name;
-
-		MethodEnum(String name) {
-			this.name = name;
-		}
-	}
-
-	public enum TypeEnum {
-		BWR_1("BWR-1"), BWR_2("BWR-2"), BWR_3("BWR-3"), BWR_4("BWR-4"), BWR_5(
-				"BWR-5"), BWR_6("BWR-6"), COLD_FUSION("cold fusion"), COMBINED_CYCLE(
-				"combined cycle"), CANDU("CANDU"), CPR_1000("CPR-1000"), EPR(
-				"EPR"), FRANCIS_TURBINE("francis turbine"), GAS_TURBINE(
-				"gas turbine"), HEAT_PUMP("heat pump"), HORIZONTAL_AXIS(
-				"horizontal axis"), ICF("ICF"), KAPLAN_TURBINE("kaplan turbine"), PELTON_TURBINE(
-				"pelton turbine"), PWR("PWR"), RBMK_1000("RBMK-1000"), RBMK_1500(
-				"RBMK-1500"), RECIPROCATING_ENGINE("reciprocating engine"), SOLAR_PHOTOVOLTAIC_PANEL(
-				"solar photovoltaic panel"), SOLAR_THERMAL_COLLECTOR(
-				"solar thermal collector"), STEAM_GENERATOR("steam generator"), STEAM_TURBINE(
-				"steam turbine"), STELLARATOR("stellarator"), TOKAMAK("tokamak"), VERTICAL_AXIS(
-				"vertical axis"), VVER("VVER"), NULL("null");
-
-		public final String name;
-
-		TypeEnum(String name) {
-			this.name = name;
-		}
-	}
-
-	public enum OutputEnum {
-		COLD_AIR("cold air"), COLD_WATER("cold water"), COMPRESSED_AIR(
-				"compressed air"), ELECTRICITY("electricity"), HOT_AIR(
-				"hot air"), HOT_WATER("hot water"), STEAM("steam"), VACUUM(
-				"vacuum");
-
-		public final String name;
-
-		OutputEnum(String name) {
-			this.name = name;
-		}
-	}
-
-	public enum PlantEnum {
-		INTERMEDIATE("intermediate"), OUTPUT("output");
-
-		public final String name;
-
-		PlantEnum(String name) {
-			this.name = name;
 		}
 	}
 }
