@@ -1,4 +1,4 @@
 # Application dependencies
 
 require:
-    - play
+    - play -> sass 1.1

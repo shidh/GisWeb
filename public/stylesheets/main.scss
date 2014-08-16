@@ -1,0 +1,43 @@
+/*
+ * mixins and variables
+ */
+@mixin form_fields {
+	$bottom_margin: 10px;
+	padding: 5px 15px 0 15px;
+	button {
+		margin-bottom: $bottom_margin;
+		vertical-align: bottom !important;}
+	.form-group {
+		margin-bottom: $bottom_margin;}}
+
+@mixin left_right_padding_zero {
+	padding-left: 0 !important;
+	padding-right: 0 !important;}
+
+/*
+ * stylesheet code
+ */
+body,html {
+	height: 100%;}
+
+#table {
+	display: table;
+	height: 100%;
+	@include left_right_padding_zero;
+	width: 100%;
+	
+	#row_top {
+		@include form_fields;}
+
+	#row_middle {
+		display: table-row;
+		height: 100%;	
+		.col-xs-12 {
+			height: 100%;
+			@include left_right_padding_zero;
+			
+			#map {
+				height: 100%;}}}
+	
+	#row_bottom {
+		@include form_fields;}}

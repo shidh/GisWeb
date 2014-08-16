@@ -2,14 +2,20 @@
 #{set title:'grid2osm' /}
 #{bootstrap /}
 #{webSocket /}
-<div id='table'>
-	<div id='row_top' class='collapse'>
-		#{poi /}
+<div id='table' class='container-fluid'>
+	<div id='row_top' class='collapse row'>
+		<div class='col-xs-12'>
+			#{poi /}
+		</div>
 	</div>
-	<div id='row_middle' class='full_height'>
-		#{map /}
+	<div id='row_middle' class='row'>
+		<div class='col-xs-12'>
+			#{map /}
+		</div>
 	</div>
-	<div id='row_bottom' class='collapse'>
-		#{poiDetails /}
+	<div id='row_bottom' class='collapse row'>
+		<div class='col-xs-12'>
+			#{poiDetails /}
+		</div>
 	</div>
 </div>
