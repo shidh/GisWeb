@@ -2,14 +2,13 @@
 	#{get 'moreScripts' /}
 	#{script 'leaflet-0.7.3.js' /}
 	#{script 'leaflet_tutorial.js' /}
-	#{script 'leaflet_user_defined.js' /}
+	#{script 'map_user_defined.js' /}
 #{/set}
 #{set 'moreStyles'}
 	#{get 'moreStyles' /}
 	#{stylesheet 'leaflet-0.7.3.css' /}
-	#{stylesheet 'leaflet_user_defined.css' /}
 #{/set}
-<div id='map'></div>
+<div id='map' class='full_height'></div>
 <script type='text/javascript'>
 	initmap();
 </script>

@@ -1,0 +1,19 @@
+#{set 'moreScripts'}
+	#{get 'moreScripts' /}
+	#{script 'bootstrap.min.js' /}
+#{/set}
+#{set 'moreStyles'}
+	#{get 'moreStyles' /}
+	#{stylesheet 'bootstrap-theme.min.css' /}
+	#{stylesheet 'bootstrap.min.css' /}
+	<style type='text/css'>
+		@font-face {
+			font-family: 'Glyphicons Halflings';
+			src: url('/public/fonts/bootstrap/glyphicons-halflings-regular.eot');
+			src: url('/public/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+				 url('/public/fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'),
+				 url('/public/fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'),
+				 url('/public/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+		}
+	</style>
+#{/set}

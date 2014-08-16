@@ -1,4 +1,15 @@
 #{extends 'main.html' /}
 #{set title:'grid2osm' /}
-#{leaflet /}
+#{bootstrap /}
 #{webSocket /}
+<div id='table'>
+	<div id='row_top' class='collapse'>
+		#{poi /}
+	</div>
+	<div id='row_middle' class='full_height'>
+		#{map /}
+	</div>
+	<div id='row_bottom' class='collapse'>
+		#{poiDetails /}
+	</div>
+</div>
