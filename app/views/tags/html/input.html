@@ -1,0 +1,55 @@
+<div class='form-group'
+	#{ifnot _primary}
+		style='margin-right: 4px;'
+		#{/ifnot}>
+	<label
+		class='control-label
+			#{if _primary}
+				text-primary
+				#{/if}
+				'
+		for='${_id}'
+		>${_name}:</label><br />	
+	<input
+		class='form-control'
+		id='${_id}'
+		#{if _type == 'color'}
+			type='color'
+		#{/if}
+		#{elseif _type == 'date'}
+			type='datetime-local'
+			#{/elseif}
+		#{elseif _type == 'number'}
+			type='number'
+			#{if _min}
+				min='${_min}'
+				#{/if}
+			#{if _max}
+				max='${_max}'
+				#{/if}
+			#{if _step}
+				step='${_step}'
+				#{/if}
+			#{/elseif}
+		#{else}
+			type='text'
+			#{/else}
+		#{if _value}
+			#{if _type == 'date'}
+				value='${new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date(_value)).toString().replace(" ","T")}'
+				#{/if}
+			#{else}
+				value='${_value}'
+				#{/else}
+			#{/if}
+		#{if _placeholder}
+			placeholder='${_placeholder}'
+			#{/if}
+		#{else}
+			placeholder='text'
+			#{/else}
+		#{if _readonly}
+			readonly
+			#{/if}
+		>
+</div>

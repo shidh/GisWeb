@@ -1,37 +1,25 @@
-#{set 'moreScripts'}
-	#{get 'moreScripts' /}
-#{/set}
-#{set 'moreStyles'}
-	#{get 'moreStyles' /}
-#{/set}
 <form class='form-inline'>
-	<div class='form-group'>
-		<label for='poi_accuracy'>Accuracy:</label><br />
-		<input class='form-control' id='poi_accuracy' placeholder='missing value' type='text'>
-	</div>
-	<div class='form-group'>
-		<label for='poi_altitude'>Altitude:</label><br />
-		<input class='form-control' id='poi_altitude' placeholder='missing value' type='text'>
-	</div>
-	<div class='form-group'>
-		<label for='poi_bearing'>Bearing:</label><br />
-		<input class='form-control' id='poi_bearing' placeholder='missing value' type='text'>
-	</div>
-	<div class='form-group'>
-		<label for='poi_latitude'>Latitude:</label><br />
-		<input class='form-control' id='poi_latitude' placeholder='missing value' type='text'>
-	</div>
-	<div class='form-group'>
-		<label for='poi_longitude'>Longitude:</label><br />
-		<input class='form-control' id='poi_longitude' placeholder='missing value' type='text'>
-	</div>
-	<div class='form-group'>
-		<label for='poi_provider'>Provider:</label><br />
-		<input class='form-control' id='poi_provider' placeholder='missing value' type='text'>
-	</div>
-	<div class='form-group'>
-		<label for='poi_time'>Time:</label><br />
-		<input class='form-control' id='poi_time' type='datetime-local'>
-	</div>
+	#{html/input id:'poi_accuracy', name:'Accuracy', primary:'true',type:'number',min:'0',             step:'0.001',placeholder:'meters (decimal; range [0;∞[)',      value:poi.accuracy /}
+	#{html/input id:'poi_altitude', name:'Altitude', primary:'true',type:'number',                     step:'0.001',placeholder:'meters (decimal)',                   value:poi.altitude /}
+	#{html/input id:'poi_bearing',  name:'Bearing',  primary:'true',type:'number',min:'0',  max:'360', step:'0.001',placeholder:'degrees (decimal; range [0;360])',   value:poi.bearing /}
+	#{html/input id:'poi_latitude', name:'Latitude', primary:'true',type:'number',min:'-90',max:'90',  step:'0.001',placeholder:'degrees (decimal; range [-90;90])',  value:poi.latitude /}
+	#{html/input id:'poi_longitude',name:'Longitude',primary:'true',type:'number',min:'-180',max:'180',step:'0.001',placeholder:'degress (decimal; range [-180;180])',value:poi.longitude /}
+	#{html/input id:'poi_provider', name:'Provider', primary:'true',                                                                                                  value:poi.provider /}
+	#{html/input id:'poi_time',     name:'Time',     primary:'true',type:'date',                                                                                      value:poi.time /}
+	#{html/select_start id:'poi_power_tag',name:'Power Tag',primary:'true' /}
+		#{html/option value:'Cable' /}
+		#{html/option value:'Cable Distribution Cabinet' /}
+		#{html/option value:'Converter' /}
+		#{html/option value:'Generator' /}
+		#{html/option value:'Line' /}
+		#{html/option value:'Minor Line' /}
+		#{html/option value:'Plant' /}
+		#{html/option value:'Pole' /}
+		#{html/option value:'Substation' /}
+		#{html/option value:'Switch' /}
+		#{html/option value:'Tower' /}
+		#{html/option value:'Transformer' /}
+	#{html/select_end /}
+	<div id='poi_power_tag_details'></div>
 	<button type="submit" class="btn btn-default">Submit</button>
 </form>

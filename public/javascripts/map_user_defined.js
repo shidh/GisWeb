@@ -1,6 +1,7 @@
 var markerArray = [];
 
 function addMarker(poiId, latitude, longitude) {
+	deleteMarker(poiId);
 	var customIcon = L.icon({
 		iconUrl : '/public/images/leaflet/marker-icon.png',
 		shadowUrl : '/public/images/leaflet/marker-shadow.png'
@@ -13,6 +14,9 @@ function addMarker(poiId, latitude, longitude) {
 	var marker = new customMarker([ latitude, longitude ], {
 		icon : customIcon,
 		poiId : poiId
+	});
+	marker.on('click', function(){
+		showPoi(this.options.poiId);
 	});
 	markerArray.push(marker);
 	marker.addTo(map);
@@ -34,9 +38,4 @@ function getMarker(poiId) {
 	if (marker.length == 1) {
 		return marker[0];
 	}
-}
-
-function updateMarker(poiId, latitude, longitude) {
-	deleteMarker(poiId);
-	addMarker(poiId, latitude, longitude);
 }

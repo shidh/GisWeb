@@ -44,6 +44,7 @@ public class Poi extends Model {
 	public Double altitude;
 	public Float bearing;
 	public Double latitude;
+	public boolean latLngIsDerived;
 	public Double longitude;
 	public String provider;
 	public Long time;
@@ -56,28 +57,4 @@ public class Poi extends Model {
 
 	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
 	public PowerTag powerTag;
-
-	public double derivePoiLatitude() {
-		if (latitude != null) {
-			return latitude;
-		} else {
-			double lat = 0;
-			for (Photo photo : photos) {
-				lat += photo.latitude;
-			}
-			return lat / photos.size();
-		}
-	}
-
-	public double derivePoiLongitude() {
-		if (longitude != null) {
-			return longitude;
-		} else {
-			double lng = 0;
-			for (Photo photo : photos) {
-				lng += photo.longitude;
-			}
-			return lng / photos.size();
-		}
-	}
 }

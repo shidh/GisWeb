@@ -1,0 +1,12 @@
+<div class='form-group'
+	#{ifnot _primary}
+		style='margin-right: 4px;'
+		#{/ifnot}
+		>
+	<label class='control-label
+		#{if _primary}
+			text-primary
+			#{/if}
+		' for='${_id}' name='${_id}'>${_name}:</label><br />
+	<select class='form-control' id='${_id}'>
+		<option value=''> </option>

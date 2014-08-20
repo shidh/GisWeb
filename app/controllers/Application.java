@@ -25,9 +25,12 @@ public class Application extends Controller {
 
 		if (payload != null) {
 			Poi poi = new Poi();
+			poi.latLngIsDerived = true;
 			poi.locationTrace = new ArrayList<LocationTrace>();
 			poi.photos = new ArrayList<Photo>();
 			int index = 0;
+			double latitude = 0;
+			double longitude = 0;
 			while (true) {
 				File photoFile = params.get("photo_" + index + "_file",
 						File.class);
@@ -56,9 +59,13 @@ public class Application extends Controller {
 					photo.photoBlob = photoBlob;
 					photo.poi = poi;
 					poi.photos.add(photo);
+					latitude += photo.latitude;
+					longitude += photo.longitude;
 					index++;
 				}
 			}
+			poi.latitude = latitude / poi.photos.size();
+			poi.longitude = longitude / poi.photos.size();
 			if (!poi.photos.isEmpty()) {
 				index = 0;
 				while (true) {
@@ -85,10 +92,9 @@ public class Application extends Controller {
 					poi.locationTrace.add(trace);
 					index++;
 				}
-
 				poi.save();
-				WebSocket.publishAddMarkerEvent(poi.derivePoiLatitude(),
-						poi.derivePoiLongitude(), poi.id);
+				WebSocket.publishAddMarkerEvent(poi.latitude, poi.longitude,
+						poi.id);
 				ok();
 			} else {
 				badRequest();
@@ -98,8 +104,30 @@ public class Application extends Controller {
 		}
 	}
 
-	public static void index() {
-		render();
+	public static void getPoi(long poiId) {
+		Poi poi = Poi.findById(poiId);
+		renderArgs.put("poi", poi);
+		render("app/views/tags/poi.html");
 	}
 
+	public static void getPoiPowerTag(long poiId, String powerTag) {
+		render("app/views/tags/power/" + powerTag + ".html");
+	}
+
+	public static void getPoiPowerTagGeneratorMethod(long poiId, String source) {
+		render("app/views/tags/power/fields/generator/method/" + source
+				+ ".html");
+	}
+
+	public static void getPoiPowerTagGeneratorType(long poiId,
+			String sourceMethod) {
+		render("app/views/tags/power/fields/generator/type/" + sourceMethod
+				+ ".html");
+	}
+
+	public static void index() {
+		List<Poi> pois = Poi.findAll();
+		renderArgs.put("pois", pois);
+		render();
+	}
 }

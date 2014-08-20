@@ -14,7 +14,5 @@ socket.onmessage = function(event) {
 		addMarker(poiId, latitude, longitude);
 	} else if (type == 'DeleteMarker') {
 		deleteMarker(poiId);
-	} else if (type == 'UpdateMarker') {
-		updateMarker(poiId, latitude, longitude);
 	}
 };
