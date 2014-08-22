@@ -37,7 +37,7 @@ public class Application extends Controller {
 				if (photoFile == null) {
 					break;
 				} else {
-					Photo photo = new Photo();
+					Photo photo = new Photo(poi);
 					photo.accuracy = params.get("photo_" + index + "_accuracy",
 							Float.class);
 					photo.altitude = params.get("photo_" + index + "_altitude",
@@ -57,7 +57,6 @@ public class Application extends Controller {
 					photoBlob.set(new FileInputStream(photoFile),
 							MimeTypes.getContentType(photoName));
 					photo.photoBlob = photoBlob;
-					photo.poi = poi;
 					poi.photos.add(photo);
 					latitude += photo.latitude;
 					longitude += photo.longitude;
@@ -69,7 +68,7 @@ public class Application extends Controller {
 			if (!poi.photos.isEmpty()) {
 				index = 0;
 				while (true) {
-					LocationTrace trace = new LocationTrace();
+					LocationTrace trace = new LocationTrace(poi);
 					trace.latitude = params.get("trace_" + index + "_latitude",
 							Double.class);
 					if (trace.latitude == null) {
@@ -88,7 +87,6 @@ public class Application extends Controller {
 							String.class);
 					trace.time = params.get("trace_" + index + "_time",
 							Long.class);
-					trace.poi = poi;
 					poi.locationTrace.add(trace);
 					index++;
 				}

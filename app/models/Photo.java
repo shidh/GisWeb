@@ -9,12 +9,12 @@ import play.db.jpa.Blob;
 @Entity
 public class Photo {
 
-	@ManyToOne
-	public Poi poi;
-
 	@Id
 	@GeneratedValue
 	public Long id;
+	
+	@ManyToOne
+	public Poi poi;
 
 	public Float accuracy;
 	public Double altitude;
@@ -24,4 +24,8 @@ public class Photo {
 	public Blob photoBlob;
 	public String provider;
 	public Long time;
+
+	public Photo(Poi poi) {
+		this.poi = poi;
+	}
 }

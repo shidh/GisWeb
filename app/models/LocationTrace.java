@@ -8,12 +8,12 @@ import javax.persistence.ManyToOne;
 @Entity
 public class LocationTrace {
 
-	@ManyToOne
-	public Poi poi;
-
 	@Id
 	@GeneratedValue
 	public Long id;
+
+	@ManyToOne
+	public Poi poi;
 
 	public Float accuracy;
 	public Double altitude;
@@ -22,4 +22,8 @@ public class LocationTrace {
 	public Double longitude;
 	public String provider;
 	public Long time;
+
+	public LocationTrace(Poi poi) {
+		this.poi = poi;
+	}
 }
