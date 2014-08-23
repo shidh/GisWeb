@@ -1,5 +1,1 @@
-#{html/select_start id:'material',name:'Material' /}
-	#{html/option value:'Concrete' /}
-	#{html/option value:'Steel' /}
-	#{html/option value:'Wood' /}
-#{html/select_end /}
+#{html/select id:'material',name:'Material',values:models.powerTags.Tower.MaterialEnum.class.getEnumConstants() /}

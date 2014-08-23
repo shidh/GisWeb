@@ -1,5 +1,1 @@
-#{html/select_start id:'converter',name:'Converter' /}
-	#{html/option value:'Back-To-Back' /}
-	#{html/option value:'LCC' /}
-	#{html/option value:'VSC' /}
-#{html/select_end /}
+#{html/select id:'converter',name:'Converter',values:models.powerTags.Converter.ConverterEnum.class.getEnumConstants() /}

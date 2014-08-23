@@ -1,9 +1,1 @@
-#{html/select_start id:'type',name:'Type' /}
-	#{html/option value:'Auto' /}
-	#{html/option value:'Converter' /}
-	#{html/option value:'Distribution' /}
-	#{html/option value:'Generator' /}
-	#{html/option value:'Phase Angle Regulator' /}
-	#{html/option value:'Traction' /}
-	#{html/option value:'Yes' /}
-#{html/select_end /}
+#{html/select id:'type',name:'Type',values:models.powerTags.Transformer.TypeEnum.class.getEnumConstants() /}

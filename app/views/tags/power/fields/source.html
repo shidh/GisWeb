@@ -1,18 +1,1 @@
-#{html/select_start id:'source',name:'Source' /}
-	#{html/option value:'Biofuel' /}
-	#{html/option value:'Biogas' /}
-	#{html/option value:'Biomass' /}
-	#{html/option value:'Coal' /}
-	#{html/option value:'Diesel' /}
-	#{html/option value:'Gas' /}
-	#{html/option value:'Gasoline' /}
-	#{html/option value:'Geothermal' /}
-	#{html/option value:'Hydro' /}
-	#{html/option value:'Nuclear' /}
-	#{html/option value:'Oil' /}
-	#{html/option value:'Solar' /}
-	#{html/option value:'Tidal' /}
-	#{html/option value:'Waste' /}
-	#{html/option value:'Wave' /}
-	#{html/option value:'Wind' /}
-#{html/select_end /}
+#{html/select id:'source',name:'Source',values:models.powerTags.Generator.SourceEnum.class.getEnumConstants() /}

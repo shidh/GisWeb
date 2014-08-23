@@ -1,5 +1,1 @@
-#{html/select_start id:'structure',name:'Structure' /}
-	#{html/option value:'Latice' /}
-	#{html/option value:'Solid' /}
-	#{html/option value:'Tubular' /}
-#{html/select_end /}
+#{html/select id:'structure',name:'Structure',values:models.powerTags.Tower.StructureEnum.class.getEnumConstants() /}

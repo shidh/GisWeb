@@ -1,5 +1,1 @@
-#{html/select_start id:'location',name:'Location' /}
-	#{html/option value:'Overground' /}
-	#{html/option value:'Underground' /}
-	#{html/option value:'Underwater' /}
-#{html/select_end /}
+#{html/select id:'location',name:'Location',values:models.powerTags.Cable.LocationEnum.class.getEnumConstants() /}

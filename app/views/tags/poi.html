@@ -7,18 +7,18 @@
 	#{html/input id:'poi_provider', name:'Provider', primary:'true',                                                                                                  value:poi.provider /}
 	#{html/input id:'poi_time',     name:'Time',     primary:'true',type:'date',                                                                                      value:poi.time /}
 	#{html/select_start id:'poi_power_tag',name:'Power Tag',primary:'true' /}
-		#{html/option value:'Cable' /}
-		#{html/option value:'Cable Distribution Cabinet' /}
-		#{html/option value:'Converter' /}
-		#{html/option value:'Generator' /}
-		#{html/option value:'Line' /}
-		#{html/option value:'Minor Line' /}
-		#{html/option value:'Plant' /}
-		#{html/option value:'Pole' /}
-		#{html/option value:'Substation' /}
-		#{html/option value:'Switch' /}
-		#{html/option value:'Tower' /}
-		#{html/option value:'Transformer' /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Cable.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.CableDistributionCabinet.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Converter.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Generator.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Line.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.MinorLine.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Plant.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Pole.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Substation.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Switch.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Tower.class.getSimpleName()) /}
+		#{html/option value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Transformer.class.getSimpleName()) /}
 	#{html/select_end /}
 	<div id='poi_power_tag_details'></div>
 	<button type="submit" class="btn btn-default">Submit</button>

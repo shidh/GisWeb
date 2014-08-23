@@ -1,5 +1,5 @@
-#{html/input id:'method',name:'Method',readonly:'true',value:'Combustion' /}
+#{html/input id:'method',name:'Method',readonly:'true',value:models.powerTags.Generator.MethodEnum.COMBUSTION.name /}
 #{html/select_start id:'type',name:'Type' /}
-	#{html/option value:'Steam Generator' /}
-	#{html/option value:'Steam Turbine' /}
+	#{html/option value:models.powerTags.Generator.TypeEnum.STEAM_GENERATOR.name /}
+	#{html/option value:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name /}
 #{html/select_end /}

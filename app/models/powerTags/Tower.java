@@ -11,16 +11,16 @@ import models.PowerTag;
 public class Tower extends PowerTag {
 
 	public enum DesignEnum {
-		ASYMMETRIC("asymmetric"), BARREL("barrel"), BIPOLE("bipole"), DELTA(
-				"delta"), DELTA_TWO_LEVEL("delta and two-level"), DONAU("donau"), DONAU_ONE_LEVEL(
-				"donau and one-level"), FLAG("flag"), FOUR_LEVEL("four-level"), GUYED_H_FRAME(
-				"guyed h-frame"), GUYED_V_FRAME("guyed v-frame"), H_FRAME(
-				"h-frame"), INCOMPLETE("incomplete"), MONOPOLAR("monopolar"), NAME(
-				"name"), NINE_LEVEL("nine-level"), ONE_LEVEL("one-level"), PORTAL(
-				"portal"), PORTAL_THREE_LEVEL("portal and three-level"), PORTAL_TWO_LEVEL(
-				"portal and two-level"), SIX_LEVEL("six-level"), THREE_LEVEL(
-				"three-level"), TRIANGLE("triangle"), TWO_LEVEL("two-level"), X_FRAME(
-				"x-frame"), Y_FRAME("y-frame");
+		ASYMMETRIC("Asymmetric"), BARREL("Barrel"), BIPOLE("Bipole"), DELTA(
+				"Delta"), DELTA_TWO_LEVEL("Delta And Two-Level"), DONAU("Donau"), DONAU_ONE_LEVEL(
+				"Donau And One-Level"), FLAG("Flag"), FOUR_LEVEL("Four-Level"), GUYED_H_FRAME(
+				"Guyed H-Frame"), GUYED_V_FRAME("Guyed V-Frame"), H_FRAME(
+				"H-Frame"), INCOMPLETE("Incomplete"), MONOPOLAR("Monopolar"), NAME(
+				"Name"), NINE_LEVEL("Nine-Level"), ONE_LEVEL("One-Level"), PORTAL(
+				"Portal"), PORTAL_THREE_LEVEL("Portal And Three-Level"), PORTAL_TWO_LEVEL(
+				"Portal And Two-Level"), SIX_LEVEL("Six-Level"), THREE_LEVEL(
+				"Three-Level"), TRIANGLE("Triangle"), TWO_LEVEL("Two-Level"), X_FRAME(
+				"X-Frame"), Y_FRAME("Y-Frame");
 
 		public final String name;
 
@@ -30,7 +30,7 @@ public class Tower extends PowerTag {
 	}
 
 	public enum MaterialEnum {
-		CONCRETE("concrete"), STEEL("steel"), WOOD("wood");
+		CONCRETE("Concrete"), STEEL("Steel"), WOOD("Wood");
 
 		public final String name;
 
@@ -40,7 +40,7 @@ public class Tower extends PowerTag {
 	}
 
 	public enum StructureEnum {
-		LATTICE("lattice"), SOLID("solid"), TUBULAR("tubular");
+		LATTICE("Lattice"), SOLID("Solid"), TUBULAR("Tubular");
 
 		public final String name;
 
@@ -50,9 +50,9 @@ public class Tower extends PowerTag {
 	}
 
 	public enum TypeEnum {
-		ANCHOR("anchor"), BRANCH("branch"), CROSSING("crossing"), SUSPENSION(
-				"suspension"), TERMINATION("termination"), TRANSITION(
-				"transition"), TRANSPOSING("transposing");
+		ANCHOR("Anchor"), BRANCH("Branch"), CROSSING("Crossing"), SUSPENSION(
+				"Suspension"), TERMINATION("Termination"), TRANSITION(
+				"Transition"), TRANSPOSING("Transposing");
 
 		public final String name;
 

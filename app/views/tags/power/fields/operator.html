@@ -1,9 +1,2 @@
 #{html/input id:'operator_name',name:'Operator Name' /}
-#{html/select_start id:'operator_type',name:'Operator Type' /}
-	#{html/option value:'Community' /}
-	#{html/option value:'Government' /}
-	#{html/option value:'NGO' /}
-	#{html/option value:'Private' /}
-	#{html/option value:'Public' /}
-	#{html/option value:'Religious' /}
-#{html/select_end /}
+#{html/select id:'operator_type',name:'Operator Type',values:models.types.Operator.TypeEnum.class.getEnumConstants() /}

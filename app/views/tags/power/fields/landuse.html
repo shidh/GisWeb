@@ -1,4 +1,1 @@
-#{html/select_start id:'landuse',name:'Landuse' /}
-	#{html/option value:'Industrial' /}
-	#{html/option value:'Wind Farm' /}
-#{html/select_end /}
+#{html/select id:'landuse',name:'Landuse',values:models.powerTags.Plant.LanduseEnum.class.getEnumConstants() /}

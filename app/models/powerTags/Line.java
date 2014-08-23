@@ -12,8 +12,8 @@ import models.types.Operator;
 public class Line extends PowerTag {
 
 	public enum WiresEnum {
-		SINGLE("single"), DOUBLE("double"), TRIPLE("triple"), QUAD("quad"), FIVEFOLD(
-				"fivefold"), SIXFOLD("sixfold"), EIGHTFOLD("eightfold");
+		SINGLE("Single"), DOUBLE("Double"), TRIPLE("Triple"), QUAD("Quad"), FIVEFOLD(
+				"Fivefold"), SIXFOLD("Sixfold"), EIGHTFOLD("Eightfold");
 
 		public final String name;
 

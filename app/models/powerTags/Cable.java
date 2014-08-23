@@ -12,8 +12,8 @@ import models.types.Operator;
 public class Cable extends PowerTag {
 
 	public enum LocationEnum {
-		OVERGROUND("overground"), UNDERGROUND("underground"), UNDERWATER(
-				"underwater");
+		OVERGROUND("Overground"), UNDERGROUND("Underground"), UNDERWATER(
+				"Underwater");
 
 		public final String name;
 

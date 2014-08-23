@@ -1,4 +1,1 @@
-#{html/select_start id:'plant',name:'Plant' /}
-	#{html/option value:'Intermediate' /}
-	#{html/option value:'Output' /}
-#{html/select_end /}
+#{html/select id:'plant',name:'Plant',values:models.powerTags.Generator.PlantEnum.class.getEnumConstants() /}

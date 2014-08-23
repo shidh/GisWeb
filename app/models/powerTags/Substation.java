@@ -12,8 +12,8 @@ import models.types.Operator;
 public class Substation extends PowerTag {
 
 	public enum LocationEnum {
-		INDOOR("indoor"), KIOSK("kiosk"), OUTDOOR("outdoor"), PLATFORM(
-				"platform"), ROOFTOP("rooftop"), UNDERGROUND("underground");
+		INDOOR("Indoor"), KIOSK("Kiosk"), OUTDOOR("Outdoor"), PLATFORM(
+				"Platform"), ROOFTOP("Rooftop"), UNDERGROUND("Underground");
 
 		public final String name;
 
@@ -22,15 +22,15 @@ public class Substation extends PowerTag {
 		}
 	}
 
-	public enum SubstationTypeEnum {
-		COMPENSATION("compensation"), CONVERTER("converter"), DISTRIBUTION(
-				"distribution"), INDUSTRIAL("industrial"), MINOR_DISTRIBUTION(
-				"minor distribution"), TRACTION("traction"), TRANSITION(
-				"transition"), TRANSMISSION("transmission");
+	public enum TypeEnum {
+		COMPENSATION("Compensation"), CONVERTER("Converter"), DISTRIBUTION(
+				"Distribution"), INDUSTRIAL("Industrial"), MINOR_DISTRIBUTION(
+				"Minor Distribution"), TRACTION("Traction"), TRANSITION(
+				"Transition"), TRANSMISSION("Transmission");
 
 		public final String name;
 
-		SubstationTypeEnum(String name) {
+		TypeEnum(String name) {
 			this.name = name;
 		}
 	}
@@ -43,7 +43,7 @@ public class Substation extends PowerTag {
 	public Operator operator;
 
 	public String ref;
-	public SubstationTypeEnum substationType;
+	public TypeEnum type;
 	public Float voltage;
 
 	public Substation(Poi poi) {

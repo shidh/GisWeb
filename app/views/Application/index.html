@@ -22,18 +22,17 @@
 			};
 		});
 		$(document).on('change', '#source', function() {
-			if ($('#source').val() == "") {
-				$('#generator_method').empty();
-			} else {
+			$('#generator_method').empty();
+			$('#generator_type').empty();
+			if ($('#source').val() !== "") {
 				var action = #{jsAction @getPoiPowerTagGeneratorMethod(':poiId', ':source') /};
 				var source = $('#source').val().replace(/ /g, '_').toLowerCase();
 				$('#generator_method').load(action({poiId: 1, source: source}));
 			}
 		});
 		$(document).on('change', '#method', function() {
-			if ($('#method').val() == "") {
-				$('#generator_type').empty();
-			} else {
+			$('#generator_type').empty();
+			if ($('#method').val() !== "") {
 				var action = #{jsAction @getPoiPowerTagGeneratorType(':poiId', ':sourceMethod') /};
 				var source = $('#source').val().replace(/ /g, '_').toLowerCase();
 				var method = $('#method').val().replace(/ /g, '_').toLowerCase();

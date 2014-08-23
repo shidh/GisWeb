@@ -7,29 +7,17 @@ import javax.persistence.OneToOne;
 import models.Poi;
 import models.PowerTag;
 import models.types.Operator;
+import models.types.Output.OutputEnum;
 
 @Entity
 public class Plant extends PowerTag {
 
 	public enum LanduseEnum {
-		INDUSTRIAL("industrial"), WIND_FARM("wind farm");
+		INDUSTRIAL("Industrial"), WIND_FARM("Wind Farm");
 
 		public final String name;
 
 		LanduseEnum(String name) {
-			this.name = name;
-		}
-	}
-
-	public enum OutputEnum {
-		COLD_AIR("cold air"), COLD_WATER("cold water"), COMPRESSED_AIR(
-				"compressed air"), ELECTRICITY("electricity"), HOT_AIR(
-				"hot air"), HOT_WATER("hot water"), STEAM("steam"), VACUUM(
-				"vacuum");
-
-		public final String name;
-
-		OutputEnum(String name) {
 			this.name = name;
 		}
 	}

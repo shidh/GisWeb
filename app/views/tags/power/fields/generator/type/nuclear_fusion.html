@@ -1,6 +1,6 @@
 #{html/select_start id:'type',name:'Type' /}
-	#{html/option value:'Cold Fusion' /}
-	#{html/option value:'ICF' /}
-	#{html/option value:'Stellarator' /}
-	#{html/option value:'Tokamak' /}
+	#{html/option value:models.powerTags.Generator.TypeEnum.COLD_FUSION.name /}
+	#{html/option value:models.powerTags.Generator.TypeEnum.ICF.name /}
+	#{html/option value:models.powerTags.Generator.TypeEnum.STELLARATOR.name /}
+	#{html/option value:models.powerTags.Generator.TypeEnum.TOKAMAK.name /}
 #{html/select_end /}
