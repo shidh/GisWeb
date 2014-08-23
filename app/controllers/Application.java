@@ -18,10 +18,6 @@ public class Application extends Controller {
 	private static final String audience = "889611969164-ujvohn299csu833avfmcsun3k6fna30s.apps.googleusercontent.com";
 	private static final String[] clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
 
-	public static String spaceBeforeUpperCase(String str) {
-		return str.replaceAll("(\\p{Ll})(\\p{Lu})","$1 $2");
-	}
-	
 	public static void createPoi(String token) throws FileNotFoundException {
 
 		Checker checker = new Checker(clientId, audience);
@@ -131,5 +127,9 @@ public class Application extends Controller {
 		List<Poi> pois = Poi.findAll();
 		renderArgs.put("pois", pois);
 		render();
+	}
+
+	public static String spaceBeforeUpperCase(String str) {
+		return str.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");
 	}
 }

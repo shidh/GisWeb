@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import models.PowerTag;
-import models.types.Operator.TypeEnum;
 import play.db.jpa.Model;
 
 @Entity

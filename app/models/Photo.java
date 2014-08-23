@@ -12,7 +12,7 @@ public class Photo {
 	@Id
 	@GeneratedValue
 	public Long id;
-	
+
 	@ManyToOne
 	public Poi poi;
 
