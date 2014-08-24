@@ -1,5 +1,5 @@
 #{html/select_start id:'method',name:'Method' /}
-	#{html/option value:models.powerTags.Generator.MethodEnum.RUN_OF_THE_RIVER.name /}
-	#{html/option value:models.powerTags.Generator.MethodEnum.WATER_PUMPED_STORAGE.name /}
-	#{html/option value:models.powerTags.Generator.MethodEnum.WATER_STORAGE.name /}
+	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.RUN_OF_THE_RIVER.name /}
+	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.WATER_PUMPED_STORAGE.name /}
+	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.WATER_STORAGE.name /}
 #{html/select_end /}

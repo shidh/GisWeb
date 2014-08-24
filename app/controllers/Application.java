@@ -12,6 +12,7 @@ import java.util.*;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
 import models.*;
+import models.powerTags.Generator;
 
 public class Application extends Controller {
 
@@ -109,18 +110,66 @@ public class Application extends Controller {
 	}
 
 	public static void getPoiPowerTag(long poiId, String powerTag) {
-		render("app/views/tags/power/" + powerTag + ".html");
+
+		if (powerTag != null && !powerTag.isEmpty()) {
+			Poi poi = Poi.findById(poiId);
+			String powerTagFileName = powerTag.replaceAll(" ", "_")
+					.toLowerCase();
+
+			if (poi.powerTag != null) {
+				String poiPowerTagClassName = poi.powerTag.getClass()
+						.getSimpleName();
+				String powerTagInput = powerTag.replaceAll(" ", "");
+				if (poiPowerTagClassName.equals(powerTagInput)) {
+					renderArgs.put("powerTag", poi.powerTag);
+				}
+			}
+			render("app/views/tags/power/" + powerTagFileName + ".html");
+		}
 	}
 
 	public static void getPoiPowerTagGeneratorMethod(long poiId, String source) {
-		render("app/views/tags/power/fields/generator/method/" + source
-				+ ".html");
+
+		if (source != null && !source.isEmpty()) {
+			Poi poi = Poi.findById(poiId);
+			Generator generator = (Generator) poi.powerTag;
+			if (generator.source != null
+					&& generator.source.name.equals(source)
+					&& generator.method != null) {
+				renderArgs.put("method", generator.method);
+			}
+			render("app/views/tags/power/fields/generator/method/"
+					+ source.replaceAll(" ", "_").toLowerCase() + ".html");
+		}
 	}
 
 	public static void getPoiPowerTagGeneratorType(long poiId,
 			String sourceMethod) {
-		render("app/views/tags/power/fields/generator/type/" + sourceMethod
-				+ ".html");
+
+		if (sourceMethod != null && !sourceMethod.isEmpty()) {
+			Poi poi = Poi.findById(poiId);
+			Generator generator = (Generator) poi.powerTag;
+			String source = "";
+			String method = "";
+			if (generator.source != null && generator.source.name != "null") {
+				source = generator.source.name;
+			}
+			if (generator.method != null && generator.method.name != "null") {
+				method = generator.method.name;
+			}
+			String poiSourceMethod;
+			if (source.isEmpty() || method.isEmpty()) {
+				poiSourceMethod = source + method;
+			} else {
+				poiSourceMethod = source + "_" + method;
+			}
+			if (poiSourceMethod != null && poiSourceMethod.equals(sourceMethod)
+					&& generator.type != null) {
+				renderArgs.put("type", generator.type);
+			}
+			render("app/views/tags/power/fields/generator/type/"
+					+ sourceMethod.replaceAll(" ", "_").toLowerCase() + ".html");
+		}
 	}
 
 	public static void index() {

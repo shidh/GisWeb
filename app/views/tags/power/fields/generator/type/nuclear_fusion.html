@@ -1,6 +1,6 @@
 #{html/select_start id:'type',name:'Type' /}
-	#{html/option value:models.powerTags.Generator.TypeEnum.COLD_FUSION.name /}
-	#{html/option value:models.powerTags.Generator.TypeEnum.ICF.name /}
-	#{html/option value:models.powerTags.Generator.TypeEnum.STELLARATOR.name /}
-	#{html/option value:models.powerTags.Generator.TypeEnum.TOKAMAK.name /}
+	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.COLD_FUSION.name /}
+	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.ICF.name /}
+	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.STELLARATOR.name /}
+	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.TOKAMAK.name /}
 #{html/select_end /}

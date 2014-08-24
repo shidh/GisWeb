@@ -1,1 +1,5 @@
-<option value='${_value}'>${_value}</option>
+<option value='${_value}'
+	#{if _selected == _value}
+		selected
+	#{/if}
+	>${_value}</option>

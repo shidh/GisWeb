@@ -35,9 +35,12 @@
 			type='text'
 			#{/else}
 		#{if _value}
-			#{if _type == 'date'}
-				value='${new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date(_value)).toString().replace(" ","T")}'
+			#{if _type == 'color'}
+				value='#${java.lang.Integer.toHexString(_value.getRGB()).substring(2, java.lang.Integer.toHexString(_value.getRGB()).length())}'
 				#{/if}
+			#{elseif _type == 'date'}
+				value='${new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(new java.util.Date(_value)).toString().replace(" ","T")}'
+				#{/elseif}
 			#{else}
 				value='${_value}'
 				#{/else}

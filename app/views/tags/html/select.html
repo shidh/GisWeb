@@ -11,7 +11,11 @@
 	<select class='form-control' id='${_id}'>
 		<option value=''> </option>
 		#{list items:_values, as:'value'}
-		<option value='${value.name}'>${value.name}</option>
+		<option value='${value.name}'
+		#{if value.name == _selected}
+			selected
+		#{/if}
+		>${value.name}</option>
 		#{/list}
 	</select>
 </div>
