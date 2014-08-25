@@ -2,17 +2,12 @@ var markerArray = [];
 
 function addMarker(poiId, latitude, longitude) {
 	deleteMarker(poiId);
-	var customIcon = L.icon({
-		iconUrl : '/public/images/leaflet/marker-icon.png',
-		shadowUrl : '/public/images/leaflet/marker-shadow.png'
-	});
 	customMarker = L.Marker.extend({
 		options : {
 			poiId : ''
 		}
 	});
 	var marker = new customMarker([ latitude, longitude ], {
-		icon : customIcon,
 		poiId : poiId
 	});
 	marker.on('click', function(){
