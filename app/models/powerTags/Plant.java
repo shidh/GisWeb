@@ -13,7 +13,7 @@ import models.types.Output.OutputEnum;
 public class Plant extends PowerTag {
 
 	public enum LanduseEnum {
-		INDUSTRIAL("Industrial"), WIND_FARM("Wind Farm");
+		INDUSTRIAL("Industrial"), NULL("null"), WIND_FARM("Wind Farm");
 
 		public final String name;
 

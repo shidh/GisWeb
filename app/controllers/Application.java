@@ -4,15 +4,42 @@ import play.db.jpa.Blob;
 import play.libs.MimeTypes;
 import play.mvc.*;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
 import models.*;
+import models.powerTags.Cable;
+import models.powerTags.Converter.ConverterEnum;
+import models.powerTags.Generator.MethodEnum;
+import models.powerTags.Generator.PlantEnum;
+import models.powerTags.Generator.SourceEnum;
+import models.powerTags.CableDistributionCabinet;
+import models.powerTags.Converter;
 import models.powerTags.Generator;
+import models.powerTags.Line;
+import models.powerTags.Line.WiresEnum;
+import models.powerTags.Plant.LanduseEnum;
+import models.powerTags.MinorLine;
+import models.powerTags.Plant;
+import models.powerTags.Pole;
+import models.powerTags.Substation;
+import models.powerTags.Substation.BooleanEnum;
+import models.powerTags.Tower.DesignEnum;
+import models.powerTags.Tower.MaterialEnum;
+import models.powerTags.Switch;
+import models.powerTags.Tower;
+import models.powerTags.Tower.StructureEnum;
+import models.powerTags.Transformer;
+import models.types.Operator;
+import models.types.Operator.TypeEnum;
+import models.types.Output.OutputEnum;
 
 public class Application extends Controller {
 
@@ -111,7 +138,7 @@ public class Application extends Controller {
 
 	public static void getPoiPowerTag(long poiId, String powerTag) {
 
-		if (powerTag != null && !powerTag.isEmpty()) {
+		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("null")) {
 			Poi poi = Poi.findById(poiId);
 			String powerTagFileName = powerTag.replaceAll(" ", "_")
 					.toLowerCase();
@@ -130,7 +157,7 @@ public class Application extends Controller {
 
 	public static void getPoiPowerTagGeneratorMethod(long poiId, String source) {
 
-		if (source != null && !source.isEmpty()) {
+		if (source != null && !source.isEmpty() && !source.equals("null")) {
 			Poi poi = Poi.findById(poiId);
 			Generator generator = (Generator) poi.powerTag;
 			if (generator.source != null
@@ -146,7 +173,8 @@ public class Application extends Controller {
 	public static void getPoiPowerTagGeneratorType(long poiId,
 			String sourceMethod) {
 
-		if (sourceMethod != null && !sourceMethod.isEmpty()) {
+		if (sourceMethod != null && !sourceMethod.isEmpty()
+				&& !sourceMethod.equals("null")) {
 			Poi poi = Poi.findById(poiId);
 			Generator generator = (Generator) poi.powerTag;
 			String source = "";
@@ -180,5 +208,206 @@ public class Application extends Controller {
 
 	public static String spaceBeforeUpperCase(String str) {
 		return str.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");
+	}
+
+	public static void updatePoi() throws ParseException,
+			ClassNotFoundException {
+		Poi poi = Poi.findById(params.get("poi_id", Long.class));
+		poi.accuracy = params.get("poi_accuracy", Float.class);
+		poi.altitude = params.get("poi_altitude", Double.class);
+		poi.bearing = params.get("poi_bearing", Float.class);
+		poi.latitude = params.get("poi_latitude", Double.class);
+		poi.longitude = params.get("poi_longitude", Double.class);
+		poi.provider = params.get("poi_provider", String.class);
+		String time = params.get("poi_time", String.class);
+		if (!time.isEmpty()) {
+			poi.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
+					time.replace("T", " ")).getTime();
+		}
+		String powerTagParam = params.get("poi_power_tag", String.class);
+		if (poi.powerTag != null) {
+			poi.powerTag.delete();
+			poi.powerTag = null;
+		}
+		if (powerTagParam != null && !powerTagParam.equals("null")) {
+			Class powerTagClass = Class.forName("models.powerTags."
+					+ powerTagParam.replaceAll(" ", ""));
+			if (powerTagClass.equals(Cable.class)) {
+				poi.powerTag = new Cable(poi);
+				Cable cable = (Cable) poi.powerTag;
+				cable.cables = params.get("cables", String.class);
+				cable.circuits = params.get("circuits", Byte.class);
+				cable.location = Cable.LocationEnum.valueOf(params
+						.get("location", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				cable.name = params.get("name", String.class);
+				cable.operator = new Operator(cable);
+				cable.operator.name = params.get("operator_name", String.class);
+				cable.operator.type = TypeEnum.valueOf(params
+						.get("operator_type", String.class)
+						.replaceAll(" ", "_").toUpperCase());
+				cable.ref = params.get("ref", String.class);
+				cable.voltage = params.get("voltage", Float.class);
+			} else if (powerTagClass.equals(CableDistributionCabinet.class)) {
+				poi.powerTag = new CableDistributionCabinet(poi);
+				CableDistributionCabinet cableDistributionCabinet = (CableDistributionCabinet) poi.powerTag;
+				cableDistributionCabinet.operator = new Operator(
+						cableDistributionCabinet);
+				cableDistributionCabinet.operator.name = params.get(
+						"operator_name", String.class);
+				cableDistributionCabinet.operator.type = TypeEnum
+						.valueOf(params.get("operator_type", String.class)
+								.replaceAll(" ", "_").toUpperCase());
+				cableDistributionCabinet.ref = params.get("ref", String.class);
+				cableDistributionCabinet.voltage = params.get("voltage",
+						Float.class);
+			} else if (powerTagClass.equals(Converter.class)) {
+				poi.powerTag = new Converter(poi);
+				Converter converter = (Converter) poi.powerTag;
+				converter.converter = ConverterEnum.valueOf(params
+						.get("converter", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				converter.poles = params.get("poles", Byte.class);
+				converter.rating = params.get("rating", Long.class);
+				converter.voltage = params.get("voltage", Float.class);
+			} else if (powerTagClass.equals(Generator.class)) {
+				poi.powerTag = new Generator(poi);
+				Generator generator = (Generator) poi.powerTag;
+				generator.name = params.get("name", String.class);
+				generator.operator = new Operator(generator);
+				generator.operator.name = params.get("operator_name",
+						String.class);
+				generator.operator.type = TypeEnum.valueOf(params
+						.get("operator_type", String.class)
+						.replaceAll(" ", "_").toUpperCase());
+				generator.output = OutputEnum.valueOf(params
+						.get("output", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				generator.plant = PlantEnum.valueOf(params
+						.get("plant", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				String source = params.get("source");
+				String method = params.get("method");
+				String type = params.get("type");
+				if (source != null) {
+					generator.source = SourceEnum.valueOf(source.replaceAll(
+							" ", "_").toUpperCase());
+				}
+				if (method != null) {
+					generator.method = MethodEnum.valueOf(method.replaceAll(
+							" ", "_").toUpperCase());
+				}
+				if (type != null) {
+					generator.type = Generator.TypeEnum.valueOf(type
+							.replaceAll(" ", "_").toUpperCase());
+				}
+			} else if (powerTagClass.equals(Line.class)) {
+				poi.powerTag = new Line(poi);
+				Line line = (Line) poi.powerTag;
+				line.cables = params.get("cables", String.class);
+				line.operator = new Operator(line);
+				line.operator.name = params.get("operator_name", String.class);
+				line.operator.type = TypeEnum.valueOf(params
+						.get("operator_type", String.class)
+						.replaceAll(" ", "_").toUpperCase());
+				line.ref = params.get("ref", String.class);
+				line.voltage = params.get("voltage", Float.class);
+				line.wires = WiresEnum.valueOf(params
+						.get("wires", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+			} else if (powerTagClass.equals(MinorLine.class)) {
+				poi.powerTag = new MinorLine(poi);
+				MinorLine minorLine = (MinorLine) poi.powerTag;
+				minorLine.cables = params.get("cables", String.class);
+				minorLine.name = params.get("name", String.class);
+				minorLine.operator = new Operator(minorLine);
+				minorLine.operator.name = params.get("operator_name",
+						String.class);
+				minorLine.operator.type = TypeEnum.valueOf(params
+						.get("operator_type", String.class)
+						.replaceAll(" ", "_").toUpperCase());
+				minorLine.ref = params.get("ref", String.class);
+				minorLine.voltage = params.get("voltage", Float.class);
+			} else if (powerTagClass.equals(Plant.class)) {
+				poi.powerTag = new Plant(poi);
+				Plant plant = (Plant) poi.powerTag;
+				plant.landuse = LanduseEnum.valueOf(params
+						.get("landuse", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				plant.name = params.get("name", String.class);
+				plant.operator = new Operator(plant);
+				plant.operator.name = params.get("operator_name", String.class);
+				plant.operator.type = TypeEnum.valueOf(params
+						.get("operator_type", String.class)
+						.replaceAll(" ", "_").toUpperCase());
+				plant.output = OutputEnum.valueOf(params
+						.get("output", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				String start_date = params.get("start_date", String.class);
+				if (!time.isEmpty()) {
+					plant.start_date = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+							.parse(start_date.replace("T", " ")).getTime();
+				}
+			} else if (powerTagClass.equals(Pole.class)) {
+				poi.powerTag = new Pole(poi);
+				Pole pole = (Pole) poi.powerTag;
+				pole.ref = params.get("ref", String.class);
+			} else if (powerTagClass.equals(Substation.class)) {
+				poi.powerTag = new Substation(poi);
+				Substation substation = (Substation) poi.powerTag;
+				substation.gas_insulated = BooleanEnum.valueOf(params
+						.get("gas_insulated", String.class)
+						.replaceAll(" ", "_").toUpperCase());
+				substation.location = Substation.LocationEnum.valueOf(params
+						.get("location", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				substation.name = params.get("name", String.class);
+				substation.operator = new Operator(substation);
+				substation.operator.name = params.get("operator_name",
+						String.class);
+				substation.operator.type = TypeEnum.valueOf(params
+						.get("operator_type", String.class)
+						.replaceAll(" ", "_").toUpperCase());
+				substation.ref = params.get("ref", String.class);
+				substation.type = Substation.TypeEnum.valueOf(params
+						.get("type", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				substation.voltage = params.get("voltage", Float.class);
+			} else if (powerTagClass.equals(Switch.class)) {
+				poi.powerTag = new Switch(poi);
+			} else if (powerTagClass.equals(Tower.class)) {
+				poi.powerTag = new Tower(poi);
+				Tower tower = (Tower) poi.powerTag;
+				tower.color = Color.decode(params.get("color", String.class));
+				tower.design = DesignEnum.valueOf(params
+						.get("design", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				tower.height = params.get("height", Float.class);
+				tower.material = MaterialEnum.valueOf(params
+						.get("material", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				tower.ref = params.get("ref", String.class);
+				tower.structure = StructureEnum.valueOf(params
+						.get("structure", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				tower.type = Tower.TypeEnum.valueOf(params
+						.get("type", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+			} else if (powerTagClass.equals(Transformer.class)) {
+				poi.powerTag = new Transformer(poi);
+				Transformer transformer = (Transformer) poi.powerTag;
+				transformer.frequency = params.get("frequency", Float.class);
+				transformer.location = Transformer.LocationEnum.valueOf(params
+						.get("location", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				transformer.phases = params.get("phases", Integer.class);
+				transformer.rating = params.get("rating", Long.class);
+				transformer.type = Transformer.TypeEnum.valueOf(params
+						.get("type", String.class).replaceAll(" ", "_")
+						.toUpperCase());
+				transformer.voltage = params.get("voltage", Float.class);
+			}
+		}
+		poi.save();
 	}
 }

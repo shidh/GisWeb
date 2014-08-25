@@ -9,7 +9,7 @@ import models.PowerTag;
 public class Converter extends PowerTag {
 
 	public enum ConverterEnum {
-		BACK_TO_BACK("Back-To-Back"), LCC("LCC"), VSC("VSC");
+		BACK_TO_BACK("Back-To-Back"), LCC("LCC"), NULL("null"), VSC("VSC");
 
 		public final String name;
 

@@ -9,7 +9,7 @@ import models.PowerTag;
 public class Transformer extends PowerTag {
 
 	public enum LocationEnum {
-		INDOOR("Indoor"), OVERGROUND("Overground"), UNDERGROUND("Underground"), UNDERWATER(
+		INDOOR("Indoor"), NULL("null"), OVERGROUND("Overground"), UNDERGROUND("Underground"), UNDERWATER(
 				"Underwater");
 
 		public final String name;
@@ -21,7 +21,7 @@ public class Transformer extends PowerTag {
 
 	public enum TypeEnum {
 		AUTO("Auto"), CONVERTER("Converter"), DISTRIBUTION("Distribution"), GENERATOR(
-				"Generator"), PHASE_ANGLE_REGULATOR("Phase Angle Regulator"), TRACTION(
+				"Generator"), NULL("null"), PHASE_ANGLE_REGULATOR("Phase Angle Regulator"), TRACTION(
 				"Traction"), YES("Yes");
 
 		public final String name;

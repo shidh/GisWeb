@@ -11,8 +11,18 @@ import models.types.Operator;
 @Entity
 public class Substation extends PowerTag {
 
+	public enum BooleanEnum {
+		FALSE("False"), NULL("null"), TRUE("True");
+		
+		public final String name;
+		
+		BooleanEnum(String name) {
+			this.name = name;
+		}
+	}
+	
 	public enum LocationEnum {
-		INDOOR("Indoor"), KIOSK("Kiosk"), OUTDOOR("Outdoor"), PLATFORM(
+		INDOOR("Indoor"), KIOSK("Kiosk"), NULL("null"), OUTDOOR("Outdoor"), PLATFORM(
 				"Platform"), ROOFTOP("Rooftop"), UNDERGROUND("Underground");
 
 		public final String name;
@@ -25,7 +35,7 @@ public class Substation extends PowerTag {
 	public enum TypeEnum {
 		COMPENSATION("Compensation"), CONVERTER("Converter"), DISTRIBUTION(
 				"Distribution"), INDUSTRIAL("Industrial"), MINOR_DISTRIBUTION(
-				"Minor Distribution"), TRACTION("Traction"), TRANSITION(
+				"Minor Distribution"), NULL("null"), TRACTION("Traction"), TRANSITION(
 				"Transition"), TRANSMISSION("Transmission");
 
 		public final String name;
@@ -35,7 +45,7 @@ public class Substation extends PowerTag {
 		}
 	}
 
-	public Boolean gas_insulated;
+	public BooleanEnum gas_insulated;
 	public LocationEnum location;
 	public String name;
 

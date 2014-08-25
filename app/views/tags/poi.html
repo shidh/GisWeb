@@ -1,5 +1,5 @@
-<form class='form-inline'>
-	<input id='poi_id' name='Id' type='hidden' value='${poi.id}'>
+<form class='form-inline' id='poi_form'>
+	<input id='poi_id' name='poi_id' type='hidden' value='${poi.id}'>
 	#{html/input id:'poi_accuracy', name:'Accuracy', primary:'true',type:'number',min:'0',             step:'0.001',placeholder:'meters (decimal; range [0;∞[)',      value:poi.accuracy /}
 	#{html/input id:'poi_altitude', name:'Altitude', primary:'true',type:'number',                     step:'0.001',placeholder:'meters (decimal)',                   value:poi.altitude /}
 	#{html/input id:'poi_bearing',  name:'Bearing',  primary:'true',type:'number',min:'0',  max:'360', step:'0.001',placeholder:'degrees (decimal; range [0;360])',   value:poi.bearing /}
@@ -22,5 +22,5 @@
 		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Transformer.class.getSimpleName()) /}
 	#{html/select_end /}
 	<div id='poi_power_tag_details'></div>
-	<button type="submit" class="btn btn-default">Submit</button>
+	<button class="btn btn-default" id='poi_submit' type="submit">Submit</button>
 </form>

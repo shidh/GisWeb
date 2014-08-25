@@ -16,7 +16,7 @@ public class Tower extends PowerTag {
 				"Donau And One-Level"), FLAG("Flag"), FOUR_LEVEL("Four-Level"), GUYED_H_FRAME(
 				"Guyed H-Frame"), GUYED_V_FRAME("Guyed V-Frame"), H_FRAME(
 				"H-Frame"), INCOMPLETE("Incomplete"), MONOPOLAR("Monopolar"), NAME(
-				"Name"), NINE_LEVEL("Nine-Level"), ONE_LEVEL("One-Level"), PORTAL(
+				"Name"), NINE_LEVEL("Nine-Level"), NULL("null"), ONE_LEVEL("One-Level"), PORTAL(
 				"Portal"), PORTAL_THREE_LEVEL("Portal And Three-Level"), PORTAL_TWO_LEVEL(
 				"Portal And Two-Level"), SIX_LEVEL("Six-Level"), THREE_LEVEL(
 				"Three-Level"), TRIANGLE("Triangle"), TWO_LEVEL("Two-Level"), X_FRAME(
@@ -30,7 +30,7 @@ public class Tower extends PowerTag {
 	}
 
 	public enum MaterialEnum {
-		CONCRETE("Concrete"), STEEL("Steel"), WOOD("Wood");
+		CONCRETE("Concrete"), NULL("null"), STEEL("Steel"), WOOD("Wood");
 
 		public final String name;
 
@@ -40,7 +40,7 @@ public class Tower extends PowerTag {
 	}
 
 	public enum StructureEnum {
-		LATTICE("Lattice"), SOLID("Solid"), TUBULAR("Tubular");
+		LATTICE("Lattice"), NULL("null"), SOLID("Solid"), TUBULAR("Tubular");
 
 		public final String name;
 
@@ -50,7 +50,7 @@ public class Tower extends PowerTag {
 	}
 
 	public enum TypeEnum {
-		ANCHOR("Anchor"), BRANCH("Branch"), CROSSING("Crossing"), SUSPENSION(
+		ANCHOR("Anchor"), BRANCH("Branch"), CROSSING("Crossing"), NULL("null"), SUSPENSION(
 				"Suspension"), TERMINATION("Termination"), TRANSITION(
 				"Transition"), TRANSPOSING("Transposing");
 

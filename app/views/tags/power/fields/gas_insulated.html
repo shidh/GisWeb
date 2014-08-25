@@ -1,4 +1,1 @@
-#{html/select_start id:'gas_insulated',name:'Gas Insulated' /}
-	#{html/option selected:_value,value:java.lang.Boolean.FALSE /}
-	#{html/option selected:_value,value:java.lang.Boolean.TRUE /}
-#{html/select_end /}
+#{html/select id:'gas_insulated',name:'Gas Insulated',selected:_value?.name,values:models.powerTags.Substation.BooleanEnum.class.getEnumConstants() /}

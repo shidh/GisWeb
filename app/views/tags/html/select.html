@@ -8,14 +8,16 @@
 			text-primary
 			#{/if}
 		' for='${_id}' name='${_id}'>${_name}:</label><br />
-	<select class='form-control' id='${_id}'>
-		<option value=''> </option>
+	<select class='form-control' id='${_id}' name='${_id}'>
+		<option value='null'> </option>
 		#{list items:_values, as:'value'}
-		<option value='${value.name}'
-		#{if value.name == _selected}
-			selected
-		#{/if}
-		>${value.name}</option>
+			#{ifnot value.name == "null"}
+				<option value='${value.name}'
+				#{if value.name == _selected}
+					selected
+				#{/if}
+				>${value.name}</option>
+			#{/ifnot}
 		#{/list}
 	</select>
 </div>

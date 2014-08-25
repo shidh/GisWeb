@@ -12,7 +12,7 @@ public class Output extends Model {
 	public enum OutputEnum {
 		COLD_AIR("Cold Air"), COLD_WATER("Cold Water"), COMPRESSED_AIR(
 				"Compressed Air"), ELECTRICITY("Electricity"), HOT_AIR(
-				"Hot Air"), HOT_WATER("Hot Water"), STEAM("Steam"), VACUUM(
+				"Hot Air"), HOT_WATER("Hot Water"), NULL("null"), STEAM("Steam"), VACUUM(
 				"Vacuum");
 
 		public final String name;
