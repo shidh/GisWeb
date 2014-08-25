@@ -2,12 +2,18 @@ var markerArray = [];
 
 function addMarker(poiId, latitude, longitude) {
 	deleteMarker(poiId);
+	var customIcon = L.AwesomeMarkers.icon({
+		icon: 'dot-circle-o',
+		markerColor: 'red',
+		prefix: 'fa'
+	});
 	customMarker = L.Marker.extend({
 		options : {
 			poiId : ''
 		}
 	});
 	var marker = new customMarker([ latitude, longitude ], {
+		icon : customIcon,
 		poiId : poiId
 	});
 	marker.on('click', function(){
