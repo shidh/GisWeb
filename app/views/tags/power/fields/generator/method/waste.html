@@ -1,4 +1,1 @@
-#{html/select_start id:'method',name:'Method' /}
-	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.COMBUSTION.name /}
-	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.GASIFICATION.name /}
-#{html/select_end /}
+#{html/input id:'method',name:'Method',readonly:'true',value:models.powerTags.Generator.MethodEnum.COMBUSTION.name /}
