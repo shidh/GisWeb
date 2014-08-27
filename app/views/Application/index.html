@@ -3,12 +3,14 @@
 #{set 'moreScripts'}
 	#{get 'moreScripts' /}
 	<script type='text/javascript'>
+		var row_bottom_collapsed = true;
 		var row_top_collapsed = true;
-		function showPoi(poiId) {
+		function showPoi(poi) {
 			if (row_top_collapsed) {
 				row_top_collapsed = false;
 				$('#row_top').collapse('show');
 				
+				var poiId = poi.options.id;
 				var action = #{jsAction @getPoi(':poiId') /};
 				$('#poi').load(action({poiId: poiId}), function() {
 				
@@ -16,30 +18,30 @@
 					var powerTag = encodeURIComponent($('#poi_power_tag').val());
 					$('#poi_power_tag_details').load(action({poiId: poiId, powerTag: powerTag}), function() {
 					
-						if ($('#poi_power_tag').val() == 'Generator') {
-							if ($('#source').val() !== 'undefined' && $('#source').val() !== 'null') {
+						if ($('#poi_power_tag').val() === 'Generator') {
+							if ($('#source').val()) {
 							
 								action = #{jsAction @getPoiPowerTagGeneratorMethod(':poiId', ':source') /};
 								var source = encodeURIComponent($('#source').val());
 								$('#generator_method').load(action({poiId: $('#poi_id').val(), source: source}), function() {
 								
-									if ($('#method').val() !== 'undefined' && $('#method').val() !== 'null') {
+									if ($('#method').val()) {
 										action = #{jsAction @getPoiPowerTagGeneratorType(':poiId', ':sourceMethod') /};
 										var source = encodeURIComponent($('#source').val());
 										var method = encodeURIComponent($('#method').val());
 										var sourceMethod;
-										if (source == 'undefined') {
+										if (!source) {
 											source = '';
 										}
-										if (method == 'undefined') {
+										if (!method) {
 											method = '';
 										}
-										if (source == '' || method == ''){
+										if (source === '' || method === ''){
 											sourceMethod = source + method;
 										} else {
 											sourceMethod = source + '_' + method;
 										}
-										if (sourceMethod !== 'undefined') {
+										if (sourceMethod) {
 											$('#generator_type').load(action({poiId: $('#poi_id').val(), sourceMethod: sourceMethod}));
 										}
 									}
@@ -50,8 +52,28 @@
 				});
 			}
 		};
+		function showPhoto(photo) {
+			var tempPhotoArray = photoArray;
+			photoArray = [];
+			for (var i = 0; i < tempPhotoArray.length; i++) {
+				var currentPhoto = tempPhotoArray[i];
+				var spin = false;
+				if (photo.options.id === currentPhoto.options.id) {
+					spin = true;
+				}
+				addMarker(currentPhoto.options.id, currentPhoto._latlng.lat, currentPhoto._latlng.lng, 'photo', spin);
+			}
+
+			if (row_bottom_collapsed) {
+				row_bottom_collapsed = false;
+				$('#row_bottom').collapse('show');
+			}
+			
+			var action = #{jsAction @getPhoto(':photoId') /};
+			$('#photo').load(action({photoId: photo.options.id}));
+		};
 		$(document).on('change', '#poi_power_tag', function() {
-			if ($('#poi_power_tag').val() == 'null') {
+			if ($('#poi_power_tag').val() === 'null') {
 				$('#poi_power_tag_details').empty();
 			} else {
 				var action = #{jsAction @getPoiPowerTag(':poiId', ':powerTag') /};
@@ -60,7 +82,7 @@
 			};
 		});
 		$(document).on('change', '#source', function() {
-			if ($('#source').val() == 'null') {
+			if ($('#source').val() === 'null') {
 				$('#generator_method').empty();
 				$('#generator_type').empty();
 			} else {
@@ -68,25 +90,25 @@
 				var source = encodeURIComponent($('#source').val());
 				$('#generator_method').load(action({poiId: $('#poi_id').val(), source: source}), function() {
 				
-					if ($('#method').val() == 'null') {
+					if ($('#method').val() === 'null') {
 						$('#generator_type').empty();
 					} else {
 						var action = #{jsAction @getPoiPowerTagGeneratorType(':poiId', ':sourceMethod') /};
 						var source = encodeURIComponent($('#source').val());
 						var method = encodeURIComponent($('#method').val());
 						var sourceMethod;
-						if (source == 'undefined') {
+						if (!source) {
 							source = '';
 						}
-						if (method == 'undefined') {
+						if (!method) {
 							method = '';
 						}
-						if (source == '' || method == ''){
+						if (source === '' || method === ''){
 							sourceMethod = source + method;
 						} else {
 							sourceMethod = source + '_' + method;
 						}
-						if (sourceMethod !== 'undefined') {
+						if (sourceMethod) {
 							$('#generator_type').load(action({poiId: $('#poi_id').val(), sourceMethod: sourceMethod}));
 						}
 					}
@@ -94,25 +116,25 @@
 			}
 		});
 		$(document).on('change', '#method', function() {
-			if ($('#method').val() == 'null') {
+			if ($('#method').val() === 'null') {
 				$('#generator_type').empty();
 			} else {
 				var action = #{jsAction @getPoiPowerTagGeneratorType(':poiId', ':sourceMethod') /};
 				var source = encodeURIComponent($('#source').val());
 				var method = encodeURIComponent($('#method').val());
 				var sourceMethod;
-				if (source == 'undefined') {
+				if (!source) {
 					source = '';
 				}
-				if (method == 'undefined') {
+				if (!method) {
 					method = '';
 				}
-				if (source == '' || method == ''){
+				if (source === '' || method === ''){
 					sourceMethod = source + method;
 				} else {
 					sourceMethod = source + '_' + method;
 				}
-				if (sourceMethod !== 'undefined') {
+				if (sourceMethod) {
 					$('#generator_type').load(action({poiId: $('#poi_id').val(), sourceMethod: sourceMethod}));
 				}
 			}
@@ -153,7 +175,7 @@
 <script type='text/javascript'>
 	(function() {
 	#{list items:pois, as:'poi'}
-	addMarker(${poi.id}, ${poi.latitude}, ${poi.longitude});
+	addMarker(${poi.id}, ${poi.latitude}, ${poi.longitude}, 'poi', false);
 	#{/list}
 	})();
 </script>

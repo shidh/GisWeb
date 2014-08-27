@@ -1,16 +1,12 @@
 package models;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-@Entity
-public class LocationTrace {
+import play.db.jpa.Model;
 
-	@Id
-	@GeneratedValue
-	public Long id;
+@Entity
+public class LocationTrace extends Model {
 
 	@ManyToOne
 	public Poi poi;

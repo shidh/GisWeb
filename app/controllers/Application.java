@@ -129,6 +129,12 @@ public class Application extends Controller {
 			unauthorized();
 		}
 	}
+	
+	public static void getPhoto(long photoId) {
+		Photo photo = Photo.findById(photoId);
+		renderArgs.put("photo", photo);
+		render("app/views/tags/photo.html");
+	}
 
 	public static void getPoi(long poiId) {
 		Poi poi = Poi.findById(poiId);
