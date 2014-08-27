@@ -139,6 +139,20 @@
 				}
 			}
 		});
+		$(document).on('click', '#poi_cancel', function() {
+			$('#row_bottom').collapse('hide');
+			$('#row_top').collapse('hide');
+			$('#photo').empty();
+			$('#poi').empty();
+			row_bottom_collapsed = true;
+			row_top_collapsed = true;
+
+			map.removeLayer(polygon);
+			for (var i = 0; i < photoArray.length; i++) {
+				map.removeLayer(photoArray[i]);
+			}
+			photoArray = [];
+		});
 		$(document).on('click', '#poi_submit', function() {
 			var updatePoiRoute = #{jsRoute @updatePoi() /};
 			$.post(updatePoiRoute.url(),
@@ -152,7 +166,17 @@
 					$('#poi_submit').addClass('btn-warning');
 				});
 			return false;
-		})
+		});
+		$(document).on('click', '#poi_zoom', function() {
+			var marker = getMarker($('#poi_id').val(), 'poi');
+			if (photoArray.length !== 0) {
+				var markerArray = photoArray.concat(new Array(marker));
+				var group = new L.featureGroup(markerArray);
+				map.fitBounds(group.getBounds());
+			} else {
+				map.setView(marker._latlng, 12);
+			}
+		});
 	</script>
 #{/set}
 #{bootstrap /}

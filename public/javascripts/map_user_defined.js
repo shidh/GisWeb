@@ -66,7 +66,7 @@ function getMarker(id, type) {
 		array = photoArray;
 	}
 	var marker = $.grep(array, function(e) {
-		return e.options.id === id;
+		return e.options.id == id;
 	});
 	if (marker.length === 1) {
 		return marker[0];

@@ -22,8 +22,10 @@
 		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Transformer.class.getSimpleName()) /}
 	#{html/select_end /}
 	<div id='poi_power_tag_details'></div>
-	<button class="btn btn-default" id='poi_submit' type="submit">Submit</button>
+	<button class='btn btn-default' id='poi_submit' type="submit">Submit</button>
 </form>
+<button class='btn btn-default' id='poi_zoom'>Zoom</button>
+<button class='btn btn-default' id='poi_cancel'>Cancel</button>
 <script type='text/javascript'>
 	(function() {
 		#{list items:poi.photos, as:'photo'}
