@@ -53,10 +53,8 @@
 			}
 		};
 		function showPhoto(photo) {
-			var tempPhotoArray = photoArray;
-			photoArray = [];
-			for (var i = 0; i < tempPhotoArray.length; i++) {
-				var currentPhoto = tempPhotoArray[i];
+			for (var i = 0; i < photoArray.length; i++) {
+				var currentPhoto = photoArray[i];
 				var spin = false;
 				if (photo.options.id === currentPhoto.options.id) {
 					spin = true;
