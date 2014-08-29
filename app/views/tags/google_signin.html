@@ -1,0 +1,26 @@
+#{set 'moreScripts'}
+	#{get 'moreScripts' /}
+	#{script 'google_signin_tutorial.js' /}
+#{/set}
+<span id='signinButton'>
+	<span
+		class='g-signin'
+		data-callback='signinCallback'
+		data-clientid='889611969164-ujvohn299csu833avfmcsun3k6fna30s.apps.googleusercontent.com'
+		data-cookiepolicy='single_host_origin'
+		data-height='tall'
+		data-scope='https://www.googleapis.com/auth/userinfo.email'
+		data-width='iconOnly'>
+	</span>
+</span>
+<button class='btn btn-danger btn-lg' id='signoutButton' type='button'>
+	<span class="glyphicon glyphicon-log-out"></span> 
+</button>
+<script type='text/javascript'>
+	<!-- Place this asynchronous JavaScript just before your </body> tag -->
+	(function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = 'https://apis.google.com/js/client:plusone.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	})();
+</script>

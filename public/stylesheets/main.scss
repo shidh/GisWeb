@@ -51,3 +51,10 @@ body,html {
 	
 	#row_bottom {
 		@include form_fields;}}
+
+#signinButton,#signoutButton {
+	bottom: 50%;
+	display: none;
+	position: absolute;
+	right: 0;
+	z-index: 1;}
