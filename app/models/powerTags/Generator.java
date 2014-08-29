@@ -39,9 +39,9 @@ public class Generator extends PowerTag {
 	public enum SourceEnum {
 		BIOFUEL("Biofuel"), BIOGAS("Biogas"), BIOMASS("Biomass"), COAL("Coal"), DIESEL(
 				"Diesel"), GAS("Gas"), GASOLINE("Gasoline"), GEOTHERMAL(
-				"Geothermal"), HYDRO("Hydro"), NUCLEAR("Nuclear"), NULL("null"), OIL("Oil"), SOLAR(
-				"Solar"), TIDAL("Tidal"), WASTE("Waste"), WAVE("Wave"), WIND(
-				"Wind");
+				"Geothermal"), HYDRO("Hydro"), NUCLEAR("Nuclear"), NULL("null"), OIL(
+				"Oil"), SOLAR("Solar"), TIDAL("Tidal"), WASTE("Waste"), WAVE(
+				"Wave"), WIND("Wind");
 
 		public final String name;
 
@@ -56,9 +56,10 @@ public class Generator extends PowerTag {
 				"Cold Fusion"), COMBINED_CYCLE("Combined Cycle"), CPR_1000(
 				"CPR-1000"), EPR("EPR"), FRANCIS_TURBINE("Francis Turbine"), GAS_TURBINE(
 				"Gas Turbine"), HEAT_PUMP("Heat Pump"), HORIZONTAL_AXIS(
-				"Horizontal Axis"), ICF("ICF"), KAPLAN_TURBINE("Kaplan Turbine"), NULL("null"), PELTON_TURBINE(
-				"Pelton Turbine"), PWR("PWR"), RBMK_1000("RBMK-1000"), RBMK_1500(
-				"RBMK-1500"), RECIPROCATING_ENGINE("Reciprocating Engine"), SOLAR_PHOTOVOLTAIC_PANEL(
+				"Horizontal Axis"), ICF("ICF"), KAPLAN_TURBINE("Kaplan Turbine"), NULL(
+				"null"), PELTON_TURBINE("Pelton Turbine"), PWR("PWR"), RBMK_1000(
+				"RBMK-1000"), RBMK_1500("RBMK-1500"), RECIPROCATING_ENGINE(
+				"Reciprocating Engine"), SOLAR_PHOTOVOLTAIC_PANEL(
 				"Solar Photovoltaic Panel"), SOLAR_THERMAL_COLLECTOR(
 				"Solar Thermal Collector"), STEAM_GENERATOR("Steam Generator"), STEAM_TURBINE(
 				"Steam Turbine"), STELLARATOR("Stellarator"), TOKAMAK("Tokamak"), VERTICAL_AXIS(

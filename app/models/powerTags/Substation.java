@@ -13,14 +13,14 @@ public class Substation extends PowerTag {
 
 	public enum BooleanEnum {
 		FALSE("False"), NULL("null"), TRUE("True");
-		
+
 		public final String name;
-		
+
 		BooleanEnum(String name) {
 			this.name = name;
 		}
 	}
-	
+
 	public enum LocationEnum {
 		INDOOR("Indoor"), KIOSK("Kiosk"), NULL("null"), OUTDOOR("Outdoor"), PLATFORM(
 				"Platform"), ROOFTOP("Rooftop"), UNDERGROUND("Underground");

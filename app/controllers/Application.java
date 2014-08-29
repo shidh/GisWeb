@@ -170,7 +170,7 @@ public class Application extends Controller {
 		if (source != null && !source.isEmpty() && !source.equals("null")) {
 			Poi poi = Poi.findById(poiId);
 			Generator generator = (Generator) poi.powerTag;
-			if (generator.source != null
+			if (generator != null && generator.source != null
 					&& generator.source.name.equals(source)
 					&& generator.method != null) {
 				renderArgs.put("method", generator.method);
@@ -189,11 +189,13 @@ public class Application extends Controller {
 			Generator generator = (Generator) poi.powerTag;
 			String source = "";
 			String method = "";
-			if (generator.source != null && generator.source.name != "null") {
-				source = generator.source.name;
-			}
-			if (generator.method != null && generator.method.name != "null") {
-				method = generator.method.name;
+			if (generator != null) {
+				if (generator.source != null && generator.source.name != "null") {
+					source = generator.source.name;
+				}
+				if (generator.method != null && generator.method.name != "null") {
+					method = generator.method.name;
+				}
 			}
 			String poiSourceMethod;
 			if (source.isEmpty() || method.isEmpty()) {

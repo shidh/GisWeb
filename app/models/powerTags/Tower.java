@@ -16,8 +16,9 @@ public class Tower extends PowerTag {
 				"Donau And One-Level"), FLAG("Flag"), FOUR_LEVEL("Four-Level"), GUYED_H_FRAME(
 				"Guyed H-Frame"), GUYED_V_FRAME("Guyed V-Frame"), H_FRAME(
 				"H-Frame"), INCOMPLETE("Incomplete"), MONOPOLAR("Monopolar"), NAME(
-				"Name"), NINE_LEVEL("Nine-Level"), NULL("null"), ONE_LEVEL("One-Level"), PORTAL(
-				"Portal"), PORTAL_THREE_LEVEL("Portal And Three-Level"), PORTAL_TWO_LEVEL(
+				"Name"), NINE_LEVEL("Nine-Level"), NULL("null"), ONE_LEVEL(
+				"One-Level"), PORTAL("Portal"), PORTAL_THREE_LEVEL(
+				"Portal And Three-Level"), PORTAL_TWO_LEVEL(
 				"Portal And Two-Level"), SIX_LEVEL("Six-Level"), THREE_LEVEL(
 				"Three-Level"), TRIANGLE("Triangle"), TWO_LEVEL("Two-Level"), X_FRAME(
 				"X-Frame"), Y_FRAME("Y-Frame");
