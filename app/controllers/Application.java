@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import models.*;
+import models.GoogleUser.AccountType;
 import models.powerTags.Cable;
 import models.powerTags.Converter.ConverterEnum;
 import models.powerTags.Generator.MethodEnum;
@@ -241,6 +242,7 @@ public class Application extends Controller {
 						}
 					} else if (users.isEmpty()) {
 						user = new GoogleUser();
+						user.accountType = AccountType.NULL;
 						user.googleId = googleId;
 						user.googleMail = googleMail;
 						user.save();

@@ -7,6 +7,11 @@ import play.db.jpa.Model;
 @Entity
 public class GoogleUser extends Model {
 
-	public String googleMail;
+	public enum AccountType {
+		NULL, SUPERUSER, USER;
+	}
+
+	public AccountType accountType;
 	public String googleId;
+	public String googleMail;
 }
