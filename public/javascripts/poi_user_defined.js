@@ -16,8 +16,8 @@ function showPoi(poi) {
 						$('#generator_method').load(getPoiPowerTagGeneratorMethod({poiId: $('#poi_id').val(), source: source}), function() {
 								
 							if ($('#method').val()) {
-								var source = encodeURIComponent($('#source').val());
-								var method = encodeURIComponent($('#method').val());
+								var source = $('#source').val();
+								var method = $('#method').val();
 								var sourceMethod;
 								if (!source) {
 									source = '';
@@ -31,7 +31,7 @@ function showPoi(poi) {
 									sourceMethod = source + '_' + method;
 								}
 								if (sourceMethod) {
-									$('#generator_type').load(getPoiPowerTagGeneratorType({poiId: $('#poi_id').val(), sourceMethod: sourceMethod}));
+									$('#generator_type').load(getPoiPowerTagGeneratorType({poiId: $('#poi_id').val(), sourceMethod: encodeURIComponent(sourceMethod)}));
 								}
 							}
 						});
@@ -60,8 +60,8 @@ $(document).on('change', '#source', function() {
 			if ($('#method').val() === 'null') {
 				$('#generator_type').empty();
 			} else {
-				var source = encodeURIComponent($('#source').val());
-				var method = encodeURIComponent($('#method').val());
+				var source = $('#source').val();
+				var method = $('#method').val();
 				var sourceMethod;
 				if (!source) {
 					source = '';
@@ -75,7 +75,7 @@ $(document).on('change', '#source', function() {
 					sourceMethod = source + '_' + method;
 				}
 				if (sourceMethod) {
-					$('#generator_type').load(getPoiPowerTagGeneratorType({poiId: $('#poi_id').val(), sourceMethod: sourceMethod}));
+					$('#generator_type').load(getPoiPowerTagGeneratorType({poiId: $('#poi_id').val(), sourceMethod: encodeURIComponent(sourceMethod)}));
 				}
 			}
 		});
@@ -85,8 +85,8 @@ $(document).on('change', '#method', function() {
 	if ($('#method').val() === 'null') {
 		$('#generator_type').empty();
 	} else {
-		var source = encodeURIComponent($('#source').val());
-		var method = encodeURIComponent($('#method').val());
+		var source = $('#source').val();
+		var method = $('#method').val();
 		var sourceMethod;
 		if (!source) {
 			source = '';
@@ -100,7 +100,7 @@ $(document).on('change', '#method', function() {
 			sourceMethod = source + '_' + method;
 		}
 		if (sourceMethod) {
-			$('#generator_type').load(getPoiPowerTagGeneratorType({poiId: $('#poi_id').val(), sourceMethod: sourceMethod}));
+			$('#generator_type').load(getPoiPowerTagGeneratorType({poiId: $('#poi_id').val(), sourceMethod: encodeURIComponent(sourceMethod)}));
 		}
 	}
 });

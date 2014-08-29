@@ -26,6 +26,9 @@
 	<div id='row_middle' class='row'>
 		<div class='col-xs-12'>
 			#{map /}
+			<div id='settings'>
+			</div>
+			#{google_signin_html /}
 		</div>
 	</div>
 	<div id='row_bottom' class='collapse row'>
@@ -40,6 +43,4 @@
 	#{/list}
 	})();
 </script>
-<div id='settings'>
-</div>
-#{google_signin /}
+#{google_signin_js /}
