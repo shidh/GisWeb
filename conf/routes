@@ -17,6 +17,7 @@ GET     /getPoiPowerTag/                        Application.getPoiPowerTag
 GET     /getPoiPowerTagGeneratorMethod/         Application.getPoiPowerTagGeneratorMethod
 GET     /getPoiPowerTagGeneratorType/           Application.getPoiPowerTagGeneratorType
 POST    /createPoi/                             Application.createPoi
+POST    /registerUser/                          Application.registerUser
 POST    /updatePoi/                             Application.updatePoi
 WS      /webSocket/                             WebSocket.join
 

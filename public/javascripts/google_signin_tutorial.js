@@ -4,6 +4,20 @@ function signinCallback(authResult) {
 		// Hide the sign-in button now that the user is authorized, for example:
 		$('#signinButton').hide();
 		$('#signoutButton').show();
+		var data = { 'gToken' : authResult.id_token };
+		$.ajax({
+			contentType: 'application/json',
+			data: JSON.stringify(data),
+			processData: false,
+			type: 'POST',
+			url: registerUser.url(),
+			error: function() {
+				console.log('nay');
+			},
+			success: function() {
+				console.log('yay');
+			}
+		})
 	} else {
 		// Update the app to reflect a signed out user
 		// Possible error values:

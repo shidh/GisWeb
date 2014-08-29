@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import models.*;
 import models.powerTags.Cable;
@@ -44,11 +46,12 @@ import models.types.Output.OutputEnum;
 public class Application extends Controller {
 
 	private static final String audience = "889611969164-ujvohn299csu833avfmcsun3k6fna30s.apps.googleusercontent.com";
-	private static final String[] clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
+	private static final String[] android_clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
+	private static final String[] web_clientId = new String[] { audience };
 
 	public static void createPoi(String token) throws FileNotFoundException {
 
-		Checker checker = new Checker(clientId, audience);
+		Checker checker = new Checker(android_clientId, audience);
 		Payload payload = checker.check(token);
 
 		if (payload != null) {
@@ -129,7 +132,7 @@ public class Application extends Controller {
 			unauthorized();
 		}
 	}
-	
+
 	public static void getPhoto(long photoId) {
 		Photo photo = Photo.findById(photoId);
 		renderArgs.put("photo", photo);
@@ -210,6 +213,43 @@ public class Application extends Controller {
 		List<Poi> pois = Poi.findAll();
 		renderArgs.put("pois", pois);
 		render();
+	}
+
+	public static void registerUser() throws Exception {
+
+		String body = params.get("body");
+		JsonObject jsonObject = (JsonObject) new JsonParser().parse(body);
+		String gToken = jsonObject.get("gToken").getAsString();
+
+		if (gToken != null) {
+			Checker checker = new Checker(web_clientId, audience);
+			Payload payload = checker.check(gToken);
+
+			if (payload != null) {
+				String googleId = payload.getUserId();
+				String googleMail = payload.getEmail();
+
+				if (googleId != null && googleMail != null) {
+					List<GoogleUser> users = GoogleUser.find("byGoogleId",
+							googleId).fetch();
+					GoogleUser user;
+					if (users.size() == 1) {
+						user = users.get(0);
+						if (!googleMail.equals(user.googleMail)) {
+							user.googleMail = googleMail;
+							user.save();
+						}
+					} else if (users.isEmpty()) {
+						user = new GoogleUser();
+						user.googleId = googleId;
+						user.googleMail = googleMail;
+						user.save();
+					} else {
+						throw new Exception();
+					}
+				}
+			}
+		}
 	}
 
 	public static String spaceBeforeUpperCase(String str) {
