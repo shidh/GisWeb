@@ -1,6 +1,11 @@
 /*
  * mixins and variables
  */
+@mixin button {
+	bottom: 50%;
+	position: absolute;
+	z-index: 1;}
+
 @mixin form_fields {
 	$bottom_margin: 10px;
 	padding-top: 5px;
@@ -52,9 +57,13 @@ body,html {
 	#row_bottom {
 		@include form_fields;}}
 
+#settingsButton {
+	@include button;
+
+	left: 0;}
+
 #signinButton,#signoutButton {
-	bottom: 50%;
+	@include button;
+
 	display: none;
-	position: absolute;
-	right: 0;
-	z-index: 1;}
+	right: 0;}
