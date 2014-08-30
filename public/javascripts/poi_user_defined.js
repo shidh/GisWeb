@@ -4,7 +4,7 @@ function showPoi(poi) {
 		$('#row_top').collapse('show');
 				
 		var poiId = poi.options.id;
-		$('#poi').load(getPoi({poiId: poiId}), function() {
+		$('#poi').load(getPoi.url(), {'gToken': gapi.auth.getToken().id_token, 'poiId': poiId}, function() {
 				
 			var powerTag = encodeURIComponent($('#poi_power_tag').val());
 			$('#poi_power_tag_details').load(getPoiPowerTag({poiId: poiId, powerTag: powerTag}), function() {

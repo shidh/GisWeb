@@ -140,7 +140,9 @@ public class Application extends Controller {
 		render("app/views/tags/photo.html");
 	}
 
-	public static void getPoi(long poiId) {
+	public static void getPoi() {
+		String gToken = params.get("gToken");
+		Long poiId = params.get("poiId", Long.class);
 		Poi poi = Poi.findById(poiId);
 		renderArgs.put("poi", poi);
 		render("app/views/tags/poi.html");

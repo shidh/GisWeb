@@ -12,7 +12,7 @@ GET     /favicon.ico                            404
 GET     /public/                                staticDir:public
 
 GET     /getPhoto/                              Application.getPhoto
-GET     /getPoi/                                Application.getPoi
+POST    /getPoi/                                Application.getPoi
 GET     /getPoiPowerTag/                        Application.getPoiPowerTag
 GET     /getPoiPowerTagGeneratorMethod/         Application.getPoiPowerTagGeneratorMethod
 GET     /getPoiPowerTagGeneratorType/           Application.getPoiPowerTagGeneratorType
