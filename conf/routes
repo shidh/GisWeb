@@ -14,8 +14,8 @@ GET     /public/                                staticDir:public
 POST    /getPhoto/                              Application.getPhoto
 POST    /getPoi/                                Application.getPoi
 POST    /getPoiPowerTag/                        Application.getPoiPowerTag
-GET     /getPoiPowerTagGeneratorMethod/         Application.getPoiPowerTagGeneratorMethod
-GET     /getPoiPowerTagGeneratorType/           Application.getPoiPowerTagGeneratorType
+POST    /getPoiPowerTagGeneratorMethod/         Application.getPoiPowerTagGeneratorMethod
+POST    /getPoiPowerTagGeneratorType/           Application.getPoiPowerTagGeneratorType
 POST    /createPoi/                             Application.createPoi
 POST    /registerUser/                          Application.registerUser
 POST    /updatePoi/                             Application.updatePoi

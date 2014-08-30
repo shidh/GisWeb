@@ -56,7 +56,7 @@ public class Generator extends PowerTag {
 				"Cold Fusion"), COMBINED_CYCLE("Combined Cycle"), CPR_1000(
 				"CPR-1000"), EPR("EPR"), FRANCIS_TURBINE("Francis Turbine"), GAS_TURBINE(
 				"Gas Turbine"), HEAT_PUMP("Heat Pump"), HORIZONTAL_AXIS(
-				"Horizontal Axis"), ICF("ICF"), KAPLAN_TURBINE("Kaplan Turbine"), NULL(
+				"Horizontal Axis"), HYDRODYNAMIC_SCREW("Hydrodynamic Screw"), ICF("ICF"), KAPLAN_TURBINE("Kaplan Turbine"), NULL(
 				"null"), PELTON_TURBINE("Pelton Turbine"), PWR("PWR"), RBMK_1000(
 				"RBMK-1000"), RBMK_1500("RBMK-1500"), RECIPROCATING_ENGINE(
 				"Reciprocating Engine"), SOLAR_PHOTOVOLTAIC_PANEL(

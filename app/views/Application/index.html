@@ -5,14 +5,17 @@
 	<script type='text/javascript'>
 		var row_bottom_collapsed = true;
 		var row_top_collapsed = true;
-		var getPhoto = #{jsRoute @getPhoto() /};
-		var getPoi = #{jsRoute @getPoi() /};
-		var getPoiPowerTag = #{jsRoute @getPoiPowerTag() /};
-		var getPoiPowerTagGeneratorMethod = #{jsAction @getPoiPowerTagGeneratorMethod(':poiId', ':source') /};
-		var getPoiPowerTagGeneratorType = #{jsAction @getPoiPowerTagGeneratorType(':poiId', ':sourceMethod') /};
-		var registerUser = #{jsRoute @registerUser() /};
-		var updatePoi = #{jsRoute @updatePoi() /};
+		var routes = {
+			getPhoto: #{jsRoute @getPhoto() /},
+			getPoi: #{jsRoute @getPoi() /},
+			getPoiPowerTag: #{jsRoute @getPoiPowerTag() /},
+			getPoiPowerTagGeneratorMethod: #{jsRoute @getPoiPowerTagGeneratorMethod() /},
+			getPoiPowerTagGeneratorType: #{jsRoute @getPoiPowerTagGeneratorType() /},
+			registerUser: #{jsRoute @registerUser() /},
+			updatePoi: #{jsRoute @updatePoi() /}
+		}
 	</script>
+	#{script 'google_signin_user_defined.js' /}
 	#{script 'photo_user_defined.js' /}
 	#{script 'poi_user_defined.js' /}
 #{/set}

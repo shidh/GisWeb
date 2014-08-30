@@ -11,37 +11,28 @@ function addMarker(id, latitude, longitude, type, spin) {
 		markerColor = 'red';
 	} else if (type === 'photo') {
 		icon = 'photo';
-		markerColor = 'blue';
-	}
+		markerColor = 'blue';}
 	var customIcon = L.AwesomeMarkers.icon({
 		icon: icon,
 		markerColor: markerColor,
 		prefix: 'fa',
-		spin: spin
-	});
+		spin: spin});
 	var customMarker = L.Marker.extend({
 		options : {
-			id : ''
-		}
-	});
+			id : ''}});
 	var marker = new customMarker([ latitude, longitude ], {
 		icon : customIcon,
-		id : id
-	});
+		id : id});
 	marker.on('click', function(){
 		if (type === 'poi') {
 			showPoi(this);
 		} else if (type === 'photo') {
-			showPhoto(this);
-		}
-	});
+			showPhoto(this);}});
 	if (type === 'poi') {
 		poiArray.push(marker);
 	} else if (type === 'photo') {
-		photoArray.push(marker);
-	}
-	marker.addTo(map);
-}
+		photoArray.push(marker);}
+	marker.addTo(map);}
 
 function deleteMarker(id, type) {
 	var marker = getMarker(id, type);
@@ -52,11 +43,8 @@ function deleteMarker(id, type) {
 			poiArray.splice(index, 1);
 		} else if (type === 'photo') {
 			index = photoArray.indexOf(marker);
-			photoArray.splice(index, 1);
-		}
-		map.removeLayer(marker);
-	}
-}
+			photoArray.splice(index, 1);}
+		map.removeLayer(marker);}}
 
 function getMarker(id, type) {
 	var array;
@@ -66,9 +54,6 @@ function getMarker(id, type) {
 		array = photoArray;
 	}
 	var marker = $.grep(array, function(e) {
-		return e.options.id == id;
-	});
+		return e.options.id == id;});
 	if (marker.length === 1) {
-		return marker[0];
-	}
-}
+		return marker[0];}}

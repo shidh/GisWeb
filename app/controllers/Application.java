@@ -13,8 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import models.*;
 import models.GoogleUser.AccountType;
@@ -134,26 +132,19 @@ public class Application extends Controller {
 		}
 	}
 
-	public static void getPhoto() {
-		String gToken = params.get("gToken");
-		Long photoId = params.get("photoId", Long.class);
+	public static void getPhoto(String gToken, Long photoId) {
 		Photo photo = Photo.findById(photoId);
 		renderArgs.put("photo", photo);
 		render("app/views/tags/photo.html");
 	}
 
-	public static void getPoi() {
-		String gToken = params.get("gToken");
-		Long poiId = params.get("poiId", Long.class);
+	public static void getPoi(String gToken, Long poiId) {
 		Poi poi = Poi.findById(poiId);
 		renderArgs.put("poi", poi);
 		render("app/views/tags/poi.html");
 	}
 
-	public static void getPoiPowerTag() {
-		String gToken = params.get("gToken");
-		Long poiId = params.get("poiId", Long.class);
-		String powerTag = params.get("powerTag");
+	public static void getPoiPowerTag(String gToken, Long poiId, String powerTag) {
 
 		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("null")) {
 			Poi poi = Poi.findById(poiId);
@@ -172,7 +163,8 @@ public class Application extends Controller {
 		}
 	}
 
-	public static void getPoiPowerTagGeneratorMethod(long poiId, String source) {
+	public static void getPoiPowerTagGeneratorMethod(String gToken, Long poiId,
+			String source) {
 
 		if (source != null && !source.isEmpty() && !source.equals("null")) {
 			Poi poi = Poi.findById(poiId);
@@ -187,35 +179,29 @@ public class Application extends Controller {
 		}
 	}
 
-	public static void getPoiPowerTagGeneratorType(long poiId,
+	public static void getPoiPowerTagGeneratorType(String gToken, Long poiId,
 			String sourceMethod) {
 
 		if (sourceMethod != null && !sourceMethod.isEmpty()
 				&& !sourceMethod.equals("null")) {
 			Poi poi = Poi.findById(poiId);
 			Generator generator = (Generator) poi.powerTag;
-			String source = "";
-			String method = "";
-			if (generator != null) {
-				if (generator.source != null && generator.source.name != "null") {
-					source = generator.source.name;
+			if (generator != null && generator.source != null
+					&& generator.method != null) {
+				String poiSourceMethod = generator.source.name + "_"
+						+ generator.method.name;
+				if (poiSourceMethod.equals(sourceMethod)
+						&& generator.type != null) {
+					renderArgs.put("type", generator.type);
 				}
-				if (generator.method != null && generator.method.name != "null") {
-					method = generator.method.name;
-				}
 			}
-			String poiSourceMethod;
-			if (source.isEmpty() || method.isEmpty()) {
-				poiSourceMethod = source + method;
-			} else {
-				poiSourceMethod = source + "_" + method;
+			try {
+				render("app/views/tags/power/fields/generator/type/"
+						+ sourceMethod.replaceAll(" ", "_").toLowerCase()
+						+ ".html");
+			} catch (Exception e) {
+				render("app/views/Application/about_blank.html");
 			}
-			if (poiSourceMethod != null && poiSourceMethod.equals(sourceMethod)
-					&& generator.type != null) {
-				renderArgs.put("type", generator.type);
-			}
-			render("app/views/tags/power/fields/generator/type/"
-					+ sourceMethod.replaceAll(" ", "_").toLowerCase() + ".html");
 		}
 	}
 
@@ -225,9 +211,7 @@ public class Application extends Controller {
 		render();
 	}
 
-	public static void registerUser() throws Exception {
-
-		String gToken = params.get("gToken");
+	public static void registerUser(String gToken) throws Exception {
 
 		if (gToken != null) {
 			Checker checker = new Checker(web_clientId, audience);
@@ -354,7 +338,8 @@ public class Application extends Controller {
 				}
 				if (type != null) {
 					generator.type = Generator.TypeEnum.valueOf(type
-							.replaceAll(" ", "_").toUpperCase());
+							.replaceAll(" ", "_").replaceAll("-", "_")
+							.toUpperCase());
 				}
 			} else if (powerTagClass.equals(Line.class)) {
 				poi.powerTag = new Line(poi);
