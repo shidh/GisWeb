@@ -150,7 +150,10 @@ public class Application extends Controller {
 		render("app/views/tags/poi.html");
 	}
 
-	public static void getPoiPowerTag(long poiId, String powerTag) {
+	public static void getPoiPowerTag() {
+		String gToken = params.get("gToken");
+		Long poiId = params.get("poiId", Long.class);
+		String powerTag = params.get("powerTag");
 
 		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("null")) {
 			Poi poi = Poi.findById(poiId);

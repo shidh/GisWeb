@@ -5,9 +5,8 @@ function showPoi(poi) {
 				
 		var poiId = poi.options.id;
 		$('#poi').load(getPoi.url(), {'gToken': gapi.auth.getToken().id_token, 'poiId': poiId}, function() {
-				
-			var powerTag = encodeURIComponent($('#poi_power_tag').val());
-			$('#poi_power_tag_details').load(getPoiPowerTag({poiId: poiId, powerTag: powerTag}), function() {
+
+			$('#poi_power_tag_details').load(getPoiPowerTag.url(), {'gToken': gapi.auth.getToken().id_token, 'poiId': poiId, 'powerTag': $('#poi_power_tag').val()}, function() {
 					
 				if ($('#poi_power_tag').val() === 'Generator') {
 					if ($('#source').val()) {
@@ -45,8 +44,7 @@ $(document).on('change', '#poi_power_tag', function() {
 	if ($('#poi_power_tag').val() === 'null') {
 		$('#poi_power_tag_details').empty();
 	} else {
-		var powerTag = encodeURIComponent($('#poi_power_tag').val());
-		$('#poi_power_tag_details').load(getPoiPowerTag({poiId: $('#poi_id').val(), powerTag: powerTag}));
+		$('#poi_power_tag_details').load(getPoiPowerTag.url(), {'gToken': gapi.auth.getToken().id_token, 'poiId': $('#poi_id').val(), 'powerTag': $('#poi_power_tag').val()});
 	};
 });
 $(document).on('change', '#source', function() {
