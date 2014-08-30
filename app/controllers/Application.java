@@ -220,9 +220,7 @@ public class Application extends Controller {
 
 	public static void registerUser() throws Exception {
 
-		String body = params.get("body");
-		JsonObject jsonObject = (JsonObject) new JsonParser().parse(body);
-		String gToken = jsonObject.get("gToken").getAsString();
+		String gToken = params.get("gToken");
 
 		if (gToken != null) {
 			Checker checker = new Checker(web_clientId, audience);
