@@ -16,5 +16,5 @@ function showPhoto(photo) {
 		$('#row_bottom').collapse('show');
 	}
 
-	$('#photo').load(getPhoto({photoId: photo.options.id}));
+	$('#photo').load(getPhoto.url(), {'gToken': gapi.auth.getToken().id_token, 'photoId': photo.options.id});
 };

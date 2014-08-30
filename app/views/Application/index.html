@@ -5,7 +5,7 @@
 	<script type='text/javascript'>
 		var row_bottom_collapsed = true;
 		var row_top_collapsed = true;
-		var getPhoto = #{jsAction @getPhoto(':photoId') /};
+		var getPhoto = #{jsRoute @getPhoto() /};
 		var getPoi = #{jsRoute @getPoi() /};
 		var getPoiPowerTag = #{jsAction @getPoiPowerTag(':poiId', ':powerTag') /};
 		var getPoiPowerTagGeneratorMethod = #{jsAction @getPoiPowerTagGeneratorMethod(':poiId', ':source') /};

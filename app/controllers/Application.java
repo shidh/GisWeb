@@ -134,7 +134,9 @@ public class Application extends Controller {
 		}
 	}
 
-	public static void getPhoto(long photoId) {
+	public static void getPhoto() {
+		String gToken = params.get("gToken");
+		Long photoId = params.get("photoId", Long.class);
 		Photo photo = Photo.findById(photoId);
 		renderArgs.put("photo", photo);
 		render("app/views/tags/photo.html");
