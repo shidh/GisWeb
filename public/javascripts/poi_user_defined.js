@@ -1,7 +1,17 @@
-function showPoi(poi) {
+function collapsePoi() {
+	if (!row_top_collapsed) {
+		row_top_collapsed = true;
+		$('#poi').empty();
+		$('#row_top').collapse('hide');}}
+
+function expandPoi() {
 	if (row_top_collapsed) {
 		row_top_collapsed = false;
-		$('#row_top').collapse('show');
+		$('#row_top').collapse('show');}}
+
+function showPoi(poi) {
+	if (row_top_collapsed) {
+		expandPoi();
 		var poiId = poi.options.id;
 		$('#poi').load(
 			routes.getPoi.url(),
@@ -74,12 +84,8 @@ $(document).on('change', '#method', function() {
 			'sourceMethod': $('#source').val() + '_' + $('#method').val()});});
 
 $(document).on('click', '#poi_cancel', function() {
-	$('#row_bottom').collapse('hide');
-	$('#row_top').collapse('hide');
-	$('#photo').empty();
-	$('#poi').empty();
-	row_bottom_collapsed = true;
-	row_top_collapsed = true;
+	collapsePhoto();
+	collapsePoi();
 
 	map.removeLayer(polygon);
 	for (var i = 0; i < photoArray.length; i++) {

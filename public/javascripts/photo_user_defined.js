@@ -1,3 +1,14 @@
+function collapsePhoto() {
+	if (!row_bottom_collapsed) {
+		row_bottom_collapsed = true;
+		$('#photo').empty();
+		$('#row_bottom').collapse('hide');}}
+
+function expandPhoto() {
+	if (row_bottom_collapsed) {
+		row_bottom_collapsed = false;
+		$('#row_bottom').collapse('show');}}
+
 function showPhoto(photo) {
 	var tempPhotoArray = photoArray;
 	photoArray = [];
@@ -8,11 +19,9 @@ function showPhoto(photo) {
 			spin = true;}
 		addMarker(currentPhoto.options.id, currentPhoto._latlng.lat, currentPhoto._latlng.lng, 'photo', spin);
 		map.removeLayer(currentPhoto);}
-	if (row_bottom_collapsed) {
-		row_bottom_collapsed = false;
-		$('#row_bottom').collapse('show');}
+	expandPhoto();
 	$('#photo').load(
-		getPhoto.url(),
+		routes.getPhoto.url(),
 		{
 			'gToken': gapi.auth.getToken().id_token,
 			'photoId': photo.options.id});}
