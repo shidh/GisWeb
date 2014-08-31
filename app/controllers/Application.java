@@ -243,7 +243,7 @@ public class Application extends Controller {
 	public static void getSettingsButton(String gToken) {
 		
 		if (isSuperUser(gToken)) {
-			render("app/views/tags/settings.html");
+			render("app/views/tags/settingsButton.html");
 		}
 	}
 
