@@ -240,6 +240,13 @@ public class Application extends Controller {
 		}
 	}
 
+	public static void getSettingsButton(String gToken) {
+		
+		if (isSuperUser(gToken)) {
+			render("app/views/tags/settings.html");
+		}
+	}
+
 	public static void index() {
 		List<Poi> pois = Poi.findAll();
 		renderArgs.put("pois", pois);

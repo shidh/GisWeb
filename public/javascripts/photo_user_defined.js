@@ -23,5 +23,5 @@ function showPhoto(photo) {
 	$('#photo').load(
 		routes.getPhoto.url(),
 		{
-			'gToken': gapi.auth.getToken().id_token,
+			'gToken': getGoogleIdToken(),
 			'photoId': photo.options.id});}

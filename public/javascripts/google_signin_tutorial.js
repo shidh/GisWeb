@@ -8,6 +8,10 @@ function signinCallback(authResult) {
 			routes.registerUser.url(),
 			{
 				'gToken': authResult.id_token});
+		$('#settings').load(
+			routes.getSettingsButton.url(),
+			{
+				'gToken': getGoogleIdToken()});
 	} else {
 		// Update the app to reflect a signed out user
 		// Possible error values:
@@ -15,7 +19,8 @@ function signinCallback(authResult) {
 		//   "access_denied" - User denied access to your app
 		//   "immediate_failed" - Could not automatically log in the user
 		$('#signinButton').show();
-		$('#signoutButton').hide();}}
+		$('#signoutButton').hide();
+		$('#settings').empty()}}
 
 $(document).on('click', '#signoutButton', function() {
 	var access_token = gapi.auth.getToken().access_token;

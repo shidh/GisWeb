@@ -11,12 +11,13 @@ GET     /favicon.ico                            404
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
+POST    /createPoi/                             Application.createPoi
 POST    /getPhoto/                              Application.getPhoto
 POST    /getPoi/                                Application.getPoi
 POST    /getPoiPowerTag/                        Application.getPoiPowerTag
 POST    /getPoiPowerTagGeneratorMethod/         Application.getPoiPowerTagGeneratorMethod
 POST    /getPoiPowerTagGeneratorType/           Application.getPoiPowerTagGeneratorType
-POST    /createPoi/                             Application.createPoi
+POST    /getSettingsButton/                     Application.getSettingsButton
 POST    /registerUser/                          Application.registerUser
 POST    /updatePoi/                             Application.updatePoi
 WS      /webSocket/                             WebSocket.join
