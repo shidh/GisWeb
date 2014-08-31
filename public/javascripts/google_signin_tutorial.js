@@ -9,7 +9,7 @@ function signinCallback(authResult) {
 			{
 				'gToken': authResult.id_token});
 		$('#settings').load(
-			routes.getSettingsButton.url(),
+			routes.getSettingsModal.url(),
 			{
 				'gToken': getGoogleIdToken()});
 	} else {
