@@ -1,6 +1,6 @@
-#{power/fields/frequency value:powerTag?.frequency /}
-#{power/fields/location/transformer value:powerTag?.location /}
-#{power/fields/phases value:powerTag?.phases /}
-#{power/fields/rating value:powerTag?.rating /}
-#{power/fields/type/transformer value:powerTag?.type /}
-#{power/fields/voltage value:powerTag?.voltage /}
+#{power/fields/frequency isAuthorized:isAuthorized,value:powerTag?.frequency /}
+#{power/fields/location/transformer isAuthorized:isAuthorized,value:powerTag?.location /}
+#{power/fields/phases isAuthorized:isAuthorized,value:powerTag?.phases /}
+#{power/fields/rating isAuthorized:isAuthorized,value:powerTag?.rating /}
+#{power/fields/type/transformer isAuthorized:isAuthorized,value:powerTag?.type /}
+#{power/fields/voltage isAuthorized:isAuthorized,value:powerTag?.voltage /}

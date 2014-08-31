@@ -52,5 +52,8 @@
 		#{if _readonly}
 			readonly
 			#{/if}
+		#{if _isAuthorized == false}
+			disabled
+			#{/if}
 		>
 </div>

@@ -1,9 +1,9 @@
 <form class='form-inline'>
-	#{html/input id:'photo_accuracy', name:'Accuracy', placeholder:' ',primary:'true',readonly:'true',value:photo?.accuracy /}
-	#{html/input id:'photo_altitude', name:'Altitude', placeholder:' ',primary:'true',readonly:'true',value:photo?.altitude /}
-	#{html/input id:'photo_bearing',  name:'Bearing',  placeholder:' ',primary:'true',readonly:'true',value:photo?.bearing /}
-	#{html/input id:'photo_latitude', name:'Latitude', placeholder:' ',primary:'true',readonly:'true',value:photo?.latitude /}
-	#{html/input id:'photo_longitude',name:'Longitude',placeholder:' ',primary:'true',readonly:'true',value:photo?.longitude /}
-	#{html/input id:'photo_provider', name:'Provider', placeholder:' ',primary:'true',readonly:'true',value:photo?.provider /}
-	#{html/input id:'photo_time',     name:'Time',     placeholder:' ',primary:'true',readonly:'true',type:'date',value:photo?.time /}
+	#{html/input id:'photo_accuracy', isAuthorized:isAuthorized,name:'Accuracy', placeholder:' ',primary:'true',readonly:'true',value:photo?.accuracy /}
+	#{html/input id:'photo_altitude', isAuthorized:isAuthorized,name:'Altitude', placeholder:' ',primary:'true',readonly:'true',value:photo?.altitude /}
+	#{html/input id:'photo_bearing',  isAuthorized:isAuthorized,name:'Bearing',  placeholder:' ',primary:'true',readonly:'true',value:photo?.bearing /}
+	#{html/input id:'photo_latitude', isAuthorized:isAuthorized,name:'Latitude', placeholder:' ',primary:'true',readonly:'true',value:photo?.latitude /}
+	#{html/input id:'photo_longitude',isAuthorized:isAuthorized,name:'Longitude',placeholder:' ',primary:'true',readonly:'true',value:photo?.longitude /}
+	#{html/input id:'photo_provider', isAuthorized:isAuthorized,name:'Provider', placeholder:' ',primary:'true',readonly:'true',value:photo?.provider /}
+	#{html/input id:'photo_time',     isAuthorized:isAuthorized,name:'Time',     placeholder:' ',primary:'true',readonly:'true',type:'date',value:photo?.time /}
 </form>

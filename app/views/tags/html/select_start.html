@@ -4,5 +4,9 @@
 			text-primary
 			#{/if}
 		' for='${_id}' name='${_id}'>${_name}:</label><br />
-	<select class='form-control' id='${_id}' name='${_id}'>
+	<select class='form-control' id='${_id}' name='${_id}'
+		#{if _isAuthorized == false}
+			disabled
+			#{/if}
+		>
 		<option value='null'> </option>

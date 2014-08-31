@@ -87,9 +87,11 @@ $(document).on('click', '#poi_cancel', function() {
 	photoArray = [];});
 
 $(document).on('click', '#poi_submit', function() {
+	var data = $('#poi_form').serializeArray();
+	data.push({name: 'gToken', value: getGoogleIdToken()});
 	$.post(
 		routes.updatePoi.url(),
-		$('#poi_form').serialize())
+		$.param(data))
 		.done(function() {
 			$('#poi_submit').removeClass('btn-warning');
 			$('#poi_submit').addClass('btn-success');})

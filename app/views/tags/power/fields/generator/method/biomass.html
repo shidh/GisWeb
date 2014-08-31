@@ -1,4 +1,4 @@
-#{html/select_start id:'method',name:'Method' /}
+#{html/select_start id:'method',isAuthorized:isAuthorized,name:'Method' /}
 	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.ANAEROBIC_DIGESTION.name /}
 	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.COMBUSTION.name /}
 	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.GASIFICATION.name /}

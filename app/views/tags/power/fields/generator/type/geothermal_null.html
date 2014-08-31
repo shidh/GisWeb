@@ -1,4 +1,4 @@
-#{html/select_start id:'type',name:'Type' /}
+#{html/select_start id:'type',isAuthorized:isAuthorized,name:'Type' /}
 	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.HEAT_PUMP.name /}
 	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name /}
 #{html/select_end /}

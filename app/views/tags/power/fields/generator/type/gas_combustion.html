@@ -1,4 +1,4 @@
-#{html/select_start id:'type',name:'Type' /}
+#{html/select_start id:'type',isAuthorized:isAuthorized,name:'Type' /}
 	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.COMBINED_CYCLE.name /}
 	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.GAS_TURBINE.name /}
 	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.RECIPROCATING_ENGINE.name /}
