@@ -536,4 +536,26 @@ public class Application extends Controller {
 			poi.save();
 		}
 	}
+
+	public static void updateSettings() {
+		
+		if (isSuperUser(params.get("gToken"))) {
+			List<GoogleUser> users = GoogleUser.findAll();
+			
+			for (GoogleUser user : users) {
+				
+				if (!user.accountType.equals(AccountType.SUPERUSER)) {
+					String googleId = user.googleId;
+					Boolean isUser = params.get(googleId, Boolean.class);
+					
+					if (isUser != null && isUser) {
+						user.accountType = AccountType.USER;
+					} else {
+						user.accountType = AccountType.NULL;
+					}
+					user.save();
+				}
+			}
+		}
+	}
 }

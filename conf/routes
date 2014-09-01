@@ -21,6 +21,7 @@ POST    /getSettingsModal/                      Application.getSettingsModal
 POST    /getSettingsUserAdministration/         Application.getSettingsUserAdministration
 POST    /registerUser/                          Application.registerUser
 POST    /updatePoi/                             Application.updatePoi
+POST    /updateSettings/                        Application.updateSettings
 WS      /webSocket/                             WebSocket.join
 
 # Catch all

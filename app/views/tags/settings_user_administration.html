@@ -2,7 +2,11 @@
 #{list items:users, as:'user'}
 <div class='checkbox'>
 	<label>
-		<input type='checkbox' id='${user.googleId}' name='${user.googleId}' value="true"> ${user.googleMail}
+		<input type='checkbox' id='${user.googleId}' name='${user.googleId}' value="true"
+		#{if user.accountType == models.GoogleUser.AccountType.USER}
+			checked
+			#{/if}
+		> ${user.googleMail}
 	</label>
 </div>
 #{/list}
