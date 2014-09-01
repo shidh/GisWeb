@@ -247,6 +247,21 @@ public class Application extends Controller {
 		}
 	}
 
+	public static void getSettingsUserAdministration(String gToken) {
+
+		if (isSuperUser(gToken)) {
+			List<GoogleUser> allUsers = GoogleUser.findAll();
+			ArrayList<GoogleUser> users = new ArrayList<GoogleUser>();
+			for (GoogleUser user : allUsers) {
+				if (!user.accountType.equals(AccountType.SUPERUSER)) {
+					users.add(user);
+				}
+			}
+			renderArgs.put("users", users);
+			render("app/views/tags/settings_user_administration.html");
+		}
+	}
+
 	public static void index() {
 		List<Poi> pois = Poi.findAll();
 		renderArgs.put("pois", pois);

@@ -12,6 +12,7 @@
 			getPoiPowerTagGeneratorMethod: #{jsRoute @getPoiPowerTagGeneratorMethod() /},
 			getPoiPowerTagGeneratorType: #{jsRoute @getPoiPowerTagGeneratorType() /},
 			getSettingsModal: #{jsRoute @getSettingsModal() /},
+			getSettingsUserAdministration: #{jsRoute @getSettingsUserAdministration() /},
 			registerUser: #{jsRoute @registerUser() /},
 			updatePoi: #{jsRoute @updatePoi() /}
 		}
@@ -19,6 +20,7 @@
 	#{script 'google_signin_user_defined.js' /}
 	#{script 'photo_user_defined.js' /}
 	#{script 'poi_user_defined.js' /}
+	#{script 'settings_user_defined.js' /}
 #{/set}
 #{bootstrap /}
 #{web_socket /}

@@ -1,0 +1,8 @@
+<p>Select those users that are allowed to edit the POI data.</p>
+#{list items:users, as:'user'}
+<div class='checkbox'>
+	<label>
+		<input type='checkbox' id='${user.googleId}' name='${user.googleId}' value="true"> ${user.googleMail}
+	</label>
+</div>
+#{/list}
