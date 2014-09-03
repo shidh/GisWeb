@@ -50,7 +50,9 @@ function joinSocket() {
 	};
 
 	socket.onclose = function(event) {
-		console.log(event);
+		if (event.code === 1006 || !event.wasClean) {
+			joinSocket();
+		}
 	};
 
 	socket.onerror = function(event) {
