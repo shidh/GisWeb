@@ -146,7 +146,7 @@ $(document).on('change', '#method', function() {
 	});
 });
 
-$(document).on('click', '#poi_cancel', function() {
+$(document).on('click', '#poi_close', function() {
 	var data = [];
 	data.push({
 		name : 'gToken',

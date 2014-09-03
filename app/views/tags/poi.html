@@ -27,6 +27,9 @@
 		#{if poi?.taskCompleted == true}
 		checked
 		#{/if}
+		#{if isAuthorized == false}
+		disabled
+		#{/if}
 		> Task Completed
 	</label>
 	#{if isAuthorized == true}
@@ -34,7 +37,7 @@
 	#{/if}
 </form>
 <button class='btn btn-default' id='poi_zoom'>Zoom</button>
-<button class='btn btn-default' id='poi_cancel'>Cancel</button>
+<button class='btn btn-default' id='poi_close'>Close</button>
 <script type='text/javascript'>
 	(function() {
 		#{list items:poi.photos, as:'photo'}
