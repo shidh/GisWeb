@@ -14,7 +14,9 @@ function initmap() {
 	var osm = new L.TileLayer(osmUrl, {
 		minZoom : 1,
 		maxZoom : 19,
-		attribution : osmAttrib});
+		attribution : osmAttrib
+	});
 	// start the map in South-East England
 	map.setView(new L.LatLng(0, 0), 2);
-	map.addLayer(osm);}
+	map.addLayer(osm);
+}

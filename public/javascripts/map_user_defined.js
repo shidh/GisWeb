@@ -2,58 +2,87 @@ var photoArray = [];
 var poiArray = [];
 var polygon;
 
-function addMarker(id, latitude, longitude, type, spin) {
-	deleteMarker(id, type);
-	var icon;
-	var markerColor;
-	if (type === 'poi') {
-		icon = 'dot-circle-o';
-		markerColor = 'red';
-	} else if (type === 'photo') {
-		icon = 'photo';
-		markerColor = 'blue';}
+function addMarker(google_id, latitude, longitude, marker_type, marker_id,
+		task_completed) {
+	deleteMarker(marker_type, marker_id);
+	var state;
+	if (marker_type === 'photo') {
+		if (google_id) {
+			state = marker_state.photo.opened;
+		} else {
+			state = marker_state.photo.closed;
+		}
+	} else if (marker_type === 'poi') {
+		if (google_id) {
+			if (google_id === my_google_id) {
+				state = marker_state.poi.opened_by_editor;
+			} else {
+				state = marker_state.poi.opened_by_other;
+			}
+		} else {
+			if (task_completed) {
+				state = marker_state.poi.done;
+			} else {
+				state = marker_state.poi.todo;
+			}
+		}
+	}
 	var customIcon = L.AwesomeMarkers.icon({
-		icon: icon,
-		markerColor: markerColor,
-		prefix: 'fa',
-		spin: spin});
+		icon : state.icon,
+		markerColor : state.color,
+		prefix : 'fa',
+		spin : (state.spin === 'true')
+	});
 	var customMarker = L.Marker.extend({
 		options : {
-			id : ''}});
+			id : ''
+		}
+	});
 	var marker = new customMarker([ latitude, longitude ], {
 		icon : customIcon,
-		id : id});
-	marker.on('click', function(){
-		if (type === 'poi') {
+		id : marker_id
+	});
+	marker.on('click', function() {
+		if (marker_type === 'poi') {
 			showPoi(this);
-		} else if (type === 'photo') {
-			showPhoto(this);}});
-	if (type === 'poi') {
+		} else if (marker_type === 'photo') {
+			showPhoto(this);
+		}
+	});
+	if (marker_type === 'poi') {
 		poiArray.push(marker);
-	} else if (type === 'photo') {
-		photoArray.push(marker);}
-	marker.addTo(map);}
+	} else if (marker_type === 'photo') {
+		photoArray.push(marker);
+	}
+	marker.addTo(map);
+}
 
-function deleteMarker(id, type) {
-	var marker = getMarker(id, type);
+function deleteMarker(marker_type, marker_id) {
+	var marker = getMarker(marker_type, marker_id);
 	if (marker) {
 		var index;
-		if (type === 'poi') {
+		if (marker_type === 'poi') {
 			index = poiArray.indexOf(marker);
 			poiArray.splice(index, 1);
-		} else if (type === 'photo') {
+		} else if (marker_type === 'photo') {
 			index = photoArray.indexOf(marker);
-			photoArray.splice(index, 1);}
-		map.removeLayer(marker);}}
+			photoArray.splice(index, 1);
+		}
+		map.removeLayer(marker);
+	}
+}
 
-function getMarker(id, type) {
+function getMarker(marker_type, marker_id) {
 	var array;
-	if (type === 'poi') {
+	if (marker_type === 'poi') {
 		array = poiArray;
-	} else if (type === 'photo') {
+	} else if (marker_type === 'photo') {
 		array = photoArray;
 	}
 	var marker = $.grep(array, function(e) {
-		return e.options.id == id;});
+		return e.options.id == marker_id;
+	});
 	if (marker.length === 1) {
-		return marker[0];}}
+		return marker[0];
+	}
+}

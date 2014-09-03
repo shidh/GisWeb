@@ -11,6 +11,9 @@ GET     /favicon.ico                            404
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
+POST    /broadcastClosePoi/                     Application.broadcastClosePoi
+POST    /broadcastGetPoi/                       Application.broadcastGetPoi
+POST    /broadcastUpdatePoi/                    Application.broadcastUpdatePoi
 POST    /createPoi/                             Application.createPoi
 POST    /getPhoto/                              Application.getPhoto
 POST    /getPoi/                                Application.getPoi

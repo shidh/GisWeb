@@ -57,4 +57,9 @@ public class Poi extends Model {
 
 	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
 	public PowerTag powerTag;
+
+	@OneToOne(mappedBy = "poi", cascade = CascadeType.ALL)
+	public GoogleUser googleUser;
+
+	public boolean taskCompleted;
 }

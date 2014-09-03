@@ -2,11 +2,11 @@ package models.webSocket.events;
 
 public abstract class Event {
 
-	public final String type;
+	public final String eventType;
 	public final Long timestamp;
 
-	public Event(String type) {
-		this.type = type;
+	public Event(String eventType) {
+		this.eventType = eventType;
 		this.timestamp = System.currentTimeMillis();
 	}
 

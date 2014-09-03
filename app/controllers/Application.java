@@ -48,6 +48,38 @@ public class Application extends Controller {
 	private static final String[] android_clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
 	private static final String[] web_clientId = new String[] { audience };
 
+	private static void broadcast(String gToken, Long poiId) {
+
+		if (isAuthorized(gToken)) {
+			Poi poi = Poi.findById(poiId);
+			WebSocket.publishAddMarkerEvent(getGoogleId(gToken), poi.latitude,
+					poi.longitude, poi.id, poi.taskCompleted);
+		}
+	}
+
+	public static void broadcastClosePoi(String gToken, Long poiId) {
+
+		if (isAuthorized(gToken)) {
+			GoogleUser googleUser = getGoogleUser(gToken);
+			Poi poi = Poi.findById(poiId);
+
+			if (googleUser.poi.equals(poi)) {
+				googleUser.poi = null;
+				googleUser.save();
+				WebSocket.publishAddMarkerEvent("null", poi.latitude,
+						poi.longitude, poi.id, poi.taskCompleted);
+			}
+		}
+	}
+
+	public static void broadcastGetPoi(String gToken, Long poiId) {
+		broadcast(gToken, poiId);
+	}
+
+	public static void broadcastUpdatePoi(String gToken, Long poiId) {
+		broadcast(gToken, poiId);
+	}
+
 	public static void createPoi(String token) throws FileNotFoundException {
 
 		Checker checker = new Checker(android_clientId, audience);
@@ -58,6 +90,7 @@ public class Application extends Controller {
 			poi.latLngIsDerived = true;
 			poi.locationTrace = new ArrayList<LocationTrace>();
 			poi.photos = new ArrayList<Photo>();
+			poi.taskCompleted = false;
 			int index = 0;
 			double latitude = 0;
 			double longitude = 0;
@@ -121,8 +154,8 @@ public class Application extends Controller {
 					index++;
 				}
 				poi.save();
-				WebSocket.publishAddMarkerEvent(poi.latitude, poi.longitude,
-						poi.id);
+				WebSocket.publishAddMarkerEvent("null", poi.latitude,
+						poi.longitude, poi.id, poi.taskCompleted);
 				ok();
 			} else {
 				badRequest();
@@ -155,6 +188,41 @@ public class Application extends Controller {
 		return null;
 	}
 
+	private static String getGoogleId(String gToken) {
+
+		if (gToken != null) {
+			Checker checker = new Checker(web_clientId, audience);
+			Payload payload = checker.check(gToken);
+
+			if (payload != null) {
+				return payload.getUserId();
+			}
+		}
+		return "null";
+	}
+
+	public static GoogleUser getGoogleUser(String gToken) {
+
+		if (gToken != null) {
+			Checker checker = new Checker(web_clientId, audience);
+			Payload payload = checker.check(gToken);
+
+			if (payload != null) {
+				String googleId = payload.getUserId();
+
+				if (googleId != null) {
+					List<GoogleUser> users = GoogleUser.find("byGoogleId",
+							googleId).fetch();
+
+					if (users.size() == 1) {
+						return users.get(0);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	public static void getPhoto(String gToken, Long photoId) {
 		renderArgs.put("isAuthorized", isAuthorized(gToken));
 		Photo photo = Photo.findById(photoId);
@@ -166,6 +234,12 @@ public class Application extends Controller {
 		renderArgs.put("isAuthorized", isAuthorized(gToken));
 		Poi poi = Poi.findById(poiId);
 		renderArgs.put("poi", poi);
+
+		if (isAuthorized(gToken)) {
+			GoogleUser googleUser = getGoogleUser(gToken);
+			googleUser.poi = poi;
+			googleUser.save();
+		}
 		render("app/views/tags/poi.html");
 	}
 
@@ -241,7 +315,7 @@ public class Application extends Controller {
 	}
 
 	public static void getSettingsModal(String gToken) {
-		
+
 		if (isSuperUser(gToken)) {
 			render("app/views/tags/settings_modal.html");
 		}
@@ -336,6 +410,7 @@ public class Application extends Controller {
 			poi.latitude = params.get("poi_latitude", Double.class);
 			poi.longitude = params.get("poi_longitude", Double.class);
 			poi.provider = params.get("poi_provider", String.class);
+			poi.taskCompleted = params.get("poi_task_completed", boolean.class);
 			String time = params.get("poi_time", String.class);
 			if (!time.isEmpty()) {
 				poi.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
@@ -534,20 +609,22 @@ public class Application extends Controller {
 				}
 			}
 			poi.save();
+			WebSocket.publishAddMarkerEvent(getGoogleId(params.get("gToken")),
+					poi.latitude, poi.longitude, poi.id, poi.taskCompleted);
 		}
 	}
 
 	public static void updateSettings() {
-		
+
 		if (isSuperUser(params.get("gToken"))) {
 			List<GoogleUser> users = GoogleUser.findAll();
-			
+
 			for (GoogleUser user : users) {
-				
+
 				if (!user.accountType.equals(AccountType.SUPERUSER)) {
 					String googleId = user.googleId;
 					Boolean isUser = params.get(googleId, Boolean.class);
-					
+
 					if (isUser != null && isUser) {
 						user.accountType = AccountType.USER;
 					} else {

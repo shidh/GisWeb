@@ -5,7 +5,47 @@
 	<script type='text/javascript'>
 		var row_bottom_collapsed = true;
 		var row_top_collapsed = true;
+		var marker_state = {
+			photo: {
+				closed: {
+					color: 'blue',
+					icon: 'photo',
+					spin: 'false'
+				},
+				opened: {
+					color: 'blue',
+					icon: 'refresh',
+					spin: 'true'
+				}
+			},
+			poi: {
+				done: {
+					color: 'green',
+					icon: 'check-circle',
+					spin: 'false'
+				},
+				opened_by_editor: {
+					color: 'orange',
+					icon: 'refresh',
+					spin: 'true'
+				},
+				opened_by_other: {
+					color: 'orange',
+					icon: 'refresh',
+					spin: 'false'
+				},
+				todo: {
+					color: 'red',
+					icon: 'times-circle',
+					spin: 'false'
+				}
+			}
+		};
+		var my_google_id;
 		var routes = {
+			broadcastClosePoi: #{jsRoute @broadcastClosePoi() /},
+			broadcastGetPoi: #{jsRoute @broadcastGetPoi() /},
+			broadcastUpdatePoi: #{jsRoute @broadcastUpdatePoi() /},
 			getPhoto: #{jsRoute @getPhoto() /},
 			getPoi: #{jsRoute @getPoi() /},
 			getPoiPowerTag: #{jsRoute @getPoiPowerTag() /},
@@ -16,9 +56,14 @@
 			registerUser: #{jsRoute @registerUser() /},
 			updatePoi: #{jsRoute @updatePoi() /},
 			updateSettings: #{jsRoute @updateSettings() /}
-		}
+		};
+		var socket;
+		var socket_opened_with_token = false;
 	</script>
-	#{script 'google_signin_user_defined.js' /}
+#{/set}
+#{google_signin_js /}
+#{set 'moreScripts'}
+	#{get 'moreScripts' /}
 	#{script 'photo_user_defined.js' /}
 	#{script 'poi_user_defined.js' /}
 	#{script 'settings_user_defined.js' /}
@@ -46,8 +91,7 @@
 <script type='text/javascript'>
 	(function() {
 	#{list items:pois, as:'poi'}
-	addMarker(${poi.id}, ${poi.latitude}, ${poi.longitude}, 'poi', false);
+	addMarker('', ${poi.latitude}, ${poi.longitude}, 'poi', ${poi.id}, ${poi.taskCompleted});
 	#{/list}
 	})();
 </script>
-#{google_signin_js /}
