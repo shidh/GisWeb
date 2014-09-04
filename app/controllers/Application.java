@@ -61,8 +61,6 @@ public class Application extends Controller {
 				WebSocket.publishAddMarkerEvent(googleUser.googleId,
 						poi.latitude, poi.longitude, poi.id, poi.taskCompleted);
 			}
-		} else {
-			unauthorized();
 		}
 	}
 
@@ -83,8 +81,6 @@ public class Application extends Controller {
 					forbidden();
 				}
 			}
-		} else {
-			unauthorized();
 		}
 	}
 
@@ -387,8 +383,6 @@ public class Application extends Controller {
 
 		if (isSuperUser(gToken)) {
 			render("app/views/tags/settings_modal.html");
-		} else {
-			unauthorized();
 		}
 	}
 
@@ -483,8 +477,6 @@ public class Application extends Controller {
 			} else {
 				badRequest();
 			}
-		} else {
-			unauthorized();
 		}
 	}
 
