@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import play.mvc.*;
 import play.libs.F.*;
 import play.mvc.Http.*;
@@ -49,15 +51,18 @@ public class WebSocket extends WebSocketController {
 			for (WebSocketClose closed : SocketClosed.match(e._1)) {
 
 				if (googleUser != null) {
-					long googleUserId = googleUser.id;
-					googleUser = GoogleUser.findById(googleUserId);
-					Poi poi = googleUser.poi;
+					List<Poi> pois = Poi.find("byGoogleUser",
+							GoogleUser.findById(googleUser.id)).fetch();
 
-					if (googleUser.poi != null) {
-						WebSocket.publishAddMarkerEvent("null", poi.latitude,
-								poi.longitude, poi.id, poi.taskCompleted);
-						googleUser.poi = null;
-						googleUser.save();
+					for (Poi poi : pois) {
+
+						if (poi != null) {
+							WebSocket.publishAddMarkerEvent("null",
+									poi.latitude, poi.longitude, poi.id,
+									poi.taskCompleted);
+							poi.googleUser = null;
+							poi.save();
+						}
 					}
 				}
 				disconnect();

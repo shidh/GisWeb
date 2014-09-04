@@ -54,6 +54,7 @@
 			getSettingsModal: #{jsRoute @getSettingsModal() /},
 			getSettingsUserAdministration: #{jsRoute @getSettingsUserAdministration() /},
 			registerUser: #{jsRoute @registerUser() /},
+			reservePoi: #{jsRoute @reservePoi() /},
 			updatePoi: #{jsRoute @updatePoi() /},
 			updateSettings: #{jsRoute @updateSettings() /}
 		};
@@ -91,7 +92,7 @@
 <script type='text/javascript'>
 	(function() {
 	#{list items:pois, as:'poi'}
-	addMarker('', ${poi.latitude}, ${poi.longitude}, 'poi', ${poi.id}, ${poi.taskCompleted});
+	addMarker(#{if poi?.googleUser?.googleId}poi?.googleUser?.googleId#{/if}#{else}''#{/else}, ${poi.latitude}, ${poi.longitude}, 'poi', ${poi.id}, ${poi.taskCompleted});
 	#{/list}
 	})();
 </script>

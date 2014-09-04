@@ -1,5 +1,6 @@
 package models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -16,6 +17,6 @@ public class GoogleUser extends Model {
 	public String googleId;
 	public String googleMail;
 
-	@OneToOne
+	@OneToOne(mappedBy = "googleUser", cascade = CascadeType.ALL)
 	public Poi poi;
 }

@@ -23,6 +23,7 @@ POST    /getPoiPowerTagGeneratorType/           Application.getPoiPowerTagGenera
 POST    /getSettingsModal/                      Application.getSettingsModal
 POST    /getSettingsUserAdministration/         Application.getSettingsUserAdministration
 POST    /registerUser/                          Application.registerUser
+POST    /reservePoi/                            Application.reservePoi
 POST    /updatePoi/                             Application.updatePoi
 POST    /updateSettings/                        Application.updateSettings
 WS      /webSocket/                             WebSocket.join

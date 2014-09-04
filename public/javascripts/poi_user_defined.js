@@ -28,73 +28,82 @@ function showPoi(poi) {
 		$
 				.post(routes.broadcastGetPoi.url(), $.param(data))
 				.done(
-						function() {
-							expandPoi();
-							var poiId = poi.options.id;
-							$('#poi')
-									.load(
-											routes.getPoi.url(),
-											{
-												'gToken' : getGoogleIdToken(),
-												'poiId' : poiId
-											},
-											function() {
-												$('#poi_power_tag_details')
-														.load(
-																routes.getPoiPowerTag
-																		.url(),
-																{
-																	'gToken' : getGoogleIdToken(),
-																	'poiId' : poiId,
-																	'powerTag' : $(
-																			'#poi_power_tag')
-																			.val()
-																},
-																function() {
-																	if ($(
-																			'#poi_power_tag')
-																			.val() === 'Generator'
-																			&& $(
-																					'#source')
-																					.val() !== 'null') {
-																		$(
-																				'#generator_method')
-																				.load(
-																						routes.getPoiPowerTagGeneratorMethod
-																								.url(),
-																						{
-																							'gToken' : getGoogleIdToken(),
-																							'poiId' : $(
-																									'#poi_id')
-																									.val(),
-																							'source' : $(
+						$
+								.post(routes.reservePoi.url(), $.param(data))
+								.done(
+
+										function() {
+											expandPoi();
+											var poiId = poi.options.id;
+											$('#poi')
+													.load(
+															routes.getPoi.url(),
+															{
+																'gToken' : getGoogleIdToken(),
+																'poiId' : poiId
+															},
+															function() {
+																$(
+																		'#poi_power_tag_details')
+																		.load(
+																				routes.getPoiPowerTag
+																						.url(),
+																				{
+																					'gToken' : getGoogleIdToken(),
+																					'poiId' : poiId,
+																					'powerTag' : $(
+																							'#poi_power_tag')
+																							.val()
+																				},
+																				function() {
+																					if ($(
+																							'#poi_power_tag')
+																							.val() === 'Generator'
+																							&& $(
 																									'#source')
-																									.val()
-																						},
-																						function() {
-																							$(
-																									'#generator_type')
-																									.load(
-																											routes.getPoiPowerTagGeneratorType
-																													.url(),
-																											{
-																												'gToken' : getGoogleIdToken(),
-																												'poiId' : $(
-																														'#poi_id')
-																														.val(),
-																												'sourceMethod' : $(
-																														'#source')
-																														.val()
-																														+ '_'
-																														+ $(
-																																'#method')
-																																.val()
-																											});
-																						});
-																	}
-																});
-											});
-						});
+																									.val() !== 'null') {
+																						$(
+																								'#generator_method')
+																								.load(
+																										routes.getPoiPowerTagGeneratorMethod
+																												.url(),
+																										{
+																											'gToken' : getGoogleIdToken(),
+																											'poiId' : $(
+																													'#poi_id')
+																													.val(),
+																											'source' : $(
+																													'#source')
+																													.val()
+																										},
+																										function() {
+																											$(
+																													'#generator_type')
+																													.load(
+																															routes.getPoiPowerTagGeneratorType
+																																	.url(),
+																															{
+																																'gToken' : getGoogleIdToken(),
+																																'poiId' : $(
+																																		'#poi_id')
+																																		.val(),
+																																'sourceMethod' : $(
+																																		'#source')
+																																		.val()
+																																		+ '_'
+																																		+ $(
+																																				'#method')
+																																				.val()
+																															});
+																										});
+																					}
+																				});
+															});
+										}
+
+								)
+
+				);
 	}
 }
 

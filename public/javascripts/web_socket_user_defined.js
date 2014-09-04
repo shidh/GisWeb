@@ -52,10 +52,25 @@ function joinSocket() {
 	socket.onclose = function(event) {
 		if (event.code === 1006 || !event.wasClean) {
 			joinSocket();
+			var googleId = getGoogleIdToken();
+			var poiId = $('#poi_id').val();
+			if (googleId && poiId) {
+				var data = [];
+				data.push({
+					name : 'gToken',
+					value : googleId
+				});
+				data.push({
+					name : 'poiId',
+					value : poiId
+				});
+				$.post(routes.broadcastGetPoi.url(), $.param(data)).done(
+						$.post(routes.reservePoi.url(), $.param(data)));
+			}
 		}
 	};
 
 	socket.onerror = function(event) {
 		console.log(event);
-	}
+	};
 }

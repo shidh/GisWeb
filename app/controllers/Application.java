@@ -51,9 +51,16 @@ public class Application extends Controller {
 	private static void broadcast(String gToken, Long poiId) {
 
 		if (isAuthorized(gToken)) {
+			GoogleUser googleUser = getGoogleUser(gToken);
 			Poi poi = Poi.findById(poiId);
-			WebSocket.publishAddMarkerEvent(getGoogleId(gToken), poi.latitude,
-					poi.longitude, poi.id, poi.taskCompleted);
+
+			if (googleUser != null
+					&& poi != null
+					&& (poi.googleUser == null || (poi.googleUser != null && poi.googleUser
+							.equals(googleUser)))) {
+				WebSocket.publishAddMarkerEvent(googleUser.googleId,
+						poi.latitude, poi.longitude, poi.id, poi.taskCompleted);
+			}
 		}
 	}
 
@@ -63,9 +70,10 @@ public class Application extends Controller {
 			GoogleUser googleUser = getGoogleUser(gToken);
 			Poi poi = Poi.findById(poiId);
 
-			if (googleUser.poi.equals(poi)) {
-				googleUser.poi = null;
-				googleUser.save();
+			if (googleUser != null && poi != null && poi.googleUser != null
+					&& poi.googleUser.equals(googleUser)) {
+				poi.googleUser = null;
+				poi.save();
 				WebSocket.publishAddMarkerEvent("null", poi.latitude,
 						poi.longitude, poi.id, poi.taskCompleted);
 			}
@@ -165,29 +173,6 @@ public class Application extends Controller {
 		}
 	}
 
-	private static AccountType getAccountType(String gToken) {
-
-		if (gToken != null) {
-			Checker checker = new Checker(web_clientId, audience);
-			Payload payload = checker.check(gToken);
-
-			if (payload != null) {
-				String googleId = payload.getUserId();
-
-				if (googleId != null) {
-					List<GoogleUser> users = GoogleUser.find("byGoogleId",
-							googleId).fetch();
-
-					if (users.size() == 1) {
-						return users.get(0).accountType;
-					}
-				}
-			}
-		}
-
-		return null;
-	}
-
 	private static String getGoogleId(String gToken) {
 
 		if (gToken != null) {
@@ -198,60 +183,96 @@ public class Application extends Controller {
 				return payload.getUserId();
 			}
 		}
-		return "null";
+		return null;
 	}
 
-	public static GoogleUser getGoogleUser(String gToken) {
+	public static String getGoogleMail(String gToken) {
 
 		if (gToken != null) {
 			Checker checker = new Checker(web_clientId, audience);
 			Payload payload = checker.check(gToken);
 
 			if (payload != null) {
-				String googleId = payload.getUserId();
+				return payload.getEmail();
+			}
+		}
+		return null;
+	}
 
-				if (googleId != null) {
-					List<GoogleUser> users = GoogleUser.find("byGoogleId",
-							googleId).fetch();
+	public static GoogleUser getGoogleUser(String gToken) {
+		String googleId = getGoogleId(gToken);
 
-					if (users.size() == 1) {
-						return users.get(0);
-					}
-				}
+		if (googleId != null) {
+			List<GoogleUser> users = GoogleUser.find("byGoogleId", googleId)
+					.fetch();
+
+			if (users.size() == 1) {
+				return users.get(0);
 			}
 		}
 		return null;
 	}
 
 	public static void getPhoto(String gToken, Long photoId) {
-		renderArgs.put("isAuthorized", isAuthorized(gToken));
+		GoogleUser googleUser = getGoogleUser(gToken);
 		Photo photo = Photo.findById(photoId);
+		boolean isAuthorized = false;
+
+		if (isAuthorized(gToken) && googleUser != null && photo != null
+				&& photo.poi != null && photo.poi.googleUser != null
+				&& photo.poi.googleUser.equals(googleUser)) {
+			isAuthorized = true;
+		}
+		renderArgs.put("isAuthorized", isAuthorized);
 		renderArgs.put("photo", photo);
 		render("app/views/tags/photo.html");
 	}
 
-	public static void getPoi(String gToken, Long poiId) {
-		renderArgs.put("isAuthorized", isAuthorized(gToken));
+	public static void reservePoi(String gToken, Long poiId) {
+		GoogleUser googleUser = getGoogleUser(gToken);
 		Poi poi = Poi.findById(poiId);
-		renderArgs.put("poi", poi);
 
-		if (isAuthorized(gToken)) {
-			GoogleUser googleUser = getGoogleUser(gToken);
-			googleUser.poi = poi;
-			googleUser.save();
+		if (isAuthorized(gToken) && googleUser != null && poi != null
+				&& poi.googleUser == null) {
+			poi.googleUser = googleUser;
+			poi.save();
 		}
-		render("app/views/tags/poi.html");
+	}
+
+	public static void getPoi(String gToken, Long poiId) {
+		Poi poi = Poi.findById(poiId);
+
+		if (poi != null) {
+			renderArgs.put("poi", poi);
+			boolean isAuthorized = false;
+
+			if (isAuthorized(gToken)) {
+				GoogleUser googleUser = getGoogleUser(gToken);
+
+				if (googleUser != null && poi.googleUser != null
+						&& poi.googleUser.equals(googleUser)) {
+					isAuthorized = true;
+				}
+			}
+			renderArgs.put("isAuthorized", isAuthorized);
+			render("app/views/tags/poi.html");
+		}
 	}
 
 	public static void getPoiPowerTag(String gToken, Long poiId, String powerTag) {
-		renderArgs.put("isAuthorized", isAuthorized(gToken));
 
 		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("null")) {
+			GoogleUser googleUser = getGoogleUser(gToken);
 			Poi poi = Poi.findById(poiId);
-			String powerTagFileName = powerTag.replaceAll(" ", "_")
-					.toLowerCase();
+			boolean isAuthorized = false;
 
-			if (poi.powerTag != null) {
+			if (googleUser != null && poi != null && poi.googleUser != null
+					&& poi.googleUser.equals(googleUser)) {
+				isAuthorized = true;
+			}
+			renderArgs.put("isAuthorized", isAuthorized);
+
+			if (poi != null && poi.powerTag != null) {
 				String poiPowerTagClassName = poi.powerTag.getClass()
 						.getSimpleName();
 				String powerTagInput = powerTag.replaceAll(" ", "");
@@ -259,18 +280,27 @@ public class Application extends Controller {
 					renderArgs.put("powerTag", poi.powerTag);
 				}
 			}
+			String powerTagFileName = powerTag.replaceAll(" ", "_")
+					.toLowerCase();
 			render("app/views/tags/power/" + powerTagFileName + ".html");
 		}
 	}
 
 	public static void getPoiPowerTagGeneratorMethod(String gToken, Long poiId,
 			String source) {
-		renderArgs.put("isAuthorized", isAuthorized(gToken));
 
 		if (source != null && !source.isEmpty() && !source.equals("null")) {
+			GoogleUser googleUser = getGoogleUser(gToken);
 			Poi poi = Poi.findById(poiId);
+			boolean isAuthorized = false;
 
-			if (poi.powerTag != null
+			if (googleUser != null && poi != null && poi.googleUser != null
+					&& poi.googleUser.equals(googleUser)) {
+				isAuthorized = true;
+			}
+			renderArgs.put("isAuthorized", isAuthorized);
+
+			if (poi != null && poi.powerTag != null
 					&& poi.powerTag.getClass().equals(Generator.class)) {
 				Generator generator = (Generator) poi.powerTag;
 				if (generator.source != null
@@ -286,13 +316,20 @@ public class Application extends Controller {
 
 	public static void getPoiPowerTagGeneratorType(String gToken, Long poiId,
 			String sourceMethod) {
-		renderArgs.put("isAuthorized", isAuthorized(gToken));
 
 		if (sourceMethod != null && !sourceMethod.isEmpty()
 				&& !sourceMethod.equals("null")) {
+			GoogleUser googleUser = getGoogleUser(gToken);
 			Poi poi = Poi.findById(poiId);
+			boolean isAuthorized = false;
 
-			if (poi.powerTag != null
+			if (googleUser != null && poi != null && poi.googleUser != null
+					&& poi.googleUser.equals(googleUser)) {
+				isAuthorized = true;
+			}
+			renderArgs.put("isAuthorized", isAuthorized);
+
+			if (poi != null && poi.powerTag != null
 					&& poi.powerTag.getClass().equals(Generator.class)) {
 				Generator generator = (Generator) poi.powerTag;
 				if (generator.source != null && generator.method != null) {
@@ -343,9 +380,10 @@ public class Application extends Controller {
 	}
 
 	private static boolean isAuthorized(String gToken) {
-		AccountType accountType = getAccountType(gToken);
+		GoogleUser googleUser = getGoogleUser(gToken);
 
-		if (accountType != null && !accountType.equals(AccountType.NULL)) {
+		if (googleUser != null && googleUser.accountType != null
+				&& !googleUser.accountType.equals(AccountType.NULL)) {
 			return true;
 		} else {
 			return false;
@@ -353,9 +391,10 @@ public class Application extends Controller {
 	}
 
 	private static boolean isSuperUser(String gToken) {
-		AccountType accountType = getAccountType(gToken);
+		GoogleUser googleUser = getGoogleUser(gToken);
 
-		if (accountType != null && accountType.equals(AccountType.SUPERUSER)) {
+		if (googleUser != null && googleUser.accountType != null
+				&& googleUser.accountType.equals(AccountType.SUPERUSER)) {
 			return true;
 		} else {
 			return false;
@@ -363,36 +402,24 @@ public class Application extends Controller {
 	}
 
 	public static void registerUser(String gToken) throws Exception {
+		String googleId = getGoogleId(gToken);
+		String googleMail = getGoogleMail(gToken);
+		GoogleUser googleUser = getGoogleUser(gToken);
 
-		if (gToken != null) {
-			Checker checker = new Checker(web_clientId, audience);
-			Payload payload = checker.check(gToken);
+		if (googleUser == null) {
 
-			if (payload != null) {
-				String googleId = payload.getUserId();
-				String googleMail = payload.getEmail();
-
-				if (googleId != null && googleMail != null) {
-					List<GoogleUser> users = GoogleUser.find("byGoogleId",
-							googleId).fetch();
-					GoogleUser user;
-					if (users.size() == 1) {
-						user = users.get(0);
-						if (!googleMail.equals(user.googleMail)) {
-							user.googleMail = googleMail;
-							user.save();
-						}
-					} else if (users.isEmpty()) {
-						user = new GoogleUser();
-						user.accountType = AccountType.NULL;
-						user.googleId = googleId;
-						user.googleMail = googleMail;
-						user.save();
-					} else {
-						throw new Exception();
-					}
-				}
+			if (googleId != null && googleMail != null) {
+				googleUser = new GoogleUser();
+				googleUser.accountType = AccountType.NULL;
+				googleUser.googleId = googleId;
+				googleUser.googleMail = googleMail;
+				googleUser.save();
 			}
+		} else if (googleId != null && googleMail != null
+				&& googleUser.googleId.equals(googleId)
+				&& !googleUser.googleMail.equals(googleMail)) {
+			googleUser.googleMail = googleMail;
+			googleUser.save();
 		}
 	}
 
@@ -402,8 +429,12 @@ public class Application extends Controller {
 
 	public static void updatePoi() throws ParseException,
 			ClassNotFoundException {
-		if (isAuthorized(params.get("gToken"))) {
-			Poi poi = Poi.findById(params.get("poi_id", Long.class));
+		String gToken = params.get("gToken");
+		GoogleUser googleUser = getGoogleUser(gToken);
+		Poi poi = Poi.findById(params.get("poi_id", Long.class));
+
+		if (isAuthorized(gToken) && googleUser != null && poi != null
+				&& poi.googleUser != null && poi.googleUser.equals(googleUser)) {
 			poi.accuracy = params.get("poi_accuracy", Float.class);
 			poi.altitude = params.get("poi_altitude", Double.class);
 			poi.bearing = params.get("poi_bearing", Float.class);
@@ -609,8 +640,8 @@ public class Application extends Controller {
 				}
 			}
 			poi.save();
-			WebSocket.publishAddMarkerEvent(getGoogleId(params.get("gToken")),
-					poi.latitude, poi.longitude, poi.id, poi.taskCompleted);
+			WebSocket.publishAddMarkerEvent(googleUser.googleId, poi.latitude,
+					poi.longitude, poi.id, poi.taskCompleted);
 		}
 	}
 
