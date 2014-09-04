@@ -36,15 +36,19 @@ public class WebSocket extends WebSocketController {
 
 			// Case: Adding marker
 			for (AddMarker event : ClassOf(AddMarker.class).match(e._2)) {
-				outbound.send("%s:%s:%s:%s:%s:%s", event.eventType,
-						event.googleId, event.latitude, event.longitude,
-						event.poiId, event.taskCompleted);
+				if (outbound.isOpen()) {
+					outbound.send("%s:%s:%s:%s:%s:%s", event.eventType,
+							event.googleId, event.latitude, event.longitude,
+							event.poiId, event.taskCompleted);
+				}
 			}
 
 			// Case: Deleting marker
 			for (DeleteMarker event : ClassOf(DeleteMarker.class).match(e._2)) {
-				outbound.send("%s:null:null:null:%s:null", event.eventType,
-						event.poiId);
+				if (outbound.isOpen()) {
+					outbound.send("%s:null:null:null:%s:null", event.eventType,
+							event.poiId);
+				}
 			}
 
 			// Case: The socket has been closed

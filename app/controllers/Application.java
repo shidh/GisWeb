@@ -60,9 +60,6 @@ public class Application extends Controller {
 							.equals(googleUser)))) {
 				WebSocket.publishAddMarkerEvent(googleUser.googleId,
 						poi.latitude, poi.longitude, poi.id, poi.taskCompleted);
-				ok();
-			} else {
-				badRequest();
 			}
 		} else {
 			unauthorized();
@@ -85,8 +82,6 @@ public class Application extends Controller {
 				} else {
 					forbidden();
 				}
-			} else {
-				badRequest();
 			}
 		} else {
 			unauthorized();
@@ -484,8 +479,6 @@ public class Application extends Controller {
 					} else {
 						forbidden();
 					}
-				} else {
-					forbidden();
 				}
 			} else {
 				badRequest();
