@@ -61,7 +61,7 @@ public class WebSocket extends WebSocketController {
 									poi.latitude, poi.longitude, poi.id,
 									poi.taskCompleted);
 							poi.googleUser = null;
-							poi.save();
+							poi.store();
 						}
 					}
 				}

@@ -62,4 +62,20 @@ public class Poi extends Model {
 	public GoogleUser googleUser;
 
 	public boolean taskCompleted;
+	public Long timeStamp;
+
+	public Poi() {
+		this.timeStamp = null;
+	}
+
+	public boolean store() {
+		long currentTimeStamp = System.currentTimeMillis();
+		if (this.timeStamp == null || currentTimeStamp >= this.timeStamp) {
+			this.timeStamp = currentTimeStamp;
+			this.save();
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
