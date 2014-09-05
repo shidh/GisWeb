@@ -13,7 +13,7 @@ function joinSocket() {
 
 	// Message received on the socket
 	socket.onmessage = function(event) {
-		var parts = /^([^:]+):([^:]+):([^:]+):([^:]+):([^:]+):([^:]+)$/
+		var parts = /^([^:]+):([^:]+):([^:]+):([^:]+):([^:]+):([^:]+):([^:]+)$/
 				.exec(event.data);
 		var event_type = parts[1];
 		var google_id = parts[2];
@@ -21,6 +21,7 @@ function joinSocket() {
 		var longitude = parts[4];
 		var poi_id = parts[5];
 		var task_completed = parts[6];
+		var time_stamp = parts[7];
 		if (event_type === 'null') {
 			event_type = null;
 		}
@@ -29,21 +30,31 @@ function joinSocket() {
 		}
 		if (latitude === 'null') {
 			latitude = null;
+		} else {
+			latitude = parseFloat(latitude);
 		}
 		if (longitude === 'null') {
 			longitude = null;
+		} else {
+			longitude = parseFloat(longitude);
 		}
 		if (poi_id === 'null') {
 			poi_id = null;
+		} else {
+			poi_id = parseInt(poi_id);
 		}
 		if (task_completed === 'null') {
 			task_completed = null;
 		} else {
 			task_completed = (task_completed === 'true');
 		}
+		if (time_stamp === 'null') {
+			time_stamp = null;
+		} else {
+			time_stamp = parseInt(time_stamp);
+		}
 		if (event_type == 'AddMarker') {
-			addMarker(google_id, latitude, longitude, 'poi', poi_id,
-					task_completed);
+			addMarker(google_id, latitude, longitude, 'poi', poi_id, task_completed, time_stamp);
 		} else if (event_type == 'DeleteMarker') {
 			deleteMarker('poi', poi_id);
 		}

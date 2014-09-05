@@ -3,58 +3,63 @@ var poiArray = [];
 var polygon;
 
 function addMarker(google_id, latitude, longitude, marker_type, marker_id,
-		task_completed) {
-	deleteMarker(marker_type, marker_id);
-	var state;
-	if (marker_type === 'photo') {
-		if (google_id) {
-			state = marker_state.photo.opened;
-		} else {
-			state = marker_state.photo.closed;
-		}
-	} else if (marker_type === 'poi') {
-		if (google_id) {
-			if (google_id === my_google_id) {
-				state = marker_state.poi.opened_by_editor;
+		task_completed, time_stamp) {
+	var marker = getMarker(marker_type, marker_id);
+	if ((marker && time_stamp && time_stamp >= marker.options.time_stamp) || !marker) {
+		deleteMarker(marker_type, marker_id);
+		var state;
+		if (marker_type === 'photo') {
+			if (google_id) {
+				state = marker_state.photo.opened;
 			} else {
-				state = marker_state.poi.opened_by_other;
+				state = marker_state.photo.closed;
 			}
-		} else {
-			if (task_completed) {
-				state = marker_state.poi.done;
+		} else if (marker_type === 'poi') {
+			if (google_id) {
+				if (google_id === my_google_id) {
+					state = marker_state.poi.opened_by_editor;
+				} else {
+					state = marker_state.poi.opened_by_other;
+				}
 			} else {
-				state = marker_state.poi.todo;
+				if (task_completed) {
+					state = marker_state.poi.done;
+				} else {
+					state = marker_state.poi.todo;
+				}
 			}
 		}
-	}
-	var customIcon = L.AwesomeMarkers.icon({
-		icon : state.icon,
-		markerColor : state.color,
-		prefix : 'fa',
-		spin : (state.spin === 'true')
-	});
-	var customMarker = L.Marker.extend({
-		options : {
-			id : ''
-		}
-	});
-	var marker = new customMarker([ latitude, longitude ], {
-		icon : customIcon,
-		id : marker_id
-	});
-	marker.on('click', function() {
+		var customIcon = L.AwesomeMarkers.icon({
+			icon : state.icon,
+			markerColor : state.color,
+			prefix : 'fa',
+			spin : (state.spin === 'true')
+		});
+		var customMarker = L.Marker.extend({
+			options : {
+				id : '',
+				time_stamp : ''
+			}
+		});
+		var marker = new customMarker([ latitude, longitude ], {
+			icon : customIcon,
+			id : marker_id,
+			time_stamp : time_stamp
+		});
+		marker.on('click', function() {
+			if (marker_type === 'poi') {
+				showPoi(this);
+			} else if (marker_type === 'photo') {
+				showPhoto(this);
+			}
+		});
 		if (marker_type === 'poi') {
-			showPoi(this);
+			poiArray.push(marker);
 		} else if (marker_type === 'photo') {
-			showPhoto(this);
+			photoArray.push(marker);
 		}
-	});
-	if (marker_type === 'poi') {
-		poiArray.push(marker);
-	} else if (marker_type === 'photo') {
-		photoArray.push(marker);
+		marker.addTo(map);
 	}
-	marker.addTo(map);
 }
 
 function deleteMarker(marker_type, marker_id) {

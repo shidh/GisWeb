@@ -40,14 +40,24 @@
 <button class='btn btn-default' id='poi_close'>Close</button>
 <script type='text/javascript'>
 	(function() {
-		#{list items:poi.photos, as:'photo'}
-		addMarker('', ${photo.latitude}, ${photo.longitude}, 'photo', ${photo.id}, '');
-		#{/list}
+		$.get(
+			routes.jsonPhoto.url(),
+			$.param({poiId : $('#poi_id').val()}),
+			function(data) {
+				var photos = data.elements;
+				for (var i = 0; i < photos.length; i++) {
+					var photo = photos[i];
+					addMarker(null, photo.latitude, photo.longitude, photo.marker_type, photo.marker_id, null, null);
+				}
+			}
+		);
+		$.get(
+			routes.jsonLocationTrace.url(),
+			$.param({poiId : $('#poi_id').val()}),
+			function(data) {
+				polygon = L.polygon(data).addTo(map);
+			}
+		);
 
-		polygon = L.polygon([
-			#{list items:poi.locationTrace, as:'location'}
-			[${location.latitude}, ${location.longitude}],
-			#{/list}
-		]).addTo(map);
 	})();
 </script>

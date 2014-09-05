@@ -37,16 +37,16 @@ public class WebSocket extends WebSocketController {
 			// Case: Adding marker
 			for (AddMarker event : ClassOf(AddMarker.class).match(e._2)) {
 				if (outbound.isOpen()) {
-					outbound.send("%s:%s:%s:%s:%s:%s", event.eventType,
+					outbound.send("%s:%s:%s:%s:%s:%s:%s", event.eventType,
 							event.googleId, event.latitude, event.longitude,
-							event.poiId, event.taskCompleted);
+							event.poiId, event.taskCompleted, event.timeStamp);
 				}
 			}
 
 			// Case: Deleting marker
 			for (DeleteMarker event : ClassOf(DeleteMarker.class).match(e._2)) {
 				if (outbound.isOpen()) {
-					outbound.send("%s:null:null:null:%s:null", event.eventType,
+					outbound.send("%s:null:null:null:%s:null:null", event.eventType,
 							event.poiId);
 				}
 			}
@@ -61,9 +61,7 @@ public class WebSocket extends WebSocketController {
 					for (Poi poi : pois) {
 
 						if (poi != null) {
-							WebSocket.publishAddMarkerEvent("null",
-									poi.latitude, poi.longitude, poi.id,
-									poi.taskCompleted);
+							WebSocket.publishAddMarkerEvent(null, poi);
 							poi.googleUser = null;
 							poi.store();
 						}
@@ -74,10 +72,13 @@ public class WebSocket extends WebSocketController {
 		}
 	}
 
-	static void publishAddMarkerEvent(String googleId, double latitude,
-			double longitude, long poiId, boolean taskCompleted) {
-		events.publish(new AddMarker(googleId, latitude, longitude, poiId,
-				taskCompleted));
+	static void publishAddMarkerEvent(GoogleUser googleUser, Poi poi) {
+		String googleId = "null";
+		if (googleUser != null) {
+			googleId = googleUser.googleId;
+		}
+		events.publish(new AddMarker(googleId, poi.latitude, poi.longitude,
+				poi.id, poi.taskCompleted, poi.timeStamp));
 	}
 
 	static void publishDeleteMarkerEvent(long poiId) {

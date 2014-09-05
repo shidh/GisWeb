@@ -53,6 +53,9 @@
 			getPoiPowerTagGeneratorType: #{jsRoute @getPoiPowerTagGeneratorType() /},
 			getSettingsModal: #{jsRoute @getSettingsModal() /},
 			getSettingsUserAdministration: #{jsRoute @getSettingsUserAdministration() /},
+			jsonLocationTrace: #{jsRoute @jsonLocationTrace() /},
+			jsonPhoto: #{jsRoute @jsonPhoto() /},
+			jsonPoi: #{jsRoute @jsonPoi() /},
 			registerUser: #{jsRoute @registerUser() /},
 			reservePoi: #{jsRoute @reservePoi() /},
 			updatePoi: #{jsRoute @updatePoi() /},
@@ -91,8 +94,12 @@
 </div>
 <script type='text/javascript'>
 	(function() {
-	#{list items:pois, as:'poi'}
-	addMarker(#{if poi?.googleUser?.googleId}poi?.googleUser?.googleId#{/if}#{else}''#{/else}, ${poi.latitude}, ${poi.longitude}, 'poi', ${poi.id}, ${poi.taskCompleted});
-	#{/list}
+		$.get(routes.jsonPoi.url(), function(data) {
+			var pois = data.elements;
+			for (var i = 0; i < pois.length; i++) {
+				var poi = pois[i];
+				addMarker(poi.google_id, poi.latitude, poi.longitude, poi.marker_type, poi.marker_id, poi.task_completed, poi.time_stamp);
+			}
+		});
 	})();
 </script>

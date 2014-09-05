@@ -13,6 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.sun.xml.bind.v2.runtime.Location;
 
 import models.*;
 import models.GoogleUser.AccountType;
@@ -58,8 +62,7 @@ public class Application extends Controller {
 					&& poi != null
 					&& (poi.googleUser == null || (poi.googleUser != null && poi.googleUser
 							.equals(googleUser)))) {
-				WebSocket.publishAddMarkerEvent(googleUser.googleId,
-						poi.latitude, poi.longitude, poi.id, poi.taskCompleted);
+				WebSocket.publishAddMarkerEvent(googleUser, poi);
 			}
 		}
 	}
@@ -74,8 +77,7 @@ public class Application extends Controller {
 					&& poi.googleUser.equals(googleUser)) {
 				poi.googleUser = null;
 				if (poi.store()) {
-					WebSocket.publishAddMarkerEvent("null", poi.latitude,
-							poi.longitude, poi.id, poi.taskCompleted);
+					WebSocket.publishAddMarkerEvent(null, poi);
 					ok();
 				} else {
 					forbidden();
@@ -166,8 +168,7 @@ public class Application extends Controller {
 					index++;
 				}
 				if (poi.store()) {
-					WebSocket.publishAddMarkerEvent("null", poi.latitude,
-							poi.longitude, poi.id, poi.taskCompleted);
+					WebSocket.publishAddMarkerEvent(null, poi);
 					ok();
 				} else {
 					forbidden();
@@ -430,6 +431,59 @@ public class Application extends Controller {
 		} else {
 			return false;
 		}
+	}
+
+	public static void jsonLocationTrace(Long poiId) {
+		Poi poi = Poi.findById(poiId);
+
+		if (poi != null) {
+			ArrayList<Double[]> coordinates = new ArrayList<Double[]>();
+
+			for (LocationTrace location : poi.locationTrace) {
+				Double[] coordinate = {location.latitude, location.longitude};
+				coordinates.add(coordinate);
+			}
+			renderJSON(coordinates);
+		}
+	}
+
+	public static void jsonPhoto(Long poiId) {
+		Poi poi = Poi.findById(poiId);
+
+		if (poi != null) {
+			JsonArray jsonArray = new JsonArray();
+
+			for (Photo photo : poi.photos) {
+				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("latitude", photo.latitude);
+				jsonObject.addProperty("longitude", photo.longitude);
+				jsonObject.addProperty("marker_id", photo.id);
+				jsonObject.addProperty("marker_type", "photo");
+				jsonArray.add(jsonObject);
+			}
+			renderJSON(jsonArray);
+		}
+	}
+
+	public static void jsonPoi() {
+		List<Poi> pois = Poi.findAll();
+		JsonArray jsonArray = new JsonArray();
+		for (Poi poi : pois) {
+			JsonObject jsonObject = new JsonObject();
+			String googleId = null;
+			if (poi.googleUser != null) {
+				googleId = poi.googleUser.googleId;
+			}
+			jsonObject.addProperty("google_id", googleId);
+			jsonObject.addProperty("latitude", poi.latitude);
+			jsonObject.addProperty("longitude", poi.longitude);
+			jsonObject.addProperty("marker_id", poi.id);
+			jsonObject.addProperty("marker_type", "poi");
+			jsonObject.addProperty("task_completed", poi.taskCompleted);
+			jsonObject.addProperty("time_stamp", poi.timeStamp);
+			jsonArray.add(jsonObject);
+		}
+		renderJSON(jsonArray);
 	}
 
 	public static void registerUser(String gToken) throws Exception {
@@ -706,9 +760,7 @@ public class Application extends Controller {
 					}
 				}
 				if (poi.store()) {
-					WebSocket.publishAddMarkerEvent(googleUser.googleId,
-							poi.latitude, poi.longitude, poi.id,
-							poi.taskCompleted);
+					WebSocket.publishAddMarkerEvent(googleUser, poi);
 					ok();
 				} else {
 					forbidden();
