@@ -221,190 +221,6 @@ public class Application extends Controller {
 		return null;
 	}
 
-	public static void getPhoto(String gToken, Long photoId) {
-		Photo photo = Photo.findById(photoId);
-
-		if (photo != null) {
-			renderArgs.put("photo", photo);
-			boolean isAuthorized = false;
-
-			if (isAuthorized(gToken)) {
-				GoogleUser googleUser = getGoogleUser(gToken);
-
-				if (googleUser != null && photo.poi != null
-						&& photo.poi.googleUser != null
-						&& photo.poi.googleUser.equals(googleUser)) {
-					isAuthorized = true;
-				}
-			}
-			renderArgs.put("isAuthorized", isAuthorized);
-			render("app/views/tags/photo.html");
-		} else {
-			badRequest();
-		}
-	}
-
-	public static void getPoi(String gToken, Long poiId) {
-		Poi poi = Poi.findById(poiId);
-
-		if (poi != null) {
-			renderArgs.put("poi", poi);
-			boolean isAuthorized = false;
-
-			if (isAuthorized(gToken)) {
-				GoogleUser googleUser = getGoogleUser(gToken);
-
-				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
-					isAuthorized = true;
-				}
-			}
-			renderArgs.put("isAuthorized", isAuthorized);
-			render("app/views/tags/poi.html");
-		} else {
-			badRequest();
-		}
-	}
-
-	public static void getPoiPowerTag(String gToken, Long poiId, String powerTag) {
-
-		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("null")) {
-			Poi poi = Poi.findById(poiId);
-
-			if (poi != null) {
-				GoogleUser googleUser = getGoogleUser(gToken);
-				boolean isAuthorized = false;
-
-				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
-					isAuthorized = true;
-				}
-				renderArgs.put("isAuthorized", isAuthorized);
-
-				if (poi.powerTag != null) {
-					String poiPowerTagClassName = poi.powerTag.getClass()
-							.getSimpleName();
-					String powerTagInput = powerTag.replaceAll(" ", "");
-
-					if (poiPowerTagClassName.equals(powerTagInput)) {
-						renderArgs.put("powerTag", poi.powerTag);
-					}
-				}
-				render("app/views/tags/power/"
-						+ powerTag.replaceAll(" ", "_").toLowerCase() + ".html");
-			} else {
-				badRequest();
-			}
-		}
-	}
-
-	public static void getPoiPowerTagGeneratorMethod(String gToken, Long poiId,
-			String source) {
-
-		if (source != null && !source.isEmpty() && !source.equals("null")) {
-			Poi poi = Poi.findById(poiId);
-
-			if (poi != null) {
-				GoogleUser googleUser = getGoogleUser(gToken);
-				boolean isAuthorized = false;
-
-				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
-					isAuthorized = true;
-				}
-				renderArgs.put("isAuthorized", isAuthorized);
-
-				if (poi.powerTag != null
-						&& poi.powerTag.getClass().equals(Generator.class)) {
-					Generator generator = (Generator) poi.powerTag;
-
-					if (generator.source != null
-							&& generator.source.name.equals(source)
-							&& generator.method != null) {
-						renderArgs.put("method", generator.method);
-					}
-				}
-				render("app/views/tags/power/fields/generator/method/"
-						+ source.replaceAll(" ", "_").toLowerCase() + ".html");
-			} else {
-				badRequest();
-			}
-		} else {
-			badRequest();
-		}
-	}
-
-	public static void getPoiPowerTagGeneratorType(String gToken, Long poiId,
-			String sourceMethod) {
-
-		if (sourceMethod != null && !sourceMethod.isEmpty()
-				&& !sourceMethod.equals("null")) {
-			Poi poi = Poi.findById(poiId);
-
-			if (poi != null) {
-				GoogleUser googleUser = getGoogleUser(gToken);
-				boolean isAuthorized = false;
-
-				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
-					isAuthorized = true;
-				}
-				renderArgs.put("isAuthorized", isAuthorized);
-
-				if (poi.powerTag != null
-						&& poi.powerTag.getClass().equals(Generator.class)) {
-					Generator generator = (Generator) poi.powerTag;
-
-					if (generator.source != null && generator.method != null) {
-						String poiSourceMethod = generator.source.name + "_"
-								+ generator.method.name;
-
-						if (poiSourceMethod.equals(sourceMethod)
-								&& generator.type != null) {
-							renderArgs.put("type", generator.type);
-						}
-					}
-				}
-				try {
-					render("app/views/tags/power/fields/generator/type/"
-							+ sourceMethod.replaceAll(" ", "_").toLowerCase()
-							+ ".html");
-				} catch (Exception e) {
-					render("app/views/Application/about_blank.html");
-				}
-			} else {
-				badRequest();
-			}
-		} else {
-			badRequest();
-		}
-	}
-
-	public static void getSettingsModal(String gToken) {
-
-		if (isSuperUser(gToken)) {
-			render("app/views/tags/settings_modal.html");
-		}
-	}
-
-	public static void getSettingsUserAdministration(String gToken) {
-
-		if (isSuperUser(gToken)) {
-			List<GoogleUser> allUsers = GoogleUser.findAll();
-			ArrayList<GoogleUser> users = new ArrayList<GoogleUser>();
-
-			for (GoogleUser user : allUsers) {
-				if (!user.accountType.equals(AccountType.SUPERUSER)) {
-					users.add(user);
-				}
-			}
-			renderArgs.put("users", users);
-			render("app/views/tags/settings_user_administration.html");
-		} else {
-			unauthorized();
-		}
-	}
-
 	public static void index() {
 		List<Poi> pois = Poi.findAll();
 		renderArgs.put("pois", pois);
@@ -440,7 +256,7 @@ public class Application extends Controller {
 			ArrayList<Double[]> coordinates = new ArrayList<Double[]>();
 
 			for (LocationTrace location : poi.locationTrace) {
-				Double[] coordinate = {location.latitude, location.longitude};
+				Double[] coordinate = { location.latitude, location.longitude };
 				coordinates.add(coordinate);
 			}
 			renderJSON(coordinates);
@@ -508,6 +324,191 @@ public class Application extends Controller {
 		}
 		if (googleUser == null) {
 			badRequest();
+		}
+	}
+
+	public static void renderPhoto(String gToken, Long photoId) {
+		Photo photo = Photo.findById(photoId);
+
+		if (photo != null) {
+			renderArgs.put("photo", photo);
+			boolean isAuthorized = false;
+
+			if (isAuthorized(gToken)) {
+				GoogleUser googleUser = getGoogleUser(gToken);
+
+				if (googleUser != null && photo.poi != null
+						&& photo.poi.googleUser != null
+						&& photo.poi.googleUser.equals(googleUser)) {
+					isAuthorized = true;
+				}
+			}
+			renderArgs.put("isAuthorized", isAuthorized);
+			render("app/views/tags/photo.html");
+		} else {
+			badRequest();
+		}
+	}
+
+	public static void renderPoi(String gToken, Long poiId) {
+		Poi poi = Poi.findById(poiId);
+
+		if (poi != null) {
+			renderArgs.put("poi", poi);
+			boolean isAuthorized = false;
+
+			if (isAuthorized(gToken)) {
+				GoogleUser googleUser = getGoogleUser(gToken);
+
+				if (googleUser != null && poi.googleUser != null
+						&& poi.googleUser.equals(googleUser)) {
+					isAuthorized = true;
+				}
+			}
+			renderArgs.put("isAuthorized", isAuthorized);
+			render("app/views/tags/poi.html");
+		} else {
+			badRequest();
+		}
+	}
+
+	public static void renderPoiPowerTag(String gToken, Long poiId,
+			String powerTag) {
+
+		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("null")) {
+			Poi poi = Poi.findById(poiId);
+
+			if (poi != null) {
+				GoogleUser googleUser = getGoogleUser(gToken);
+				boolean isAuthorized = false;
+
+				if (googleUser != null && poi.googleUser != null
+						&& poi.googleUser.equals(googleUser)) {
+					isAuthorized = true;
+				}
+				renderArgs.put("isAuthorized", isAuthorized);
+
+				if (poi.powerTag != null) {
+					String poiPowerTagClassName = poi.powerTag.getClass()
+							.getSimpleName();
+					String powerTagInput = powerTag.replaceAll(" ", "");
+
+					if (poiPowerTagClassName.equals(powerTagInput)) {
+						renderArgs.put("powerTag", poi.powerTag);
+					}
+				}
+				render("app/views/tags/power/"
+						+ powerTag.replaceAll(" ", "_").toLowerCase() + ".html");
+			} else {
+				badRequest();
+			}
+		}
+	}
+
+	public static void renderPoiPowerTagGeneratorMethod(String gToken,
+			Long poiId, String source) {
+
+		if (source != null && !source.isEmpty() && !source.equals("null")) {
+			Poi poi = Poi.findById(poiId);
+
+			if (poi != null) {
+				GoogleUser googleUser = getGoogleUser(gToken);
+				boolean isAuthorized = false;
+
+				if (googleUser != null && poi.googleUser != null
+						&& poi.googleUser.equals(googleUser)) {
+					isAuthorized = true;
+				}
+				renderArgs.put("isAuthorized", isAuthorized);
+
+				if (poi.powerTag != null
+						&& poi.powerTag.getClass().equals(Generator.class)) {
+					Generator generator = (Generator) poi.powerTag;
+
+					if (generator.source != null
+							&& generator.source.name.equals(source)
+							&& generator.method != null) {
+						renderArgs.put("method", generator.method);
+					}
+				}
+				render("app/views/tags/power/fields/generator/method/"
+						+ source.replaceAll(" ", "_").toLowerCase() + ".html");
+			} else {
+				badRequest();
+			}
+		} else {
+			badRequest();
+		}
+	}
+
+	public static void renderPoiPowerTagGeneratorType(String gToken,
+			Long poiId, String sourceMethod) {
+
+		if (sourceMethod != null && !sourceMethod.isEmpty()
+				&& !sourceMethod.equals("null")) {
+			Poi poi = Poi.findById(poiId);
+
+			if (poi != null) {
+				GoogleUser googleUser = getGoogleUser(gToken);
+				boolean isAuthorized = false;
+
+				if (googleUser != null && poi.googleUser != null
+						&& poi.googleUser.equals(googleUser)) {
+					isAuthorized = true;
+				}
+				renderArgs.put("isAuthorized", isAuthorized);
+
+				if (poi.powerTag != null
+						&& poi.powerTag.getClass().equals(Generator.class)) {
+					Generator generator = (Generator) poi.powerTag;
+
+					if (generator.source != null && generator.method != null) {
+						String poiSourceMethod = generator.source.name + "_"
+								+ generator.method.name;
+
+						if (poiSourceMethod.equals(sourceMethod)
+								&& generator.type != null) {
+							renderArgs.put("type", generator.type);
+						}
+					}
+				}
+				try {
+					render("app/views/tags/power/fields/generator/type/"
+							+ sourceMethod.replaceAll(" ", "_").toLowerCase()
+							+ ".html");
+				} catch (Exception e) {
+					render("app/views/Application/about_blank.html");
+				}
+			} else {
+				badRequest();
+			}
+		} else {
+			badRequest();
+		}
+	}
+
+	public static void renderSettingsModal(String gToken) {
+
+		if (isSuperUser(gToken)) {
+			render("app/views/tags/settings_modal.html");
+		}
+	}
+
+	public static void renderSettingsUserAdministration(String gToken) {
+
+		if (isSuperUser(gToken)) {
+			List<GoogleUser> allUsers = GoogleUser.findAll();
+			ArrayList<GoogleUser> users = new ArrayList<GoogleUser>();
+
+			for (GoogleUser user : allUsers) {
+				if (!user.accountType.equals(AccountType.SUPERUSER)) {
+					users.add(user);
+				}
+			}
+			renderArgs.put("users", users);
+			render("app/views/tags/settings_user_administration.html");
+		} else {
+			unauthorized();
 		}
 	}
 

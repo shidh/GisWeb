@@ -37,7 +37,8 @@ function showPoi(poi) {
 											var poiId = poi.options.id;
 											$('#poi')
 													.load(
-															routes.getPoi.url(),
+															routes.renderPoi
+																	.url(),
 															{
 																'gToken' : getGoogleIdToken(),
 																'poiId' : poiId
@@ -46,7 +47,7 @@ function showPoi(poi) {
 																$(
 																		'#poi_power_tag_details')
 																		.load(
-																				routes.getPoiPowerTag
+																				routes.renderPoiPowerTag
 																						.url(),
 																				{
 																					'gToken' : getGoogleIdToken(),
@@ -65,7 +66,7 @@ function showPoi(poi) {
 																						$(
 																								'#generator_method')
 																								.load(
-																										routes.getPoiPowerTagGeneratorMethod
+																										routes.renderPoiPowerTagGeneratorMethod
 																												.url(),
 																										{
 																											'gToken' : getGoogleIdToken(),
@@ -80,7 +81,7 @@ function showPoi(poi) {
 																											$(
 																													'#generator_type')
 																													.load(
-																															routes.getPoiPowerTagGeneratorType
+																															routes.renderPoiPowerTagGeneratorType
 																																	.url(),
 																															{
 																																'gToken' : getGoogleIdToken(),
@@ -111,7 +112,7 @@ $(document).on('change', '#poi_power_tag', function() {
 	if ($('#poi_power_tag').val() === 'null') {
 		$('#poi_power_tag_details').empty();
 	} else {
-		$('#poi_power_tag_details').load(routes.getPoiPowerTag.url(), {
+		$('#poi_power_tag_details').load(routes.renderPoiPowerTag.url(), {
 			'gToken' : getGoogleIdToken(),
 			'poiId' : $('#poi_id').val(),
 			'powerTag' : $('#poi_power_tag').val()
@@ -119,36 +120,48 @@ $(document).on('change', '#poi_power_tag', function() {
 	}
 });
 
-$(document).on(
-		'change',
-		'#source',
-		function() {
-			if ($('#source').val() === 'null') {
-				$('#generator_method').empty();
-				$('#generator_type').empty();
-			} else {
-				$('#generator_method').load(
-						routes.getPoiPowerTagGeneratorMethod.url(),
-						{
-							'gToken' : getGoogleIdToken(),
-							'poiId' : $('#poi_id').val(),
-							'source' : $('#source').val()
-						},
-						function() {
-							$('#generator_type').load(
-									routes.getPoiPowerTagGeneratorType.url(),
-									{
-										'gToken' : getGoogleIdToken(),
-										'poiId' : $('#poi_id').val(),
-										'sourceMethod' : $('#source').val()
-												+ '_' + $('#method').val()
-									});
-						});
-			}
-		});
+$(document)
+		.on(
+				'change',
+				'#source',
+				function() {
+					if ($('#source').val() === 'null') {
+						$('#generator_method').empty();
+						$('#generator_type').empty();
+					} else {
+						$('#generator_method')
+								.load(
+										routes.renderPoiPowerTagGeneratorMethod
+												.url(),
+										{
+											'gToken' : getGoogleIdToken(),
+											'poiId' : $('#poi_id').val(),
+											'source' : $('#source').val()
+										},
+										function() {
+											$('#generator_type')
+													.load(
+															routes.renderPoiPowerTagGeneratorType
+																	.url(),
+															{
+																'gToken' : getGoogleIdToken(),
+																'poiId' : $(
+																		'#poi_id')
+																		.val(),
+																'sourceMethod' : $(
+																		'#source')
+																		.val()
+																		+ '_'
+																		+ $(
+																				'#method')
+																				.val()
+															});
+										});
+					}
+				});
 
 $(document).on('change', '#method', function() {
-	$('#generator_type').load(routes.getPoiPowerTagGeneratorType.url(), {
+	$('#generator_type').load(routes.renderPoiPowerTagGeneratorType.url(), {
 		'gToken' : getGoogleIdToken(),
 		'poiId' : $('#poi_id').val(),
 		'sourceMethod' : $('#source').val() + '_' + $('#method').val()

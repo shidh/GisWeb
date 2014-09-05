@@ -28,7 +28,7 @@ $(document).on(
 		'#myModal',
 		function(e) {
 			$('#user_administration').load(
-					routes.getSettingsUserAdministration.url(), {
+					routes.renderSettingsUserAdministration.url(), {
 						'gToken' : getGoogleIdToken()
 					});
 		});

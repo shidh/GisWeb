@@ -15,7 +15,7 @@ function signinCallback(authResult) {
 		$.post(routes.registerUser.url(), {
 			'gToken' : authResult.id_token
 		});
-		$('#settings').load(routes.getSettingsModal.url(), {
+		$('#settings').load(routes.renderSettingsModal.url(), {
 			'gToken' : getGoogleIdToken()
 		});
 	} else {
@@ -44,7 +44,8 @@ $(document)
 				function() {
 					var access_token = gapi.auth.getToken().access_token;
 					if (access_token) {
-						var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token=' + access_token;
+						var revokeUrl = 'https://accounts.google.com/o/oauth2/revoke?token='
+								+ access_token;
 						$.ajax({
 							type : 'GET',
 							url : revokeUrl,

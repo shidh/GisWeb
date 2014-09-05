@@ -27,7 +27,7 @@ function showPhoto(photo) {
 		map.removeLayer(currentPhoto);
 	}
 	expandPhoto();
-	$('#photo').load(routes.getPhoto.url(), {
+	$('#photo').load(routes.renderPhoto.url(), {
 		'gToken' : getGoogleIdToken(),
 		'photoId' : photo.options.id
 	});
