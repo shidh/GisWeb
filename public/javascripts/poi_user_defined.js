@@ -231,3 +231,10 @@ $(document).on('click', '#poi_zoom', function() {
 		map.setView(marker._latlng, 12);
 	}
 });
+
+$(document).on('click', '#poi_photos_modal_show', function() {
+	var photo_id = parseInt($('#carousel-example-generic .active').find('img').attr('alt'));
+	var photo = getMarker('photo', photo_id);
+	$('#poi_photos_modal').modal('hide');
+	showPhoto(photo);
+});

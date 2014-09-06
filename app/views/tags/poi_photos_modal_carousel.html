@@ -13,7 +13,7 @@
 		#{list items:_photos, as:'photo'}
 		<div class="item #{if photo_index == 1}active#{/if}">
 			<img src="@{Application.renderPhotoFile(photo.id)}"
-				alt="photo carousel">
+				alt="${photo.id}">
 		</div>
 		#{/list}
 	</div>
