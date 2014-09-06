@@ -59,8 +59,10 @@ function addMarker(google_id, latitude, longitude, marker_type, marker_id,
 		if (draggable) {
 			marker.on('dragend', function(event) {
 				var position = event.target.getLatLng();
-				$('#poi_latitude').val(position.lat);
-				$('#poi_longitude').val(position.lng);
+				var latitude_steps = $('#poi_latitude').prop('step').length - 2;
+				var longitude_steps = $('#poi_longitude').prop('step').length - 2;
+				$('#poi_latitude').val(position.lat.toFixed(latitude_steps));
+				$('#poi_longitude').val(position.lng.toFixed(longitude_steps));
 			});
 		}
 		if (marker_type === 'poi') {
