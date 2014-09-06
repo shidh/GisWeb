@@ -7,6 +7,7 @@ function addMarker(google_id, latitude, longitude, marker_type, marker_id,
 	var marker = getMarker(marker_type, marker_id);
 	if ((marker && time_stamp && time_stamp > marker.options.time_stamp) || !marker) {
 		deleteMarker(marker_type, marker_id);
+		var draggable = false;
 		var state;
 		if (marker_type === 'photo') {
 			if (google_id) {
@@ -17,6 +18,7 @@ function addMarker(google_id, latitude, longitude, marker_type, marker_id,
 		} else if (marker_type === 'poi') {
 			if (google_id) {
 				if (google_id === my_google_id) {
+					draggable = true;
 					state = marker_state.poi.opened_by_editor;
 				} else {
 					state = marker_state.poi.opened_by_other;
@@ -37,11 +39,12 @@ function addMarker(google_id, latitude, longitude, marker_type, marker_id,
 		});
 		var customMarker = L.Marker.extend({
 			options : {
+				draggable: draggable,
 				id : '',
 				time_stamp : ''
 			}
 		});
-		var marker = new customMarker([ latitude, longitude ], {
+		marker = new customMarker([ latitude, longitude ], {
 			icon : customIcon,
 			id : marker_id,
 			time_stamp : time_stamp
@@ -53,6 +56,13 @@ function addMarker(google_id, latitude, longitude, marker_type, marker_id,
 				showPhoto(this);
 			}
 		});
+		if (draggable) {
+			marker.on('dragend', function(event) {
+				var position = event.target.getLatLng();
+				$('#poi_latitude').val(position.lat);
+				$('#poi_longitude').val(position.lng);
+			});
+		}
 		if (marker_type === 'poi') {
 			poiArray.push(marker);
 		} else if (marker_type === 'photo') {
