@@ -52,7 +52,10 @@ body,html {
 			
 			#map {
 				height: 100%;
-				min-height: 300px;}}}
+				min-height: 300px;}
+				
+			.leaflet-control-geocoder-icon {
+				background-image: url(../images/geocoder.png) !important;}}}
 	
 	#row_bottom {
 		@include form_fields;

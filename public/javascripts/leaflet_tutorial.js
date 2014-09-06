@@ -19,4 +19,11 @@ function initmap() {
 	// start the map in South-East England
 	map.setView(new L.LatLng(0, 0), 2);
 	map.addLayer(osm);
+	
+	// add address search
+	L.Control.geocoder({
+	    geocoder: L.Control.Geocoder.nominatim({
+	    	serviceUrl: "//nominatim.openstreetmap.org/"
+	    })
+	}).addTo(map);
 }
