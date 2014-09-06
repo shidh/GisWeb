@@ -26,10 +26,11 @@ function showPoi(poi) {
 			value : poi.options.id
 		});
 		$
-				.post(routes.broadcastGetPoi.url(), $.param(data))
+				.post(routes.reservePoi.url(), $.param(data))
 				.done(
 						$
-								.post(routes.reservePoi.url(), $.param(data))
+								.post(routes.broadcastOpenPoi.url(),
+										$.param(data))
 								.done(
 
 										function() {
@@ -200,7 +201,7 @@ $(document).on('click', '#poi_submit', function() {
 		name : 'poiId',
 		value : $('#poi_id').val()
 	});
-	$.post(routes.broadcastUpdatePoi.url(), $.param(data)).done(function() {
+	$.post(routes.broadcastOpenPoi.url(), $.param(data)).done(function() {
 		var data = $('#poi_form').serializeArray();
 		data.push({
 			name : 'gToken',

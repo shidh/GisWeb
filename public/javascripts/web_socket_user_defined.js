@@ -54,7 +54,8 @@ function joinSocket() {
 			time_stamp = parseInt(time_stamp);
 		}
 		if (event_type == 'AddMarker') {
-			addMarker(google_id, latitude, longitude, 'poi', poi_id, task_completed, time_stamp);
+			addMarker(google_id, latitude, longitude, 'poi', poi_id,
+					task_completed, time_stamp);
 		} else if (event_type == 'DeleteMarker') {
 			deleteMarker('poi', poi_id);
 		}
@@ -75,8 +76,8 @@ function joinSocket() {
 					name : 'poiId',
 					value : poiId
 				});
-				$.post(routes.broadcastGetPoi.url(), $.param(data)).done(
-						$.post(routes.reservePoi.url(), $.param(data)));
+				$.post(routes.reservePoi.url(), $.param(data)).done(
+						$.post(routes.broadcastOpenPoi.url(), $.param(data)));
 			}
 		}
 	};

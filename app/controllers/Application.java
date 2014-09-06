@@ -51,21 +51,6 @@ public class Application extends Controller {
 	private static final String[] android_clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
 	private static final String[] web_clientId = new String[] { audience };
 
-	private static void broadcast(String gToken, Long poiId) {
-
-		if (isAuthorized(gToken)) {
-			GoogleUser googleUser = getGoogleUser(gToken);
-			Poi poi = Poi.findById(poiId);
-
-			if (googleUser != null
-					&& poi != null
-					&& (poi.googleUser == null || (poi.googleUser != null && poi.googleUser
-							.equals(googleUser)))) {
-				WebSocket.publishAddMarkerEvent(googleUser, poi);
-			}
-		}
-	}
-
 	public static void broadcastClosePoi(String gToken, Long poiId) {
 
 		if (isAuthorized(gToken)) {
@@ -85,12 +70,19 @@ public class Application extends Controller {
 		}
 	}
 
-	public static void broadcastGetPoi(String gToken, Long poiId) {
-		broadcast(gToken, poiId);
-	}
+	public static void broadcastOpenPoi(String gToken, Long poiId) {
 
-	public static void broadcastUpdatePoi(String gToken, Long poiId) {
-		broadcast(gToken, poiId);
+		if (isAuthorized(gToken)) {
+			GoogleUser googleUser = getGoogleUser(gToken);
+			Poi poi = Poi.findById(poiId);
+
+			if (googleUser != null
+					&& poi != null
+					&& (poi.googleUser != null && poi.googleUser
+							.equals(googleUser))) {
+				WebSocket.publishAddMarkerEvent(googleUser, poi);
+			}
+		}
 	}
 
 	public static void createPoi(String token) throws FileNotFoundException {

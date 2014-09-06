@@ -15,8 +15,7 @@ GET     /jsonLocationTrace/                     Application.jsonLocationTrace
 GET     /jsonPhoto/                             Application.jsonPhoto
 GET     /jsonPoi/                               Application.jsonPoi
 POST    /broadcastClosePoi/                     Application.broadcastClosePoi
-POST    /broadcastGetPoi/                       Application.broadcastGetPoi
-POST    /broadcastUpdatePoi/                    Application.broadcastUpdatePoi
+POST    /broadcastOpenPoi/                      Application.broadcastOpenPoi
 POST    /createPoi/                             Application.createPoi
 POST    /registerUser/                          Application.registerUser
 POST    /renderPhoto/                           Application.renderPhoto

@@ -5,7 +5,7 @@ var polygon;
 function addMarker(google_id, latitude, longitude, marker_type, marker_id,
 		task_completed, time_stamp) {
 	var marker = getMarker(marker_type, marker_id);
-	if ((marker && time_stamp && time_stamp >= marker.options.time_stamp) || !marker) {
+	if ((marker && time_stamp && time_stamp > marker.options.time_stamp) || !marker) {
 		deleteMarker(marker_type, marker_id);
 		var state;
 		if (marker_type === 'photo') {

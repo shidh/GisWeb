@@ -58,12 +58,12 @@ public class WebSocket extends WebSocketController {
 					List<Poi> pois = Poi.find("byGoogleUser",
 							GoogleUser.findById(googleUser.id)).fetch();
 
-					for (Poi poi : pois) {
+					for (Object poi : pois) {
 
-						if (poi != null) {
-							WebSocket.publishAddMarkerEvent(null, poi);
-							poi.googleUser = null;
-							poi.store();
+						if (poi != null && poi.getClass().equals(Poi.class)) {
+							WebSocket.publishAddMarkerEvent(null, (Poi) poi);
+							((Poi) poi).googleUser = null;
+							((Poi) poi).store();
 						}
 					}
 				}
