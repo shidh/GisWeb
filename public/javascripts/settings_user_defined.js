@@ -13,7 +13,6 @@ $(document).on('click', '#settings_submit', function() {
 		$('#settings_submit').removeClass('btn-success');
 		$('#settings_submit').addClass('btn-warning');
 	});
-	return false;
 });
 
 $(document).on('hidden.bs.modal', '#myModal', function(e) {
@@ -32,3 +31,7 @@ $(document).on(
 						'gToken' : getGoogleIdToken()
 					});
 		});
+
+$(document).on('submit', '#settings_form', function() {
+	return false;
+})

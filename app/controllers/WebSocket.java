@@ -46,8 +46,8 @@ public class WebSocket extends WebSocketController {
 			// Case: Deleting marker
 			for (DeleteMarker event : ClassOf(DeleteMarker.class).match(e._2)) {
 				if (outbound.isOpen()) {
-					outbound.send("%s:null:null:null:%s:null:null", event.eventType,
-							event.poiId);
+					outbound.send("%s:null:null:null:%s:null:null",
+							event.eventType, event.poiId);
 				}
 			}
 

@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,8 +16,6 @@ import java.util.*;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.sun.xml.bind.v2.runtime.Location;
 
 import models.*;
 import models.GoogleUser.AccountType;
@@ -219,6 +218,21 @@ public class Application extends Controller {
 			}
 		}
 		return null;
+	}
+
+	public static String getHtmlInputStep(String step, String value) {
+		BigDecimal stepDecimal = BigDecimal
+				.valueOf(Math.pow(10, -new BigDecimal(step).scale()))
+				.stripTrailingZeros().abs();
+		BigDecimal valueDecimal = BigDecimal
+				.valueOf(Math.pow(10, -new BigDecimal(value).scale()))
+				.stripTrailingZeros().abs();
+
+		if (stepDecimal.compareTo(valueDecimal) >= 0) {
+			return valueDecimal.toPlainString();
+		} else {
+			return stepDecimal.toPlainString();
+		}
 	}
 
 	public static void index() {

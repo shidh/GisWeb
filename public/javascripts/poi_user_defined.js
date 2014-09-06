@@ -214,6 +214,9 @@ $(document).on('click', '#poi_submit', function() {
 			$('#poi_submit').addClass('btn-warning');
 		});
 	});
+});
+
+$(document).on('submit', '#poi_form', function() {
 	return false;
 });
 

@@ -26,7 +26,12 @@
 				max='${_max}'
 				#{/if}
 			#{if _step}
-				step='${_step}'
+				#{if _value}
+					step='${controllers.Application.getHtmlInputStep(String.valueOf(_step), String.valueOf(_value))}'
+					#{/if}
+				#{else}
+					step='${_step}'
+					#{/else}
 				#{/if}
 			#{/elseif}
 		#{else}
