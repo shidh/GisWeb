@@ -55,7 +55,10 @@ body,html {
 				min-height: 300px;}}}
 	
 	#row_bottom {
-		@include form_fields;}}
+		@include form_fields;
+		
+		#photo_form,#photo_show {
+			display: inline;}}}
 
 #settingsButton {
 	@include button;

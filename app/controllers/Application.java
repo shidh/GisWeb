@@ -356,6 +356,16 @@ public class Application extends Controller {
 		}
 	}
 
+	public static void renderPhotoFile(Long photoId) {
+		Photo photo = Photo.findById(photoId);
+		
+		if (photo != null && photo.photoBlob != null) {
+			response.setContentTypeIfNotSet(photo.photoBlob
+					.type());
+			renderBinary(photo.photoBlob.get());
+		}
+	}
+
 	public static void renderPoi(String gToken, Long poiId) {
 		Poi poi = Poi.findById(poiId);
 
