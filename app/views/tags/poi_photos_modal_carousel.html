@@ -1,0 +1,29 @@
+<div id="carousel-example-generic" class="carousel slide"
+	data-ride="carousel">
+	<!-- Indicators -->
+	<ol class="carousel-indicators">
+		#{list items:_photos, as:'photo'}
+		<li data-target="#carousel-example-generic"
+			data-slide-to="${photo_index - 1}" #{if photo_index==
+			1}class="active"#{/if}></li> #{/list}
+	</ol>
+
+	<!-- Wrapper for slides -->
+	<div class="carousel-inner">
+		#{list items:_photos, as:'photo'}
+		<div class="item #{if photo_index == 1}active#{/if}">
+			<img src="@{Application.renderPhotoFile(photo.id)}"
+				alt="photo carousel">
+		</div>
+		#{/list}
+	</div>
+
+	<!-- Controls -->
+	<a class="left carousel-control" href="#carousel-example-generic"
+		role="button" data-slide="prev"> <span
+		class="glyphicon glyphicon-chevron-left"></span>
+	</a> <a class="right carousel-control" href="#carousel-example-generic"
+		role="button" data-slide="next"> <span
+		class="glyphicon glyphicon-chevron-right"></span>
+	</a>
+</div>
