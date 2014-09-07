@@ -41,6 +41,7 @@ public class Poi extends Model {
 	}
 
 	public Float accuracy;
+	public String address;
 	public Double altitude;
 	public Float bearing;
 	public Double latitude;
