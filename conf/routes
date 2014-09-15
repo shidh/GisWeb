@@ -28,7 +28,7 @@ POST    /renderSettingsUserAdministration/      Application.renderSettingsUserAd
 POST    /reservePoi/                            Application.reservePoi
 POST    /updatePoi/                             Application.updatePoi
 POST    /updateSettings/                        Application.updateSettings
-WS      /webSocket/                             WebSocket.join
+WS      /websocket/                             WebSocket.join
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
