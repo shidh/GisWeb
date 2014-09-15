@@ -9,7 +9,7 @@ function joinSocket() {
 		}
 		socket_opened_with_token = true;
 	}
-	socket = new WS('wss://www.grid2osm.org/webSocket/?gToken=' + gToken);
+	socket = new WS('wss://www.grid2osm.org/websocket/?gToken=' + gToken);
 
 	// Message received on the socket
 	socket.onmessage = function(event) {
