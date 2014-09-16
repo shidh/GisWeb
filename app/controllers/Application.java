@@ -47,8 +47,8 @@ import models.types.Output.OutputEnum;
 
 public class Application extends Controller {
 
-	private static final String audience = "889611969164-ujvohn299csu833avfmcsun3k6fna30s.apps.googleusercontent.com";
-	private static final String[] android_clientId = new String[] { "889611969164-hhapbnd498ntbuulf3u7m2prba7cpu29.apps.googleusercontent.com" };
+	private static final String audience = "484348018096-2vlhog84fcgd06nalbe16i446veti18c.apps.googleusercontent.com";
+	private static final String[] android_clientId = new String[] { "484348018096-8eupo737lepmjjrkni5su91ddtddkbda.apps.googleusercontent.com" };
 	private static final String[] web_clientId = new String[] { audience };
 
 	public static void broadcastClosePoi(String gToken, Long poiId) {
