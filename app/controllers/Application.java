@@ -563,8 +563,13 @@ public class Application extends Controller {
 
 			if (googleUser != null && poi != null && poi.googleUser != null
 					&& poi.googleUser.equals(googleUser)) {
+				poi.street = params.get("poi_street");
+				poi.housenumber = params.get("poi_housenumber", Integer.class);
+				poi.postcode = params.get("poi_postcode", Integer.class);
+				poi.city = params.get("poi_city");
+				poi.state = params.get("poi_state");
+				poi.country = params.get("poi_country");
 				poi.accuracy = params.get("poi_accuracy", Float.class);
-				poi.address = params.get("poi_address");
 				poi.altitude = params.get("poi_altitude", Double.class);
 				poi.bearing = params.get("poi_bearing", Float.class);
 				poi.latitude = params.get("poi_latitude", Double.class);

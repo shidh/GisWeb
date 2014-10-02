@@ -41,7 +41,14 @@ public class Poi extends Model {
 	}
 
 	public Float accuracy;
-	public String address;
+	
+	public String street;
+	public Integer housenumber;
+	public Integer postcode;
+	public String city;
+	public String state;
+	public String country;
+	
 	public Double altitude;
 	public Float bearing;
 	public Double latitude;
