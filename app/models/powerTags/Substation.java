@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 
 import models.Poi;
 import models.PowerTag;
-import models.types.Operator;
+import models.powerTags.types.Operator;
 
 @Entity
 public class Substation extends PowerTag {

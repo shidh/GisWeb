@@ -40,10 +40,10 @@ import models.powerTags.Tower.MaterialEnum;
 import models.powerTags.Switch;
 import models.powerTags.Tower;
 import models.powerTags.Tower.StructureEnum;
+import models.powerTags.types.Operator;
+import models.powerTags.types.Operator.TypeEnum;
+import models.powerTags.types.Output.OutputEnum;
 import models.powerTags.Transformer;
-import models.types.Operator;
-import models.types.Operator.TypeEnum;
-import models.types.Output.OutputEnum;
 
 public class Application extends Controller {
 

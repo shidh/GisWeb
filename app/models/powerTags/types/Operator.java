@@ -1,4 +1,4 @@
-package models.types;
+package models.powerTags.types;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;

@@ -6,8 +6,8 @@ import javax.persistence.OneToOne;
 
 import models.Poi;
 import models.PowerTag;
-import models.types.Operator;
-import models.types.Output.OutputEnum;
+import models.powerTags.types.Operator;
+import models.powerTags.types.Output.OutputEnum;
 
 @Entity
 public class Generator extends PowerTag {
