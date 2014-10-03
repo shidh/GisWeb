@@ -564,7 +564,7 @@ public class Application extends Controller {
 			if (googleUser != null && poi != null && poi.googleUser != null
 					&& poi.googleUser.equals(googleUser)) {
 				poi.street = params.get("poi_street");
-				poi.housenumber = params.get("poi_housenumber", Integer.class);
+				poi.housenumber = params.get("poi_housenumber");
 				poi.postcode = params.get("poi_postcode", Integer.class);
 				poi.city = params.get("poi_city");
 				poi.state = params.get("poi_state");

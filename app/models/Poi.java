@@ -43,7 +43,7 @@ public class Poi extends Model {
 	public Float accuracy;
 	
 	public String street;
-	public Integer housenumber;
+	public String housenumber;
 	public Integer postcode;
 	public String city;
 	public String state;
