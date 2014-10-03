@@ -55,7 +55,8 @@ public class Poi extends Model {
 	public boolean latLngIsDerived;
 	public Double longitude;
 	public String provider;
-	public Long time;
+	public Long start_time;
+	public Long end_time;
 
 	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
 	public List<LocationTrace> locationTrace;

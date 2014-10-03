@@ -130,9 +130,12 @@ public class Application extends Controller {
 				longitude += photo.longitude;
 				index++;
 			}
-			poi.latitude = latitude / poi.photos.size();
-			poi.longitude = longitude / poi.photos.size();
 			if (!poi.photos.isEmpty()) {
+				int numberOfPhotos = poi.photos.size();
+				poi.latitude = latitude / numberOfPhotos;
+				poi.longitude = longitude / numberOfPhotos;
+				poi.start_time = poi.photos.get(0).time;
+				poi.end_time = poi.photos.get(numberOfPhotos - 1).time;
 				index = 0;
 				while (true) {
 					LocationTrace trace = new LocationTrace(poi);
@@ -577,11 +580,6 @@ public class Application extends Controller {
 				poi.provider = params.get("poi_provider");
 				poi.taskCompleted = params.get("poi_task_completed",
 						boolean.class);
-				String time = params.get("poi_time");
-				if (!time.isEmpty()) {
-					poi.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
-							time.replace("T", " ")).getTime();
-				}
 				String powerTagParam = params
 						.get("poi_power_tag");
 				if (poi.powerTag != null) {
@@ -704,7 +702,7 @@ public class Application extends Controller {
 								.get("output")
 								.replaceAll(" ", "_").toUpperCase());
 						String start_date = params.get("start_date");
-						if (!time.isEmpty()) {
+						if (!start_date.isEmpty()) {
 							plant.start_date = new SimpleDateFormat(
 									"yyyy-MM-dd HH:mm").parse(
 									start_date.replace("T", " ")).getTime();

@@ -12,7 +12,8 @@
 	#{html/input id:'poi_latitude',   isAuthorized:isAuthorized,name:'Latitude',    primary:'true',type:'number',min:'-90',max:'90',  step:'0.00000001',placeholder:'degrees (decimal; range [-90;90])',  value:poi?.latitude /}
 	#{html/input id:'poi_longitude',  isAuthorized:isAuthorized,name:'Longitude',   primary:'true',type:'number',min:'-180',max:'180',step:'0.00000001',placeholder:'degress (decimal; range [-180;180])',value:poi?.longitude /}
 	#{html/input id:'poi_provider',   isAuthorized:isAuthorized,name:'Provider',    primary:'true',                                                                                                  value:poi?.provider /}
-	#{html/input id:'poi_time',       isAuthorized:isAuthorized,name:'Time',        primary:'true',type:'date',                                                                                      value:poi?.time /}
+	#{html/input id:'poi_start_time', isAuthorized:false,       name:'First photo taken at',primary:'true',type:'date',                                                                                      value:poi?.start_time /}
+	#{html/input id:'poi_end_time',   isAuthorized:false,       name:'Last photo taken at', primary:'true',type:'date',                                                                                      value:poi?.end_time /}
 	#{html/select_start id:'poi_power_tag',isAuthorized:isAuthorized,name:'Power Tag',primary:'true' /}
 		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Cable.class.getSimpleName()) /}
 		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.CableDistributionCabinet.class.getSimpleName()) /}
