@@ -97,8 +97,10 @@ public class Application extends Controller {
 			poi.photos = new ArrayList<Photo>();
 			poi.taskCompleted = false;
 			int index = 0;
-			double latitude = 0;
-			double longitude = 0;
+			Float accuracy = null;
+			Double altitude = null;
+			Double latitude = null;
+			Double longitude = null;
 
 			while (true) {
 				File photoFile = params.get("photo_" + index + "_file",
@@ -126,14 +128,51 @@ public class Application extends Controller {
 						MimeTypes.getContentType(photoName));
 				photo.photoBlob = photoBlob;
 				poi.photos.add(photo);
-				latitude += photo.latitude;
-				longitude += photo.longitude;
+				if (photo.accuracy != null) {
+					if (accuracy == null) {
+						accuracy = photo.accuracy;
+					} else {
+						accuracy += photo.accuracy;
+					}
+				}
+				if (photo.altitude != null) {
+					if (altitude == null) {
+						altitude = photo.altitude;
+					} else {
+						altitude += photo.altitude;
+					}
+				}
+				if (photo.latitude != null) {
+					if (latitude == null) {
+						latitude = photo.latitude;
+					} else {
+						latitude += photo.latitude;
+					}
+				}
+				if (photo.longitude != null) {
+					if (longitude == null) {
+						longitude = photo.longitude;
+					} else {
+						longitude += photo.longitude;
+					}
+				}
 				index++;
 			}
 			if (!poi.photos.isEmpty()) {
 				int numberOfPhotos = poi.photos.size();
-				poi.latitude = latitude / numberOfPhotos;
-				poi.longitude = longitude / numberOfPhotos;
+				if (accuracy != null) {
+					poi.accuracy = accuracy / numberOfPhotos;
+				}
+				if (altitude != null) {
+					poi.altitude = altitude / numberOfPhotos;
+				}
+				if (latitude != null) {
+					poi.latitude = latitude / numberOfPhotos;
+				}
+				if (longitude != null) {
+					poi.longitude = longitude / numberOfPhotos;
+				}
+				poi.provider = poi.photos.get(0).provider;
 				poi.start_time = poi.photos.get(0).time;
 				poi.end_time = poi.photos.get(numberOfPhotos - 1).time;
 				index = 0;
@@ -572,12 +611,8 @@ public class Application extends Controller {
 				poi.city = params.get("poi_city");
 				poi.state = params.get("poi_state");
 				poi.country = params.get("poi_country");
-				poi.accuracy = params.get("poi_accuracy", Float.class);
-				poi.altitude = params.get("poi_altitude", Double.class);
-				poi.bearing = params.get("poi_bearing", Float.class);
 				poi.latitude = params.get("poi_latitude", Double.class);
 				poi.longitude = params.get("poi_longitude", Double.class);
-				poi.provider = params.get("poi_provider");
 				poi.taskCompleted = params.get("poi_task_completed",
 						boolean.class);
 				String powerTagParam = params

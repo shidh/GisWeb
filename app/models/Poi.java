@@ -50,7 +50,6 @@ public class Poi extends Model {
 	public String country;
 	
 	public Double altitude;
-	public Float bearing;
 	public Double latitude;
 	public boolean latLngIsDerived;
 	public Double longitude;
