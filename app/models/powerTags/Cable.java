@@ -24,6 +24,7 @@ public class Cable extends PowerTag {
 
 	public String cables;
 	public Byte circuits;
+	public Float frequency;
 	public LocationEnum location;
 	public String name;
 

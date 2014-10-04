@@ -10,8 +10,8 @@ import play.db.jpa.Model;
 public class Output extends Model {
 
 	public enum OutputEnum {
-		COLD_AIR("Cold Air"), COLD_WATER("Cold Water"), COMPRESSED_AIR(
-				"Compressed Air"), ELECTRICITY("Electricity"), HOT_AIR(
+		BIOGAS("Biogas"), COLD_AIR("Cold Air"), COLD_WATER("Cold Water"), COMPRESSED_AIR(
+				"Compressed Air"), ELECTRICITY("Electricity"), HEAT("Heat"), HOT_AIR(
 				"Hot Air"), HOT_WATER("Hot Water"), NULL("null"), STEAM("Steam"), VACUUM(
 				"Vacuum");
 

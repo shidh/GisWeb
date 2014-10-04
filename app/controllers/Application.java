@@ -453,7 +453,7 @@ public class Application extends Controller {
 						renderArgs.put("powerTag", poi.powerTag);
 					}
 				}
-				render("app/views/tags/power/"
+				render("app/views/tags/powerTags/"
 						+ powerTag.replaceAll(" ", "_").toLowerCase() + ".html");
 			} else {
 				badRequest();
@@ -487,7 +487,7 @@ public class Application extends Controller {
 						renderArgs.put("method", generator.method);
 					}
 				}
-				render("app/views/tags/power/fields/generator/method/"
+				render("app/views/tags/powerTags/fields/generator/method/"
 						+ source.replaceAll(" ", "_").toLowerCase() + ".html");
 			} else {
 				badRequest();
@@ -529,7 +529,7 @@ public class Application extends Controller {
 					}
 				}
 				try {
-					render("app/views/tags/power/fields/generator/type/"
+					render("app/views/tags/powerTags/fields/generator/type/"
 							+ sourceMethod.replaceAll(" ", "_").toLowerCase()
 							+ ".html");
 				} catch (Exception e) {
@@ -629,6 +629,8 @@ public class Application extends Controller {
 						Cable cable = (Cable) poi.powerTag;
 						cable.cables = params.get("cables");
 						cable.circuits = params.get("circuits", Byte.class);
+						cable.frequency = params.get("frequency",
+								Float.class);
 						cable.location = Cable.LocationEnum.valueOf(params
 								.get("location")
 								.replaceAll(" ", "_").toUpperCase());
@@ -776,6 +778,10 @@ public class Application extends Controller {
 						tower.design = DesignEnum.valueOf(params
 								.get("design")
 								.replaceAll(" ", "_").toUpperCase());
+						tower.design_incomplete = models.powerTags.Tower.BooleanEnum.valueOf(params
+								.get("design_incomplete")
+								.replaceAll(" ", "_").toUpperCase());
+						tower.design_name = params.get("design_name");
 						tower.height = params.get("height", Float.class);
 						tower.material = MaterialEnum.valueOf(params
 								.get("material")
@@ -783,6 +789,9 @@ public class Application extends Controller {
 						tower.ref = params.get("ref");
 						tower.structure = StructureEnum.valueOf(params
 								.get("structure")
+								.replaceAll(" ", "_").toUpperCase());
+						tower.transition = models.powerTags.Tower.BooleanEnum.valueOf(params
+								.get("transition")
 								.replaceAll(" ", "_").toUpperCase());
 						tower.type = Tower.TypeEnum.valueOf(params
 								.get("type").replaceAll(" ", "_")
