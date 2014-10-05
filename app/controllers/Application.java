@@ -664,7 +664,7 @@ public class Application extends Controller {
 								.get("converter")
 								.replaceAll(" ", "_").toUpperCase());
 						converter.poles = params.get("poles", Byte.class);
-						converter.rating = params.get("rating", Long.class);
+						converter.rating = params.get("rating", Float.class);
 						converter.voltage = params.get("voltage", Float.class);
 					} else if (powerTagClass.equals(Generator.class)) {
 						poi.powerTag = new Generator(poi);
@@ -678,6 +678,7 @@ public class Application extends Controller {
 						generator.output = OutputEnum.valueOf(params
 								.get("output")
 								.replaceAll(" ", "_").toUpperCase());
+						generator.output_value = params.get("output_value");
 						generator.plant = PlantEnum.valueOf(params
 								.get("plant")
 								.replaceAll(" ", "_").toUpperCase());
@@ -738,6 +739,7 @@ public class Application extends Controller {
 						plant.output = OutputEnum.valueOf(params
 								.get("output")
 								.replaceAll(" ", "_").toUpperCase());
+						plant.output_value = params.get("output_value");
 						String start_date = params.get("start_date");
 						if (!start_date.isEmpty()) {
 							plant.start_date = new SimpleDateFormat(
@@ -806,7 +808,7 @@ public class Application extends Controller {
 										.replaceAll(" ", "_").toUpperCase());
 						transformer.phases = params
 								.get("phases", Integer.class);
-						transformer.rating = params.get("rating", Long.class);
+						transformer.rating = params.get("rating", Float.class);
 						transformer.type = Transformer.TypeEnum.valueOf(params
 								.get("type").replaceAll(" ", "_")
 								.toUpperCase());

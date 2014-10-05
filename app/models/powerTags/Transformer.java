@@ -34,7 +34,7 @@ public class Transformer extends PowerTag {
 	public Float frequency;
 	public LocationEnum location;
 	public Integer phases;
-	public Long rating;
+	public Float rating;
 	public TypeEnum type;
 	public Float voltage;
 

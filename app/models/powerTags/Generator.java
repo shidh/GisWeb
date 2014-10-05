@@ -78,6 +78,7 @@ public class Generator extends PowerTag {
 	public Operator operator;
 
 	public OutputEnum output;
+	public String output_value;
 	public PlantEnum plant;
 	public SourceEnum source;
 	public MethodEnum method;

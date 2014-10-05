@@ -20,7 +20,7 @@ public class Converter extends PowerTag {
 
 	public ConverterEnum converter;
 	public Byte poles;
-	public Long rating;
+	public Float rating;
 	public Float voltage;
 
 	public Converter(Poi poi) {
