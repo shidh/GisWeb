@@ -21,8 +21,8 @@
 #{if _powerTag.structure && _powerTag.structure.name() != "NULL"}
 <tag k='structure' v='${_powerTag.structure.osm}'/>
 #{/if}
-#{if _powerTag.transition && _powerTag.transition.name() != "NULL"}
-<tag k='tower' v='${_powerTag.transition.osm}'/>
+#{if _powerTag.transition && _powerTag.transition.name() == "TRUE"}
+<tag k='tower' v='transition'/>
 #{/if}
 #{if _powerTag.type && _powerTag.type.name() != "NULL"}
 <tag k='tower:type' v='${_powerTag.type.osm}'/>
