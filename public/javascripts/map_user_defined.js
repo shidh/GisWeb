@@ -3,7 +3,7 @@ var poiArray = [];
 var polygon;
 
 function addMarker(google_id, latitude, longitude, marker_type, marker_id,
-		task_completed, time_stamp) {
+		task_status, time_stamp) {
 	var marker = getMarker(marker_type, marker_id);
 	if ((marker && time_stamp && time_stamp > marker.options.time_stamp) || !marker) {
 		deleteMarker(marker_type, marker_id);
@@ -24,10 +24,14 @@ function addMarker(google_id, latitude, longitude, marker_type, marker_id,
 					state = marker_state.poi.opened_by_other;
 				}
 			} else {
-				if (task_completed) {
-					state = marker_state.poi.done;
-				} else {
+				if (task_status === 0) {
 					state = marker_state.poi.todo;
+				} else if (task_status === 1) {
+					state = marker_state.poi.done;
+				} else if (task_status === 2) {
+					state = marker_state.poi.ready_to_submit_to_osm;
+				} else if (task_status === 3) {
+					state = marker_state.poi.already_submitted_to_osm;
 				}
 			}
 		}

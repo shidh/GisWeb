@@ -1,12 +1,12 @@
 <form class='form-inline' id='photo_form'>
 	<input id='photo_id' name='photo_id' type='hidden' value='${photo.id}'>
-	#{html/input id:'photo_accuracy', isAuthorized:isAuthorized,name:'Accuracy (in meters)',placeholder:' ',primary:'true',readonly:'true',value:photo?.accuracy /}
-	#{html/input id:'photo_altitude', isAuthorized:isAuthorized,name:'Altitude (in meters)',placeholder:' ',primary:'true',readonly:'true',value:photo?.altitude /}
-	#{html/input id:'photo_bearing',  isAuthorized:isAuthorized,name:'Bearing (in degrees)',placeholder:' ',primary:'true',readonly:'true',value:photo?.bearing /}
-	#{html/input id:'photo_latitude', isAuthorized:isAuthorized,name:'Latitude',            placeholder:' ',primary:'true',readonly:'true',value:photo?.latitude /}
-	#{html/input id:'photo_longitude',isAuthorized:isAuthorized,name:'Longitude',           placeholder:' ',primary:'true',readonly:'true',value:photo?.longitude /}
-	#{html/input id:'photo_provider', isAuthorized:isAuthorized,name:'Provider for geodata',placeholder:' ',primary:'true',readonly:'true',value:photo?.provider /}
-	#{html/input id:'photo_time',     isAuthorized:isAuthorized,name:'Time',                placeholder:' ',primary:'true',readonly:'true',type:'date',value:photo?.time /}
+	#{html/input id:'photo_accuracy', isAuthorized:isAuthorized,name:'Accuracy (in meters)',placeholder:' ',primary:'true',value:photo?.accuracy /}
+	#{html/input id:'photo_altitude', isAuthorized:isAuthorized,name:'Altitude (in meters)',placeholder:' ',primary:'true',value:photo?.altitude /}
+	#{html/input id:'photo_bearing',  isAuthorized:isAuthorized,name:'Bearing (in degrees)',placeholder:' ',primary:'true',value:photo?.bearing /}
+	#{html/input id:'photo_latitude', isAuthorized:isAuthorized,name:'Latitude',            placeholder:' ',primary:'true',value:photo?.latitude /}
+	#{html/input id:'photo_longitude',isAuthorized:isAuthorized,name:'Longitude',           placeholder:' ',primary:'true',value:photo?.longitude /}
+	#{html/input id:'photo_provider', isAuthorized:isAuthorized,name:'Provider for geodata',placeholder:' ',primary:'true',value:photo?.provider /}
+	#{html/input id:'photo_time',     isAuthorized:isAuthorized,name:'Time',                placeholder:' ',primary:'true',type:'date',value:photo?.time /}
 </form>
 #{photo_modal photo:photo /}
 <button class='btn btn-default' id='photo_zoom'>Zoom</button>

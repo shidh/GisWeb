@@ -1,7 +1,7 @@
 #{html/select_start id:'type',isAuthorized:isAuthorized,name:'Type' /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.COMBINED_CYCLE.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.GAS_TURBINE.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.RECIPROCATING_ENGINE.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.STEAM_GENERATOR.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.COMBINED_CYCLE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.COMBINED_CYCLE.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.GAS_TURBINE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.GAS_TURBINE.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.RECIPROCATING_ENGINE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.RECIPROCATING_ENGINE.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.STEAM_GENERATOR.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.STEAM_GENERATOR.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name() /}
 #{html/select_end /}

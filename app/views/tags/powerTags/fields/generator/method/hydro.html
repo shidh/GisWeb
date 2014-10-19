@@ -1,5 +1,5 @@
 #{html/select_start id:'method',isAuthorized:isAuthorized,name:'Method' /}
-	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.RUN_OF_THE_RIVER.name /}
-	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.WATER_PUMPED_STORAGE.name /}
-	#{html/option selected:method?.name,value:models.powerTags.Generator.MethodEnum.WATER_STORAGE.name /}
+	#{html/option content:models.powerTags.Generator.MethodEnum.RUN_OF_THE_RIVER.name,selected:method?.name(),value:models.powerTags.Generator.MethodEnum.RUN_OF_THE_RIVER.name() /}
+	#{html/option content:models.powerTags.Generator.MethodEnum.WATER_PUMPED_STORAGE.name,selected:method?.name(),value:models.powerTags.Generator.MethodEnum.WATER_PUMPED_STORAGE.name() /}
+	#{html/option content:models.powerTags.Generator.MethodEnum.WATER_STORAGE.name,selected:method?.name(),value:models.powerTags.Generator.MethodEnum.WATER_STORAGE.name() /}
 #{html/select_end /}

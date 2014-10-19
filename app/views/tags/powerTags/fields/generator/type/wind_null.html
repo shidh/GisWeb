@@ -1,4 +1,4 @@
 #{html/select_start id:'type',isAuthorized:isAuthorized,name:'Type' /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.HORIZONTAL_AXIS.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.VERTICAL_AXIS.name /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.HORIZONTAL_AXIS.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.HORIZONTAL_AXIS.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.VERTICAL_AXIS.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.VERTICAL_AXIS.name() /}
 #{html/select_end /}

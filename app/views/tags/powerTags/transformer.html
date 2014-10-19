@@ -1,6 +1,6 @@
 #{powerTags/fields/frequency isAuthorized:isAuthorized,value:powerTag?.frequency /}
-#{powerTags/fields/location/transformer isAuthorized:isAuthorized,value:powerTag?.location /}
-#{powerTags/fields/phases isAuthorized:isAuthorized,value:powerTag?.phases /}
+#{html/select id:'location',isAuthorized:isAuthorized,name:'Location',selected:powerTag?.location?.name(),values:models.powerTags.Transformer.LocationEnum.class.getEnumConstants() /}
+#{html/input id:'phases',isAuthorized:isAuthorized,name:'Phases',type:'number',min:'0',placeholder:'non-decimal (range [0;∞[)',value:powerTag?.phases /}
 #{powerTags/fields/rating isAuthorized:isAuthorized,value:powerTag?.rating /}
-#{powerTags/fields/type/transformer isAuthorized:isAuthorized,value:powerTag?.type /}
+#{html/select id:'type',isAuthorized:isAuthorized,name:'Type',selected:powerTag?.type?.name(),values:models.powerTags.Transformer.TypeEnum.class.getEnumConstants() /}
 #{powerTags/fields/voltage isAuthorized:isAuthorized,value:powerTag?.voltage /}

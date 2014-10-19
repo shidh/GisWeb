@@ -1,0 +1,8 @@
+<tag k='power' v='line'/>
+#{osm/powerTags/xml/cables powerTag:_powerTag /}
+#{osm/powerTags/xml/operator powerTag:_powerTag /}
+#{osm/powerTags/xml/ref powerTag:_powerTag /}
+#{osm/powerTags/xml/voltage powerTag:_powerTag /}
+#{if _powerTag.wires && _powerTag.wires.name() != "NULL"}
+<tag k='wires' v='${_powerTag.wires.osm}'/>
+#{/if}

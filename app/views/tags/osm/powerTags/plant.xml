@@ -1,0 +1,12 @@
+<tag k='power' v='plant'/>
+#{if _powerTag.landuse && _powerTag.landuse.name() != "NULL"}
+<tag k='landuse' v='${_powerTag.landuse.osm}'/>
+#{/if}
+#{osm/powerTags/xml/name powerTag:_powerTag /}
+#{osm/powerTags/xml/operator powerTag:_powerTag /}
+#{if _powerTag.output && _powerTag.output.name() != "NULL"}
+<tag k='plant:output:${_powerTag.output.osm}' v='${_powerTag.output_value}'/>
+#{/if}
+#{if _powerTag.start_date}
+<tag k='start_date' v='${_powerTag.start_date}'/>
+#{/if}

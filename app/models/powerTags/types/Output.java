@@ -10,15 +10,17 @@ import play.db.jpa.Model;
 public class Output extends Model {
 
 	public enum OutputEnum {
-		BIOGAS("Biogas"), COLD_AIR("Cold Air"), COLD_WATER("Cold Water"), COMPRESSED_AIR(
-				"Compressed Air"), ELECTRICITY("Electricity"), HEAT("Heat"), HOT_AIR(
-				"Hot Air"), HOT_WATER("Hot Water"), NULL("null"), STEAM("Steam"), VACUUM(
-				"Vacuum");
+		BIOGAS("Biogas", "biogas"), COLD_AIR("Cold Air", "cold_air"), COLD_WATER("Cold Water", "cold_water"), COMPRESSED_AIR(
+				"Compressed Air", "compressed_air"), ELECTRICITY("Electricity", "electricity"), HEAT("Heat", "heat"), HOT_AIR(
+				"Hot Air", "hot_air"), HOT_WATER("Hot Water", "hot_water"), NULL(" ", null), STEAM("Steam", "steam"), VACUUM(
+				"Vacuum", "vacuum");
 
 		public final String name;
+		public final String osm;
 
-		OutputEnum(String name) {
+		OutputEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

@@ -10,14 +10,16 @@ import play.db.jpa.Model;
 public class Operator extends Model {
 
 	public enum TypeEnum {
-		COMMUNITY("Community"), GOVERNMENT("Government"), NGO("NGO"), NULL(
-				"null"), PRIVATE("Private"), PUBLIC("Public"), RELIGIOUS(
-				"Religious");
+		COMMUNITY("Community", "community"), GOVERNMENT("Government", "government"), NGO("NGO", "ngo"), NULL(
+				" ", null), PRIVATE("Private", "private"), PUBLIC("Public", "public"), RELIGIOUS(
+				"Religious", "religious");
 
 		public final String name;
+		public final String osm;
 
-		TypeEnum(String name) {
+		TypeEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

@@ -1,0 +1,4 @@
+<tag k='power' v='cable_distribution_cabinet'/>
+#{osm/powerTags/xml/operator powerTag:_powerTag /}
+#{osm/powerTags/xml/ref powerTag:_powerTag /}
+#{osm/powerTags/xml/voltage powerTag:_powerTag /}

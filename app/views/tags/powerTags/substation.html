@@ -1,7 +1,7 @@
-#{powerTags/fields/gas_insulated isAuthorized:isAuthorized,value:powerTag?.gas_insulated /}
-#{powerTags/fields/location/substation isAuthorized:isAuthorized,value:powerTag?.location /}
+#{html/select id:'gas_insulated',isAuthorized:isAuthorized,name:'Gas Insulated',selected:powerTag?.gas_insulated?.name(),values:models.powerTags.Substation.BooleanEnum.class.getEnumConstants() /}
+#{html/select id:'location',isAuthorized:isAuthorized,name:'Location',selected:powerTag?.location?.name(),values:models.powerTags.Substation.LocationEnum.class.getEnumConstants() /}
 #{powerTags/fields/name isAuthorized:isAuthorized,value:powerTag?.name /}
 #{powerTags/fields/operator isAuthorized:isAuthorized,value:powerTag?.operator /}
 #{powerTags/fields/ref isAuthorized:isAuthorized,value:powerTag?.ref /}
-#{powerTags/fields/type/substation isAuthorized:isAuthorized,value:powerTag?.type /}
+#{html/select id:'type',isAuthorized:isAuthorized,name:'Type',selected:powerTag?.type?.name(),values:models.powerTags.Substation.TypeEnum.class.getEnumConstants() /}
 #{powerTags/fields/voltage isAuthorized:isAuthorized,value:powerTag?.voltage /}

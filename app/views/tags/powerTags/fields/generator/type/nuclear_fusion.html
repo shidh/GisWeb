@@ -1,6 +1,6 @@
 #{html/select_start id:'type',isAuthorized:isAuthorized,name:'Type' /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.COLD_FUSION.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.ICF.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.STELLARATOR.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.TOKAMAK.name /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.COLD_FUSION.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.COLD_FUSION.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.ICF.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.ICF.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.STELLARATOR.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.STELLARATOR.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.TOKAMAK.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.TOKAMAK.name() /}
 #{html/select_end /}

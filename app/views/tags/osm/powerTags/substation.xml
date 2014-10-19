@@ -1,0 +1,12 @@
+<tag k='power' v='substation'/>
+#{if _powerTag.gas_insulated && _powerTag.gas_insulated.name() != "NULL"}
+<tag k='gas_insulated' v='${_powerTag.gas_insulated.osm}'/>
+#{/if}
+#{osm/powerTags/xml/location powerTag:_powerTag /}
+#{osm/powerTags/xml/name powerTag:_powerTag /}
+#{osm/powerTags/xml/operator powerTag:_powerTag /}
+#{osm/powerTags/xml/ref powerTag:_powerTag /}
+#{if _powerTag.type && _powerTag.type.name() != "NULL"}
+<tag k='substation' v='${_powerTag.type.osm}'/>
+#{/if}
+#{osm/powerTags/xml/voltage powerTag:_powerTag /}

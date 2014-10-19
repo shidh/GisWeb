@@ -12,13 +12,15 @@ import models.powerTags.types.Operator;
 public class Cable extends PowerTag {
 
 	public enum LocationEnum {
-		NULL("null"), OVERGROUND("Overground"), UNDERGROUND("Underground"), UNDERWATER(
-				"Underwater");
+		NULL(" ", null), OVERGROUND("Overground", "overground"), UNDERGROUND("Underground", "underground"), UNDERWATER(
+				"Underwater", "underwater");
 
 		public final String name;
+		public final String osm;
 
-		LocationEnum(String name) {
+		LocationEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

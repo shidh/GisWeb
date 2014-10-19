@@ -19,8 +19,13 @@
 				}
 			},
 			poi: {
-				done: {
+				already_submitted_to_osm: {
 					color: 'green',
+					icon: 'check-circle',
+					spin: 'false'
+				},
+				done: {
+					color: 'cadetblue',
 					icon: 'check-circle',
 					spin: 'false'
 				},
@@ -38,6 +43,11 @@
 					color: 'red',
 					icon: 'times-circle',
 					spin: 'false'
+				},
+				ready_to_submit_to_osm: {
+					color: 'purple',
+					icon: 'check-circle',
+					spin: 'false'
 				}
 			}
 		};
@@ -54,6 +64,7 @@
 			renderPoiPowerTag: #{jsRoute @renderPoiPowerTag() /},
 			renderPoiPowerTagGeneratorMethod: #{jsRoute @renderPoiPowerTagGeneratorMethod() /},
 			renderPoiPowerTagGeneratorType: #{jsRoute @renderPoiPowerTagGeneratorType() /},
+			renderPoiStatus: #{jsRoute @renderPoiStatus() /},
 			renderSettingsModal: #{jsRoute @renderSettingsModal() /},
 			renderSettingsUserAdministration: #{jsRoute @renderSettingsUserAdministration() /},
 			reservePoi: #{jsRoute @reservePoi() /},
@@ -97,7 +108,7 @@
 			var pois = data.elements;
 			for (var i = 0; i < pois.length; i++) {
 				var poi = pois[i];
-				addMarker(poi.google_id, poi.latitude, poi.longitude, poi.marker_type, poi.marker_id, poi.task_completed, poi.time_stamp);
+				addMarker(poi.google_id, poi.latitude, poi.longitude, poi.marker_type, poi.marker_id, poi.task_status, poi.time_stamp);
 			}
 		});
 	})();

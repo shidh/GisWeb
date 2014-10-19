@@ -1,0 +1,3 @@
+#{if _powerTag.ref}
+<tag k='ref' v='${_powerTag.ref}'/>
+#{/if}

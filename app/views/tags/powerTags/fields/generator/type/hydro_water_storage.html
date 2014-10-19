@@ -1,6 +1,6 @@
 #{html/select_start id:'type',isAuthorized:isAuthorized,name:'Type' /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.FRANCIS_TURBINE.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.HYDRODYNAMIC_SCREW.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.KAPLAN_TURBINE.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.PELTON_TURBINE.name /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.FRANCIS_TURBINE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.FRANCIS_TURBINE.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.HYDRODYNAMIC_SCREW.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.HYDRODYNAMIC_SCREW.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.KAPLAN_TURBINE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.KAPLAN_TURBINE.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.PELTON_TURBINE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.PELTON_TURBINE.name() /}
 #{html/select_end /}

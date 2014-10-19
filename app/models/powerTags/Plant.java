@@ -13,12 +13,14 @@ import models.powerTags.types.Output.OutputEnum;
 public class Plant extends PowerTag {
 
 	public enum LanduseEnum {
-		INDUSTRIAL("Industrial"), NULL("null"), WIND_FARM("Wind Farm");
+		INDUSTRIAL("Industrial", "industrial"), NULL(" ", null), WIND_FARM("Wind Farm", "wind_farm");
 
 		public final String name;
+		public final String osm;
 
-		LanduseEnum(String name) {
+		LanduseEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

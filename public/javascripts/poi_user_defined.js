@@ -15,7 +15,7 @@ function expandPoi() {
 
 function showPoi(poi) {
 
-	if (row_top_collapsed) {
+	if (row_top_collapsed || $('#poi_id').val() == poi.options.id) {
 		var data = [];
 		data.push({
 			name : 'gToken',
@@ -45,6 +45,13 @@ function showPoi(poi) {
 																'poiId' : poiId
 															},
 															function() {
+																
+																$('#poi_status').load(routes.renderPoiStatus.url(), {
+																	'gToken' : getGoogleIdToken(),
+																	'poiId' : poiId
+																},
+																function() {
+																
 																$(
 																		'#poi_power_tag_details')
 																		.load(
@@ -100,6 +107,7 @@ function showPoi(poi) {
 																										});
 																					}
 																				});
+																});
 															});
 										}
 
@@ -210,6 +218,8 @@ $(document).on('click', '#poi_submit', function() {
 		$.post(routes.updatePoi.url(), $.param(data)).done(function() {
 			$('#poi_submit').removeClass('btn-warning');
 			$('#poi_submit').addClass('btn-success');
+			var poi = getMarker('poi', $('#poi_id').val());
+			showPoi(poi);
 		}).fail(function() {
 			$('#poi_submit').removeClass('btn-success');
 			$('#poi_submit').addClass('btn-warning');

@@ -60,6 +60,9 @@ public class Poi extends Model {
 	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
 	public List<LocationTrace> locationTrace;
 
+	@OneToOne
+	public OsmNode osmNode;
+
 	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
 	public List<Photo> photos;
 
@@ -69,7 +72,7 @@ public class Poi extends Model {
 	@OneToOne
 	public GoogleUser googleUser;
 
-	public boolean taskCompleted;
+	public TaskStatus taskStatus;
 	public Long timeStamp;
 
 	public Poi() {
@@ -84,6 +87,16 @@ public class Poi extends Model {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public enum TaskStatus {
+		TODO(0), DONE(1), READY_TO_SUBMIT_TO_OSM(2), SUBMITTED_TO_OSM(3);
+		
+		public final int status;
+		
+		TaskStatus(int status) {
+			this.status = status;
 		}
 	}
 }

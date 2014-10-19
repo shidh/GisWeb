@@ -9,7 +9,7 @@
 @mixin form_fields {
 	$bottom_margin: 10px;
 	padding-top: 5px;
-	button {
+	a, button {
 		margin-bottom: $bottom_margin;
 		vertical-align: bottom !important;}
 	.form-group {

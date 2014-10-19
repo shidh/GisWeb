@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm>
+	<node changeset='${changeset.osmChangesetId}' lat='${poi.latitude}' lon='${poi.longitude}'>
+		#{if poi.street}
+			<tag k='addr:street' v='${poi.street}'/>
+		#{/if}
+		#{if poi.housenumber}
+			<tag k='addr:housenumber' v='${poi.housenumber}'/>
+		#{/if}
+		#{if poi.postcode}
+			<tag k='addr:postcode' v='${poi.postcode}'/>
+		#{/if}
+		#{if poi.city}
+			<tag k='addr:city' v='${poi.city}'/>
+		#{/if}
+		#{if poi.state}
+			<tag k='addr:state' v='${poi.state}'/>
+		#{/if}
+		#{if poi.country}
+			<tag k='addr:country' v='${poi.country}'/>
+		#{/if}
+		#{if poi.altitude}
+			<tag k='ele' v='${poi.altitude}'/>
+		#{/if}
+		#{ifnot poi.powerTag}
+			<tag k='power' v='yes'/>
+		#{/ifnot}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Cable.class)}
+			#{osm/powerTags/cable powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.CableDistributionCabinet.class)}
+			#{osm/powerTags/cable_distribution_cabinet powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Converter.class)}
+			#{osm/powerTags/converter powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Generator.class)}
+			#{osm/powerTags/generator powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Line.class)}
+			#{osm/powerTags/line powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.MinorLine.class)}
+			#{osm/powerTags/minor_line powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Plant.class)}
+			#{osm/powerTags/plant powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Pole.class)}
+			#{osm/powerTags/pole powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Substation.class)}
+			#{osm/powerTags/substation powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Switch.class)}
+			#{osm/powerTags/switch powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Tower.class)}
+			#{osm/powerTags/tower powerTag:poi.powerTag /}
+		#{/elseif}
+		#{elseif poi.powerTag.getClass().equals(models.powerTags.Transformer.class)}
+			#{osm/powerTags/transformer powerTag:poi.powerTag /}
+		#{/elseif}
+	</node>
+</osm>

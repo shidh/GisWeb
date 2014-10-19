@@ -9,11 +9,11 @@
 			disabled
 			#{/if}
 		>
-		<option value='null'> </option>
+		<option value='NULL'> </option>
 		#{list items:_values, as:'value'}
-			#{ifnot value.name == "null"}
-				<option value='${value.name}'
-				#{if value.name == _selected}
+			#{ifnot value.name() == "NULL"}
+				<option value='${value.name()}'
+				#{if value.name() == _selected}
 					selected
 				#{/if}
 				>${value.name}</option>

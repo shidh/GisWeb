@@ -1,0 +1,8 @@
+#{if _powerTag.operator}
+#{if _powerTag.operator.name}
+<tag k='operator' v='${_powerTag.operator.name}'/>
+#{/if}
+#{if _powerTag.operator.type && _powerTag.operator.type.name() != "NULL"}
+<tag k='operator:type' v='${_powerTag.operator.type.osm}'/>
+#{/if}
+#{/if}

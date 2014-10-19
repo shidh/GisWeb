@@ -9,12 +9,14 @@ import models.PowerTag;
 public class Converter extends PowerTag {
 
 	public enum ConverterEnum {
-		BACK_TO_BACK("Back-To-Back"), LCC("LCC"), NULL("null"), VSC("VSC");
+		BACK_TO_BACK("Back-To-Back", "back-to-back"), LCC("LCC", "lcc"), NULL(" ", null), VSC("VSC", "vsc");
 
 		public final String name;
+		public final String osm;
 
-		ConverterEnum(String name) {
+		ConverterEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

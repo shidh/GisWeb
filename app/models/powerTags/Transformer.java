@@ -9,25 +9,29 @@ import models.PowerTag;
 public class Transformer extends PowerTag {
 
 	public enum LocationEnum {
-		INDOOR("Indoor"), NULL("null"), OVERGROUND("Overground"), UNDERGROUND(
-				"Underground"), UNDERWATER("Underwater");
+		NULL(" ", null), OVERGROUND("Overground", "overground"), ROOF("Roof", "roof"), UNDERGROUND(
+				"Underground", "underground"), UNDERWATER("Underwater", "underwater");
 
 		public final String name;
+		public final String osm;
 
-		LocationEnum(String name) {
+		LocationEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 
 	public enum TypeEnum {
-		AUTO("Auto"), CONVERTER("Converter"), DISTRIBUTION("Distribution"), GENERATOR(
-				"Generator"), NULL("null"), PHASE_ANGLE_REGULATOR(
-				"Phase Angle Regulator"), TRACTION("Traction"), YES("Yes");
+		AUTO("Auto", "auto"), CONVERTER("Converter", "converter"), DISTRIBUTION("Distribution", "distribution"), GENERATOR(
+				"Generator", "generator"), NULL(" ", null), PHASE_ANGLE_REGULATOR(
+				"Phase Angle Regulator", "phase_angle_regulator"), TRACTION("Traction", "traction"), YES("Yes", "yes");
 
 		public final String name;
+		public final String osm;
 
-		TypeEnum(String name) {
+		TypeEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

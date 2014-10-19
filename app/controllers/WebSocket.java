@@ -39,7 +39,7 @@ public class WebSocket extends WebSocketController {
 				if (outbound.isOpen()) {
 					outbound.send("%s:%s:%s:%s:%s:%s:%s", event.eventType,
 							event.googleId, event.latitude, event.longitude,
-							event.poiId, event.taskCompleted, event.timeStamp);
+							event.poiId, event.taskStatus.status, event.timeStamp);
 				}
 			}
 
@@ -78,7 +78,7 @@ public class WebSocket extends WebSocketController {
 			googleId = googleUser.googleId;
 		}
 		events.publish(new AddMarker(googleId, poi.latitude, poi.longitude,
-				poi.id, poi.taskCompleted, poi.timeStamp));
+				poi.id, poi.taskStatus, poi.timeStamp));
 	}
 
 	static void publishDeleteMarkerEvent(long poiId) {

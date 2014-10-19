@@ -20,6 +20,7 @@ POST    /createPoi/                             Application.createPoi
 POST    /registerUser/                          Application.registerUser
 POST    /renderPhoto/                           Application.renderPhoto
 POST    /renderPoi/                             Application.renderPoi
+POST    /renderPoiStatus/                       Application.renderPoiStatus
 POST    /renderPoiPowerTag/                     Application.renderPoiPowerTag
 POST    /renderPoiPowerTagGeneratorMethod/      Application.renderPoiPowerTagGeneratorMethod
 POST    /renderPoiPowerTagGeneratorType/        Application.renderPoiPowerTagGeneratorType

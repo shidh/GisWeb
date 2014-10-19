@@ -2,7 +2,7 @@
 #{powerTags/fields/operator isAuthorized:isAuthorized,value:powerTag?.operator /}
 #{powerTags/fields/output isAuthorized:isAuthorized,value:powerTag?.output /}
 #{powerTags/fields/output_value isAuthorized:isAuthorized,value:powerTag?.output_value /}
-#{powerTags/fields/plant isAuthorized:isAuthorized,value:powerTag?.plant /}
-#{powerTags/fields/source isAuthorized:isAuthorized,value:powerTag?.source /}
+#{html/select id:'plant',isAuthorized:isAuthorized,name:'Plant',selected:powerTag?.plant?.name(),values:models.powerTags.Generator.PlantEnum.class.getEnumConstants() /}
+#{html/select id:'source',isAuthorized:isAuthorized,name:'Source',selected:powerTag?.source?.name(),values:models.powerTags.Generator.SourceEnum.class.getEnumConstants() /}
 <div id='generator_method'></div>
 <div id='generator_type'></div>

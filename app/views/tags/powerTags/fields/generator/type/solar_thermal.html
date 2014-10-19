@@ -1,4 +1,4 @@
 #{html/select_start id:'type',isAuthorized:isAuthorized,name:'Type' /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.SOLAR_THERMAL_COLLECTOR.name /}
-	#{html/option selected:type?.name,value:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.SOLAR_THERMAL_COLLECTOR.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.SOLAR_THERMAL_COLLECTOR.name() /}
+	#{html/option content:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name,selected:type?.name(),value:models.powerTags.Generator.TypeEnum.STEAM_TURBINE.name() /}
 #{html/select_end /}

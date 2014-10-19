@@ -1,0 +1,3 @@
+#{if _powerTag.location && _powerTag.location.name() != "NULL"}
+<tag k='location' v='${_powerTag.location.osm}'/>
+#{/if}

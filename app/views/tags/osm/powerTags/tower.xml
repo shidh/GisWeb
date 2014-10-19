@@ -1,0 +1,29 @@
+<tag k='power' v='tower'/>
+#{if _powerTag.color}
+<tag k='colour' v='#${controllers.Application.colorToHex(_powerTag.color)}'/>
+#{/if}
+#{if _powerTag.design && _powerTag.design.name() != "NULL"}
+<tag k='design' v='${_powerTag.design.osm}'/>
+#{/if}
+#{if _powerTag.design_incomplete && _powerTag.design_incomplete.name() != "NULL"}
+<tag k='design:incomplete' v='${_powerTag.design_incomplete.osm}'/>
+#{/if}
+#{if _powerTag.design_name}
+<tag k='design:name' v='${_powerTag.design_name}'/>
+#{/if}
+#{if _powerTag.height}
+<tag k='height' v='${_powerTag.height}'/>
+#{/if}
+#{if _powerTag.material && _powerTag.material.name() != "NULL"}
+<tag k='material' v='${_powerTag.material.osm}'/>
+#{/if}
+#{osm/powerTags/xml/ref powerTag:_powerTag /}
+#{if _powerTag.structure && _powerTag.structure.name() != "NULL"}
+<tag k='structure' v='${_powerTag.structure.osm}'/>
+#{/if}
+#{if _powerTag.transition && _powerTag.transition.name() != "NULL"}
+<tag k='tower' v='${_powerTag.transition.osm}'/>
+#{/if}
+#{if _powerTag.type && _powerTag.type.name() != "NULL"}
+<tag k='tower:type' v='${_powerTag.type.osm}'/>
+#{/if}

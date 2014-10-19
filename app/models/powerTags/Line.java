@@ -12,14 +12,16 @@ import models.powerTags.types.Operator;
 public class Line extends PowerTag {
 
 	public enum WiresEnum {
-		NULL("null"), SINGLE("Single"), DOUBLE("Double"), TRIPLE("Triple"), QUAD(
-				"Quad"), FIVEFOLD("Fivefold"), SIXFOLD("Sixfold"), EIGHTFOLD(
-				"Eightfold");
+		NULL(" ", null), SINGLE("Single", "single"), DOUBLE("Double", "double"), TRIPLE("Triple", "triple"), QUAD(
+				"Quad", "quad"), FIVEFOLD("Fivefold", "fivefold"), SIXFOLD("Sixfold", "sixfold"), EIGHTFOLD(
+				"Eightfold", "eightfold");
 
 		public final String name;
+		public final String osm;
 
-		WiresEnum(String name) {
+		WiresEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

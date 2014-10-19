@@ -1,0 +1,11 @@
+<tag k='power' v='cable'/>
+#{osm/powerTags/xml/cables powerTag:_powerTag /}
+#{if _powerTag.circuits}
+<tag k='circuits' v='${_powerTag.circuits}'/>
+#{/if}
+#{osm/powerTags/xml/frequency powerTag:_powerTag /}
+#{osm/powerTags/xml/location powerTag:_powerTag /}
+#{osm/powerTags/xml/name powerTag:_powerTag /}
+#{osm/powerTags/xml/operator powerTag:_powerTag /}
+#{osm/powerTags/xml/ref powerTag:_powerTag /}
+#{osm/powerTags/xml/voltage powerTag:_powerTag /}

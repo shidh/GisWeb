@@ -1,10 +1,10 @@
-#{powerTags/fields/color isAuthorized:isAuthorized,value:powerTag?.color /}
-#{powerTags/fields/design isAuthorized:isAuthorized,value:powerTag?.design /}
-#{powerTags/fields/design_incomplete isAuthorized:isAuthorized,value:powerTag?.design_incomplete /}
-#{powerTags/fields/design_name isAuthorized:isAuthorized,value:powerTag?.design_name /}
-#{powerTags/fields/height isAuthorized:isAuthorized,value:powerTag?.height /}
-#{powerTags/fields/material isAuthorized:isAuthorized,value:powerTag?.material /}
+#{html/input id:'color',isAuthorized:isAuthorized,name:'Color',type:'color',value:powerTag?.color /}
+#{html/select id:'design',isAuthorized:isAuthorized,name:'Design',selected:powerTag?.design?.name(),values:models.powerTags.Tower.DesignEnum.class.getEnumConstants() /}
+#{html/select id:'design_incomplete',isAuthorized:isAuthorized,name:'Design Incomplete',selected:powerTag?.design_incomplete?.name(),values:models.powerTags.Tower.BooleanEnum.class.getEnumConstants() /}
+#{html/input id:'design_name',isAuthorized:isAuthorized,name:'Design Name',value:powerTag?.design_name /}
+#{html/input id:'height',isAuthorized:isAuthorized,name:'Height',type:'number',min:'0',step:'0.001',placeholder:'meters (decimal; range [0;∞[)',value:powerTag?.height /}
+#{html/select id:'material',isAuthorized:isAuthorized,name:'Material',selected:powerTag?.material?.name(),values:models.powerTags.Tower.MaterialEnum.class.getEnumConstants() /}
 #{powerTags/fields/ref isAuthorized:isAuthorized,value:powerTag?.ref /}
-#{powerTags/fields/structure isAuthorized:isAuthorized,value:powerTag?.structure /}
-#{powerTags/fields/transition isAuthorized:isAuthorized,value:powerTag?.transition /}
-#{powerTags/fields/type/tower isAuthorized:isAuthorized,value:powerTag?.type /}
+#{html/select id:'structure',isAuthorized:isAuthorized,name:'Structure',selected:powerTag?.structure?.name(),values:models.powerTags.Tower.StructureEnum.class.getEnumConstants() /}
+#{html/select id:'transition',isAuthorized:isAuthorized,name:'Transition',selected:powerTag?.transition?.name(),values:models.powerTags.Tower.BooleanEnum.class.getEnumConstants() /}
+#{html/select id:'type',isAuthorized:isAuthorized,name:'Type',selected:powerTag?.type?.name(),values:models.powerTags.Tower.TypeEnum.class.getEnumConstants() /}

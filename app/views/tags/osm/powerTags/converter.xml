@@ -1,0 +1,9 @@
+<tag k='power' v='converter'/>
+#{if _powerTag.converter && _powerTag.converter.name() != "NULL"}
+<tag k='converter' v='${_powerTag.converter.osm}'/>
+#{/if}
+#{if _powerTag.poles}
+<tag k='poles' v='${_powerTag.poles}'/>
+#{/if}
+#{osm/powerTags/xml/rating powerTag:_powerTag /}
+#{osm/powerTags/xml/voltage powerTag:_powerTag /}

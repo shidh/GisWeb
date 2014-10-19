@@ -1,0 +1,18 @@
+<tag k='power' v='generator'/>
+#{osm/powerTags/xml/name powerTag:_powerTag /}
+#{osm/powerTags/xml/operator powerTag:_powerTag /}
+#{if _powerTag.output && _powerTag.output.name() != "NULL"}
+<tag k='generator:output:${_powerTag.output.osm}' v='${_powerTag.output_value}'/>
+#{/if}
+#{if _powerTag.plant && _powerTag.plant.name() != "NULL"}
+<tag k='generator:plant' v='${_powerTag.plant.osm}'/>
+#{/if}
+#{if _powerTag.source && _powerTag.source.name() != "NULL"}
+<tag k='generator:source' v='${_powerTag.source.osm}'/>
+#{/if}
+#{if _powerTag.method && _powerTag.method.name() != "NULL"}
+<tag k='generator:method' v='${_powerTag.method.osm}'/>
+#{/if}
+#{if _powerTag.type && _powerTag.type.name() != "NULL"}
+<tag k='generator:type' v='${_powerTag.type.osm}'/>
+#{/if}

@@ -2,4 +2,4 @@
 #{powerTags/fields/operator isAuthorized:isAuthorized,value:powerTag?.operator /}
 #{powerTags/fields/ref isAuthorized:isAuthorized,value:powerTag?.ref /}
 #{powerTags/fields/voltage isAuthorized:isAuthorized,value:powerTag?.voltage /}
-#{powerTags/fields/wires isAuthorized:isAuthorized,value:powerTag?.wires /}
+#{html/select id:'wires',isAuthorized:isAuthorized,name:'Wires',selected:powerTag?.wires?.name(),values:models.powerTags.Line.WiresEnum.class.getEnumConstants() /}

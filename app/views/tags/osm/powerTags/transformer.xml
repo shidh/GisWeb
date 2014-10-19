@@ -1,0 +1,11 @@
+<tag k='power' v='transformer'/>
+#{osm/powerTags/xml/frequency powerTag:_powerTag /}
+#{osm/powerTags/xml/location powerTag:_powerTag /}
+#{if _powerTag.phases}
+<tag k='phases' v='${_powerTag.phases}'/>
+#{/if}
+#{osm/powerTags/xml/rating powerTag:_powerTag /}
+#{if _powerTag.type && _powerTag.type.name() != "NULL"}
+<tag k='transformer' v='${_powerTag.type.osm}'/>
+#{/if}
+#{osm/powerTags/xml/voltage powerTag:_powerTag /}

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm>
+	<changeset>
+		<tag k='comment' v='Just adding some POI'/>
+		<tag k='created_by' v='grid2osm website'/>
+		<tag k='source' v='https://www.grid2osm.org'/>
+		<tag k='bot' v='no'/>
+	</changeset>
+</osm>

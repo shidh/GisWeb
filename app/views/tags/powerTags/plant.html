@@ -1,6 +1,6 @@
-#{powerTags/fields/landuse isAuthorized:isAuthorized,value:powerTag?.landuse /}
+#{html/select id:'landuse',isAuthorized:isAuthorized,name:'Landuse',selected:powerTag?.landuse?.name(),values:models.powerTags.Plant.LanduseEnum.class.getEnumConstants() /}
 #{powerTags/fields/name isAuthorized:isAuthorized,value:powerTag?.name /}
 #{powerTags/fields/operator isAuthorized:isAuthorized,value:powerTag?.operator /}
 #{powerTags/fields/output isAuthorized:isAuthorized,value:powerTag?.output /}
 #{powerTags/fields/output_value isAuthorized:isAuthorized,value:powerTag?.output_value /}
-#{powerTags/fields/start_date isAuthorized:isAuthorized,value:powerTag?.start_date /}
+#{html/input id:'start_date',isAuthorized:isAuthorized,name:'Start Date',type:'date',value:powerTag?.start_date /}

@@ -1,0 +1,3 @@
+#{if _powerTag.cables}
+<tag k='cables' v='${_powerTag.cables}'/>
+#{/if}

@@ -11,9 +11,12 @@
 		class='form-control'
 		id='${_id}'
 		name='${_id}'
-		#{if _type == 'color'}
+		#{if _content}
+			type='hidden'
+			#{/if}
+		#{elseif _type == 'color'}
 			type='color'
-		#{/if}
+			#{/elseif}
 		#{elseif _type == 'date'}
 			type='datetime-local'
 			#{/elseif}
@@ -54,11 +57,14 @@
 		#{else}
 			placeholder='text'
 			#{/else}
-		#{if _readonly}
+		#{if _readonly || _content}
 			readonly
 			#{/if}
 		#{if _isAuthorized == false}
 			disabled
 			#{/if}
 		>
+	#{if _content}
+		<input class='form-control' type='text' value='${_content}' readonly/>
+		#{/if}
 </div>

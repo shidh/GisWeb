@@ -11,64 +11,73 @@ import models.PowerTag;
 public class Tower extends PowerTag {
 
 	public enum BooleanEnum {
-		FALSE("False"), NULL("null"), TRUE("True");
+		FALSE("False", "no"), NULL(" ", null), TRUE("True", "yes");
 
 		public final String name;
+		public final String osm;
 
-		BooleanEnum(String name) {
+		BooleanEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 
 	public enum DesignEnum {
-		ASYMMETRIC("Asymmetric"), BARREL("Barrel"), BIPOLE("Bipole"), DELTA(
-				"Delta"), DELTA_TWO_LEVEL("Delta And Two-Level"), DONAU("Donau"), DONAU_ONE_LEVEL(
-				"Donau And One-Level"), FLAG("Flag"), FOUR_LEVEL("Four-Level"), GUYED_H_FRAME(
-				"Guyed H-Frame"), GUYED_V_FRAME("Guyed V-Frame"), H_FRAME(
-				"H-Frame"), INCOMPLETE("Incomplete"), MONOPOLAR("Monopolar"), NAME(
-				"Name"), NINE_LEVEL("Nine-Level"), NULL("null"), ONE_LEVEL(
-				"One-Level"), PORTAL("Portal"), PORTAL_THREE_LEVEL(
-				"Portal And Three-Level"), PORTAL_TWO_LEVEL(
-				"Portal And Two-Level"), SIX_LEVEL("Six-Level"), THREE_LEVEL(
-				"Three-Level"), TRIANGLE("Triangle"), TWO_LEVEL("Two-Level"), X_FRAME(
-				"X-Frame"), Y_FRAME("Y-Frame");
+		ASYMMETRIC("Asymmetric", "asymmetric"), BARREL("Barrel", "barrel"), BIPOLE("Bipole", "bipole"), DELTA(
+				"Delta", "delta"), DELTA_TWO_LEVEL("Delta And Two-Level", "delta_two-level"), DONAU("Donau", "donau"), DONAU_ONE_LEVEL(
+				"Donau And One-Level", "donau;one-level"), FLAG("Flag", "flag"), FOUR_LEVEL("Four-Level", "four-level"), GUYED_H_FRAME(
+				"Guyed H-Frame", "guyed_h-frame"), GUYED_V_FRAME("Guyed V-Frame", "guyed_v-frame"), H_FRAME(
+				"H-Frame", "h-frame"), MONOPOLAR("Monopolar", "monopolar"), NINE_LEVEL("Nine-Level", "nine-level"), NULL(" ", null), ONE_LEVEL(
+				"One-Level", "one-level"), PORTAL("Portal", "portal"), PORTAL_THREE_LEVEL(
+				"Portal And Three-Level", "portal_three-level"), PORTAL_TWO_LEVEL(
+				"Portal And Two-Level", "portal_two-level"), SIX_LEVEL("Six-Level", "six-level"), THREE_LEVEL(
+				"Three-Level", "three-level"), TRIANGLE("Triangle", "triangle"), TWO_LEVEL("Two-Level", "two-level"), X_FRAME(
+				"X-Frame", "x-frame"), Y_FRAME("Y-Frame", "y-frame");
 
 		public final String name;
+		public final String osm;
 
-		DesignEnum(String name) {
+		DesignEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 
 	public enum MaterialEnum {
-		CONCRETE("Concrete"), NULL("null"), STEEL("Steel"), WOOD("Wood");
+		ALUMINUM("Aluminum", "aluminum"), COMPOSITE("Composite", "composite"), CONCRETE("Concrete", "concrete"), NULL(" ", null), STEEL("Steel", "steel"), WOOD("Wood", "wood");
 
 		public final String name;
+		public final String osm;
 
-		MaterialEnum(String name) {
+		MaterialEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 
 	public enum StructureEnum {
-		LATTICE("Lattice"), NULL("null"), SOLID("Solid"), TUBULAR("Tubular");
+		LATTICE("Lattice", "lattice"), NULL(" ", null), SOLID("Solid", "solid"), TUBULAR("Tubular", "tubular");
 
 		public final String name;
+		public final String osm;
 
-		StructureEnum(String name) {
+		StructureEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 
 	public enum TypeEnum {
-		ANCHOR("Anchor"), BRANCH("Branch"), CROSSING("Crossing"), NULL("null"), SUSPENSION(
-				"Suspension"), TERMINATION("Termination"), TRANSITION(
-				"Transition"), TRANSPOSING("Transposing");
+		ANCHOR("Anchor", "anchor"), BRANCH("Branch", "branch"), CROSSING("Crossing", "crossing"), NULL(" ", null), SUSPENSION(
+				"Suspension", "suspension"), TERMINATION("Termination", "termination"), TRANSITION(
+				"Transition", "transition"), TRANSPOSING("Transposing", "transposing");
 
 		public final String name;
+		public final String osm;
 
-		TypeEnum(String name) {
+		TypeEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

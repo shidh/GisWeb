@@ -1,0 +1,41 @@
+<label class='checkbox-inline'>
+	<input type='checkbox' id='poi_task_done' name='poi_task_done' value='true'
+	#{if poi?.taskStatus?.status > 0}
+	checked
+	#{/if}
+	#{if isAuthorized == false || poi?.taskStatus?.status > 1}
+	disabled
+	#{/if}
+	> Edit Complete
+</label>
+#{if poi?.taskStatus?.status > 0}
+<label class='checkbox-inline'>
+	<input type='checkbox' id='poi_task_ready' name='poi_task_ready' value='true'
+	#{if poi?.taskStatus?.status > 1}
+	checked
+	#{/if}
+	#{if isAuthorized == false || poi?.taskStatus?.status > 2}
+	disabled
+	#{/if}
+	> Ready To Submit To OSM
+</label>
+#{/if}
+#{if poi?.taskStatus?.status > 1}
+<label class='checkbox-inline'>
+	<input type='checkbox' id='poi_task_submitted' name='poi_task_submitted' value='true'
+	#{if poi?.taskStatus?.status > 2}
+	checked
+	#{/if}
+	#{if isAuthorized == false || poi?.taskStatus?.status > 2}
+	disabled
+	#{/if}
+	> Already Submitted To OSM
+</label>
+#{/if}
+#{if isAuthorized == false || poi?.taskStatus?.status > 1}
+<input type='hidden' id='poi_task_done' name='poi_task_done' value='true'>
+#{/if}
+#{if isAuthorized == false || poi?.taskStatus?.status > 2}
+<input type='hidden' id='poi_task_ready' name='poi_task_ready' value='true'>
+<input type='hidden' id='poi_task_submitted' name='poi_task_submitted' value='true'>
+#{/if}

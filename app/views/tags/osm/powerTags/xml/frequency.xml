@@ -1,0 +1,3 @@
+#{if _powerTag.frequency}
+<tag k='frequency' v='${_powerTag.frequency}'/>
+#{/if}

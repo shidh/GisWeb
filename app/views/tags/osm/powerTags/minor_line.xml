@@ -1,0 +1,6 @@
+<tag k='power' v='minor_line'/>
+#{osm/powerTags/xml/cables powerTag:_powerTag /}
+#{osm/powerTags/xml/name powerTag:_powerTag /}
+#{osm/powerTags/xml/operator powerTag:_powerTag /}
+#{osm/powerTags/xml/ref powerTag:_powerTag /}
+#{osm/powerTags/xml/voltage powerTag:_powerTag /}

@@ -14,30 +14,21 @@
 	#{html/input id:'poi_start_time', isAuthorized:false,       name:'First photo taken at',primary:'true',type:'date',                                 placeholder:'unknown',                            value:poi?.start_time /}
 	#{html/input id:'poi_end_time',   isAuthorized:false,       name:'Last photo taken at', primary:'true',type:'date',                                 placeholder:'unknown',                            value:poi?.end_time /}
 	#{html/select_start id:'poi_power_tag',isAuthorized:isAuthorized,name:'Power Tag',primary:'true' /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Cable.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.CableDistributionCabinet.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Converter.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Generator.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Line.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.MinorLine.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Plant.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Pole.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Substation.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Switch.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Tower.class.getSimpleName()) /}
-		#{html/option selected:controllers.Application.spaceBeforeUpperCase(poi.powerTag.getClass().getSimpleName()),value:controllers.Application.spaceBeforeUpperCase(models.powerTags.Transformer.class.getSimpleName()) /}
+		#{html/option content:'Cable',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Cable.class.getSimpleName() /}
+		#{html/option content:'Cable Distribution Cabinet',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.CableDistributionCabinet.class.getSimpleName() /}
+		#{html/option content:'Converter',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Converter.class.getSimpleName() /}
+		#{html/option content:'Generator',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Generator.class.getSimpleName() /}
+		#{html/option content:'Line',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Line.class.getSimpleName() /}
+		#{html/option content:'Minor Line',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.MinorLine.class.getSimpleName() /}
+		#{html/option content:'Plant',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Plant.class.getSimpleName() /}
+		#{html/option content:'Pole',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Pole.class.getSimpleName() /}
+		#{html/option content:'Substation',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Substation.class.getSimpleName() /}
+		#{html/option content:'Switch',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Switch.class.getSimpleName() /}
+		#{html/option content:'Tower',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Tower.class.getSimpleName() /}
+		#{html/option content:'Transformer',selected:poi.powerTag.getClass().getSimpleName(),value:models.powerTags.Transformer.class.getSimpleName() /}
 	#{html/select_end /}
 	<div id='poi_power_tag_details'></div>
-	<label class='checkbox-inline'>
-		<input type='checkbox' id='poi_task_completed' name='poi_task_completed' value='true'
-		#{if poi?.taskCompleted == true}
-		checked
-		#{/if}
-		#{if isAuthorized == false}
-		disabled
-		#{/if}
-		> Task Completed
-	</label>
+	<div id='poi_status'></div>
 	#{if isAuthorized == true}
 	<button class='btn btn-default' id='poi_submit' type="submit">Submit</button>
 	#{/if}
@@ -45,6 +36,9 @@
 #{poi_photos_modal photos:poi?.photos /}
 <button class='btn btn-default' id='poi_zoom'>Zoom</button>
 <button class='btn btn-default' id='poi_close'>Close</button>
+#{if poi.taskStatus.status == 3}
+<a class='btn btn-default' href='http://api06.dev.openstreetmap.org/node/${poi.osmNode.osmNodeId}' role='button' target='_blank'>Open OSM Website</a>
+#{/if}
 <script type='text/javascript'>
 	(function() {
 		$.get(

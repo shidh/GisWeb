@@ -12,36 +12,42 @@ import models.powerTags.types.Operator;
 public class Substation extends PowerTag {
 
 	public enum BooleanEnum {
-		FALSE("False"), NULL("null"), TRUE("True");
+		FALSE("False", "no"), NULL(" ", null), TRUE("True", "yes");
 
 		public final String name;
+		public final String osm;
 
-		BooleanEnum(String name) {
+		BooleanEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 
 	public enum LocationEnum {
-		INDOOR("Indoor"), KIOSK("Kiosk"), NULL("null"), OUTDOOR("Outdoor"), PLATFORM(
-				"Platform"), ROOFTOP("Rooftop"), UNDERGROUND("Underground");
+		INDOOR("Indoor", "indoor"), KIOSK("Kiosk", "kiosk"), NULL(" ", null), OUTDOOR("Outdoor", "outdoor"), PLATFORM(
+				"Platform", "platform"), ROOFTOP("Rooftop", "rooftop"), UNDERGROUND("Underground", "underground");
 
 		public final String name;
+		public final String osm;
 
-		LocationEnum(String name) {
+		LocationEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 
 	public enum TypeEnum {
-		COMPENSATION("Compensation"), CONVERTER("Converter"), DISTRIBUTION(
-				"Distribution"), INDUSTRIAL("Industrial"), MINOR_DISTRIBUTION(
-				"Minor Distribution"), NULL("null"), TRACTION("Traction"), TRANSITION(
-				"Transition"), TRANSMISSION("Transmission");
+		COMPENSATION("Compensation", "compensation"), CONVERTER("Converter", "converter"), DISTRIBUTION(
+				"Distribution", "distribution"), INDUSTRIAL("Industrial", "industrial"), MINOR_DISTRIBUTION(
+				"Minor Distribution", "minor_distribution"), NULL(" ", null), TRACTION("Traction", "traction"), TRANSITION(
+				"Transition", "transition"), TRANSMISSION("Transmission", "transmission");
 
 		public final String name;
+		public final String osm;
 
-		TypeEnum(String name) {
+		TypeEnum(String name, String osm) {
 			this.name = name;
+			this.osm = osm;
 		}
 	}
 

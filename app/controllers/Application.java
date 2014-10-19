@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 
 import models.*;
 import models.GoogleUser.AccountType;
+import models.Poi.TaskStatus;
 import models.powerTags.Cable;
 import models.powerTags.Converter.ConverterEnum;
 import models.powerTags.Generator.MethodEnum;
@@ -85,6 +86,11 @@ public class Application extends Controller {
 		}
 	}
 
+	public static String colorToHex(Color color) {
+		String rbg = Integer.toHexString(color.getRGB());
+		return rbg.substring(2, rbg.length());
+	}
+
 	public static void createPoi(String token) throws FileNotFoundException {
 
 		Checker checker = new Checker(android_clientId, audience);
@@ -95,7 +101,7 @@ public class Application extends Controller {
 			poi.latLngIsDerived = true;
 			poi.locationTrace = new ArrayList<LocationTrace>();
 			poi.photos = new ArrayList<Photo>();
-			poi.taskCompleted = false;
+			poi.taskStatus = TaskStatus.TODO;
 			int index = 0;
 			Float accuracy = null;
 			Double altitude = null;
@@ -341,7 +347,7 @@ public class Application extends Controller {
 			jsonObject.addProperty("longitude", poi.longitude);
 			jsonObject.addProperty("marker_id", poi.id);
 			jsonObject.addProperty("marker_type", "poi");
-			jsonObject.addProperty("task_completed", poi.taskCompleted);
+			jsonObject.addProperty("task_status", poi.taskStatus.status);
 			jsonObject.addProperty("time_stamp", poi.timeStamp);
 			jsonArray.add(jsonObject);
 		}
@@ -378,18 +384,7 @@ public class Application extends Controller {
 
 		if (photo != null) {
 			renderArgs.put("photo", photo);
-			boolean isAuthorized = false;
-
-			if (isAuthorized(gToken)) {
-				GoogleUser googleUser = getGoogleUser(gToken);
-
-				if (googleUser != null && photo.poi != null
-						&& photo.poi.googleUser != null
-						&& photo.poi.googleUser.equals(googleUser)) {
-					isAuthorized = true;
-				}
-			}
-			renderArgs.put("isAuthorized", isAuthorized);
+			renderArgs.put("isAuthorized", false);
 			render("app/views/tags/photo.html");
 		} else {
 			badRequest();
@@ -417,7 +412,7 @@ public class Application extends Controller {
 				GoogleUser googleUser = getGoogleUser(gToken);
 
 				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
+						&& poi.googleUser.equals(googleUser) && (poi.taskStatus.equals(TaskStatus.TODO) || (!poi.taskStatus.equals(TaskStatus.SUBMITTED_TO_OSM) && isSuperUser(gToken)))) {
 					isAuthorized = true;
 				}
 			}
@@ -428,10 +423,32 @@ public class Application extends Controller {
 		}
 	}
 
+	public static void renderPoiStatus(String gToken, Long poiId) {
+		Poi poi = Poi.findById(poiId);
+
+		if (poi != null) {
+			renderArgs.put("poi", poi);
+			boolean isAuthorized = false;
+
+			if (isAuthorized(gToken)) {
+				GoogleUser googleUser = getGoogleUser(gToken);
+
+				if (googleUser != null && poi.googleUser != null
+						&& poi.googleUser.equals(googleUser) && (poi.taskStatus.equals(TaskStatus.TODO) || (!poi.taskStatus.equals(TaskStatus.SUBMITTED_TO_OSM) && isSuperUser(gToken)))) {
+					isAuthorized = true;
+				}
+			}
+			renderArgs.put("isAuthorized", isAuthorized);
+			render("app/views/tags/poi_task_status.html");
+		} else {
+			badRequest();
+		}
+	}
+
 	public static void renderPoiPowerTag(String gToken, Long poiId,
 			String powerTag) {
 
-		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("null")) {
+		if (powerTag != null && !powerTag.isEmpty() && !powerTag.equals("NULL")) {
 			Poi poi = Poi.findById(poiId);
 
 			if (poi != null) {
@@ -439,7 +456,7 @@ public class Application extends Controller {
 				boolean isAuthorized = false;
 
 				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
+						&& poi.googleUser.equals(googleUser) && (poi.taskStatus.equals(TaskStatus.TODO) || (!poi.taskStatus.equals(TaskStatus.SUBMITTED_TO_OSM) && isSuperUser(gToken)))) {
 					isAuthorized = true;
 				}
 				renderArgs.put("isAuthorized", isAuthorized);
@@ -447,14 +464,13 @@ public class Application extends Controller {
 				if (poi.powerTag != null) {
 					String poiPowerTagClassName = poi.powerTag.getClass()
 							.getSimpleName();
-					String powerTagInput = powerTag.replaceAll(" ", "");
 
-					if (poiPowerTagClassName.equals(powerTagInput)) {
+					if (poiPowerTagClassName.equals(powerTag)) {
 						renderArgs.put("powerTag", poi.powerTag);
 					}
 				}
 				render("app/views/tags/powerTags/"
-						+ powerTag.replaceAll(" ", "_").toLowerCase() + ".html");
+						+ powerTag.replaceAll("(\\p{Ll})(\\p{Lu})", "$1_$2").toLowerCase() + ".html");
 			} else {
 				badRequest();
 			}
@@ -464,7 +480,7 @@ public class Application extends Controller {
 	public static void renderPoiPowerTagGeneratorMethod(String gToken,
 			Long poiId, String source) {
 
-		if (source != null && !source.isEmpty() && !source.equals("null")) {
+		if (source != null && !source.isEmpty() && !source.equals("NULL")) {
 			Poi poi = Poi.findById(poiId);
 
 			if (poi != null) {
@@ -472,7 +488,7 @@ public class Application extends Controller {
 				boolean isAuthorized = false;
 
 				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
+						&& poi.googleUser.equals(googleUser) && (poi.taskStatus.equals(TaskStatus.TODO) || (!poi.taskStatus.equals(TaskStatus.SUBMITTED_TO_OSM) && isSuperUser(gToken)))) {
 					isAuthorized = true;
 				}
 				renderArgs.put("isAuthorized", isAuthorized);
@@ -482,7 +498,7 @@ public class Application extends Controller {
 					Generator generator = (Generator) poi.powerTag;
 
 					if (generator.source != null
-							&& generator.source.name.equals(source)
+							&& generator.source.name().equals(source)
 							&& generator.method != null) {
 						renderArgs.put("method", generator.method);
 					}
@@ -492,8 +508,6 @@ public class Application extends Controller {
 			} else {
 				badRequest();
 			}
-		} else {
-			badRequest();
 		}
 	}
 
@@ -501,7 +515,7 @@ public class Application extends Controller {
 			Long poiId, String sourceMethod) {
 
 		if (sourceMethod != null && !sourceMethod.isEmpty()
-				&& !sourceMethod.equals("null")) {
+				&& !sourceMethod.equals("NULL")) {
 			Poi poi = Poi.findById(poiId);
 
 			if (poi != null) {
@@ -509,7 +523,7 @@ public class Application extends Controller {
 				boolean isAuthorized = false;
 
 				if (googleUser != null && poi.googleUser != null
-						&& poi.googleUser.equals(googleUser)) {
+						&& poi.googleUser.equals(googleUser) && (poi.taskStatus.equals(TaskStatus.TODO) || (!poi.taskStatus.equals(TaskStatus.SUBMITTED_TO_OSM) && isSuperUser(gToken)))) {
 					isAuthorized = true;
 				}
 				renderArgs.put("isAuthorized", isAuthorized);
@@ -519,10 +533,10 @@ public class Application extends Controller {
 					Generator generator = (Generator) poi.powerTag;
 
 					if (generator.source != null && generator.method != null) {
-						String poiSourceMethod = generator.source.name + "_"
-								+ generator.method.name;
+						String poiSourceMethod = generator.source.name() + "_"
+								+ generator.method.name();
 
-						if (poiSourceMethod.equals(sourceMethod)
+						if (poiSourceMethod.toLowerCase().equals(sourceMethod.toLowerCase())
 								&& generator.type != null) {
 							renderArgs.put("type", generator.type);
 						}
@@ -538,8 +552,6 @@ public class Application extends Controller {
 			} else {
 				badRequest();
 			}
-		} else {
-			badRequest();
 		}
 	}
 
@@ -577,6 +589,12 @@ public class Application extends Controller {
 			if (googleUser != null && poi != null) {
 
 				if (poi.googleUser == null) {
+					List<Poi> pois = Poi.find("byGoogleUser", googleUser)
+							.fetch();
+					for (Poi currentPoi : pois) {
+						currentPoi.googleUser = null;
+						currentPoi.store();
+					}
 					poi.googleUser = googleUser;
 
 					if (poi.store()) {
@@ -591,8 +609,15 @@ public class Application extends Controller {
 		}
 	}
 
-	public static String spaceBeforeUpperCase(String str) {
-		return str.replaceAll("(\\p{Ll})(\\p{Lu})", "$1 $2");
+	public static String toLowerString(String str) {
+		
+		try {
+			if (Character.isUpperCase(str.codePointAt(0)) && Character.isLowerCase(str.codePointAt(1))) {
+				return str.toLowerCase();
+			}
+		} catch (Exception e) {
+		}
+		return str;
 	}
 
 	public static void updatePoi() throws ParseException,
@@ -605,6 +630,8 @@ public class Application extends Controller {
 
 			if (googleUser != null && poi != null && poi.googleUser != null
 					&& poi.googleUser.equals(googleUser)) {
+				TaskStatus previousTaskStatus = poi.taskStatus;
+				TaskStatus currentTaskStatus;
 				poi.street = params.get("poi_street");
 				poi.housenumber = params.get("poi_housenumber");
 				poi.postcode = params.get("poi_postcode", Integer.class);
@@ -613,17 +640,37 @@ public class Application extends Controller {
 				poi.country = params.get("poi_country");
 				poi.latitude = params.get("poi_latitude", Double.class);
 				poi.longitude = params.get("poi_longitude", Double.class);
-				poi.taskCompleted = params.get("poi_task_completed",
-						boolean.class);
+				
+				Boolean poi_task_done = params.get("poi_task_done", Boolean.class);
+				Boolean poi_task_ready = params.get("poi_task_ready", Boolean.class);
+				Boolean poi_task_submitted = params.get("poi_task_submitted", Boolean.class);
+				if (poi_task_done != null && poi_task_done) {
+					if (poi_task_ready != null && poi_task_ready) {
+						if (poi_task_submitted != null && poi_task_submitted) {
+							poi.taskStatus = TaskStatus.SUBMITTED_TO_OSM;
+							currentTaskStatus = TaskStatus.SUBMITTED_TO_OSM;
+						} else {
+							poi.taskStatus = TaskStatus.READY_TO_SUBMIT_TO_OSM;
+							currentTaskStatus = TaskStatus.READY_TO_SUBMIT_TO_OSM;
+						}
+					} else {
+						poi.taskStatus = TaskStatus.DONE;
+						currentTaskStatus = TaskStatus.DONE;
+					}
+				} else {
+					poi.taskStatus = TaskStatus.TODO;
+					currentTaskStatus = TaskStatus.TODO;
+				}
+				
 				String powerTagParam = params
 						.get("poi_power_tag");
 				if (poi.powerTag != null) {
 					poi.powerTag.delete();
 					poi.powerTag = null;
 				}
-				if (powerTagParam != null && !powerTagParam.equals("null")) {
+				if (powerTagParam != null && !powerTagParam.equals("NULL")) {
 					Class powerTagClass = Class.forName("models.powerTags."
-							+ powerTagParam.replaceAll(" ", ""));
+							+ powerTagParam);
 					if (powerTagClass.equals(Cable.class)) {
 						poi.powerTag = new Cable(poi);
 						Cable cable = (Cable) poi.powerTag;
@@ -632,14 +679,12 @@ public class Application extends Controller {
 						cable.frequency = params.get("frequency",
 								Float.class);
 						cable.location = Cable.LocationEnum.valueOf(params
-								.get("location")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("location"));
 						cable.name = params.get("name");
 						cable.operator = new Operator(cable);
 						cable.operator.name = params.get("operator_name");
 						cable.operator.type = TypeEnum.valueOf(params
-								.get("operator_type")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("operator_type"));
 						cable.ref = params.get("ref");
 						cable.voltage = params.get("voltage", Float.class);
 					} else if (powerTagClass
@@ -652,8 +697,7 @@ public class Application extends Controller {
 								"operator_name");
 						cableDistributionCabinet.operator.type = TypeEnum
 								.valueOf(params
-										.get("operator_type")
-										.replaceAll(" ", "_").toUpperCase());
+										.get("operator_type"));
 						cableDistributionCabinet.ref = params.get("ref");
 						cableDistributionCabinet.voltage = params.get(
 								"voltage", Float.class);
@@ -661,8 +705,7 @@ public class Application extends Controller {
 						poi.powerTag = new Converter(poi);
 						Converter converter = (Converter) poi.powerTag;
 						converter.converter = ConverterEnum.valueOf(params
-								.get("converter")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("converter"));
 						converter.poles = params.get("poles", Byte.class);
 						converter.rating = params.get("rating", Float.class);
 						converter.voltage = params.get("voltage", Float.class);
@@ -673,30 +716,23 @@ public class Application extends Controller {
 						generator.operator = new Operator(generator);
 						generator.operator.name = params.get("operator_name");
 						generator.operator.type = TypeEnum.valueOf(params
-								.get("operator_type")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("operator_type"));
 						generator.output = OutputEnum.valueOf(params
-								.get("output")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("output"));
 						generator.output_value = params.get("output_value");
 						generator.plant = PlantEnum.valueOf(params
-								.get("plant")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("plant"));
 						String source = params.get("source");
 						String method = params.get("method");
 						String type = params.get("type");
 						if (source != null) {
-							generator.source = SourceEnum.valueOf(source
-									.replaceAll(" ", "_").toUpperCase());
+							generator.source = SourceEnum.valueOf(source);
 						}
 						if (method != null) {
-							generator.method = MethodEnum.valueOf(method
-									.replaceAll(" ", "_").toUpperCase());
+							generator.method = MethodEnum.valueOf(method);
 						}
 						if (type != null) {
-							generator.type = Generator.TypeEnum.valueOf(type
-									.replaceAll(" ", "_").replaceAll("-", "_")
-									.toUpperCase());
+							generator.type = Generator.TypeEnum.valueOf(type);
 						}
 					} else if (powerTagClass.equals(Line.class)) {
 						poi.powerTag = new Line(poi);
@@ -705,13 +741,11 @@ public class Application extends Controller {
 						line.operator = new Operator(line);
 						line.operator.name = params.get("operator_name");
 						line.operator.type = TypeEnum.valueOf(params
-								.get("operator_type")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("operator_type"));
 						line.ref = params.get("ref");
 						line.voltage = params.get("voltage", Float.class);
 						line.wires = WiresEnum.valueOf(params
-								.get("wires")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("wires"));
 					} else if (powerTagClass.equals(MinorLine.class)) {
 						poi.powerTag = new MinorLine(poi);
 						MinorLine minorLine = (MinorLine) poi.powerTag;
@@ -720,25 +754,21 @@ public class Application extends Controller {
 						minorLine.operator = new Operator(minorLine);
 						minorLine.operator.name = params.get("operator_name");
 						minorLine.operator.type = TypeEnum.valueOf(params
-								.get("operator_type")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("operator_type"));
 						minorLine.ref = params.get("ref");
 						minorLine.voltage = params.get("voltage", Float.class);
 					} else if (powerTagClass.equals(Plant.class)) {
 						poi.powerTag = new Plant(poi);
 						Plant plant = (Plant) poi.powerTag;
 						plant.landuse = LanduseEnum.valueOf(params
-								.get("landuse")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("landuse"));
 						plant.name = params.get("name");
 						plant.operator = new Operator(plant);
 						plant.operator.name = params.get("operator_name");
 						plant.operator.type = TypeEnum.valueOf(params
-								.get("operator_type")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("operator_type"));
 						plant.output = OutputEnum.valueOf(params
-								.get("output")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("output"));
 						plant.output_value = params.get("output_value");
 						String start_date = params.get("start_date");
 						if (!start_date.isEmpty()) {
@@ -754,21 +784,17 @@ public class Application extends Controller {
 						poi.powerTag = new Substation(poi);
 						Substation substation = (Substation) poi.powerTag;
 						substation.gas_insulated = BooleanEnum.valueOf(params
-								.get("gas_insulated")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("gas_insulated"));
 						substation.location = Substation.LocationEnum
-								.valueOf(params.get("location")
-										.replaceAll(" ", "_").toUpperCase());
+								.valueOf(params.get("location"));
 						substation.name = params.get("name");
 						substation.operator = new Operator(substation);
 						substation.operator.name = params.get("operator_name");
 						substation.operator.type = TypeEnum.valueOf(params
-								.get("operator_type")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("operator_type"));
 						substation.ref = params.get("ref");
 						substation.type = Substation.TypeEnum.valueOf(params
-								.get("type").replaceAll(" ", "_")
-								.toUpperCase());
+								.get("type"));
 						substation.voltage = params.get("voltage", Float.class);
 					} else if (powerTagClass.equals(Switch.class)) {
 						poi.powerTag = new Switch(poi);
@@ -778,42 +804,44 @@ public class Application extends Controller {
 						tower.color = Color.decode(params.get("color",
 								String.class));
 						tower.design = DesignEnum.valueOf(params
-								.get("design")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("design"));
 						tower.design_incomplete = models.powerTags.Tower.BooleanEnum.valueOf(params
-								.get("design_incomplete")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("design_incomplete"));
 						tower.design_name = params.get("design_name");
 						tower.height = params.get("height", Float.class);
 						tower.material = MaterialEnum.valueOf(params
-								.get("material")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("material"));
 						tower.ref = params.get("ref");
 						tower.structure = StructureEnum.valueOf(params
-								.get("structure")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("structure"));
 						tower.transition = models.powerTags.Tower.BooleanEnum.valueOf(params
-								.get("transition")
-								.replaceAll(" ", "_").toUpperCase());
+								.get("transition"));
 						tower.type = Tower.TypeEnum.valueOf(params
-								.get("type").replaceAll(" ", "_")
-								.toUpperCase());
+								.get("type"));
 					} else if (powerTagClass.equals(Transformer.class)) {
 						poi.powerTag = new Transformer(poi);
 						Transformer transformer = (Transformer) poi.powerTag;
 						transformer.frequency = params.get("frequency",
 								Float.class);
 						transformer.location = Transformer.LocationEnum
-								.valueOf(params.get("location")
-										.replaceAll(" ", "_").toUpperCase());
+								.valueOf(params.get("location"));
 						transformer.phases = params
 								.get("phases", Integer.class);
 						transformer.rating = params.get("rating", Float.class);
 						transformer.type = Transformer.TypeEnum.valueOf(params
-								.get("type").replaceAll(" ", "_")
-								.toUpperCase());
+								.get("type"));
 						transformer.voltage = params
 								.get("voltage", Float.class);
+					}
+				}
+				if (previousTaskStatus.equals(TaskStatus.READY_TO_SUBMIT_TO_OSM) && currentTaskStatus.equals(TaskStatus.SUBMITTED_TO_OSM)) {
+					OsmNode osmNode = OpenStreetMap.createNode(poi);
+					
+					if (osmNode != null) {
+						poi.osmNode = osmNode;
+					} else {
+						badRequest();
+						return;
 					}
 				}
 				if (poi.store()) {
