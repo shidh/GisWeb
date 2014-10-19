@@ -8,5 +8,5 @@
 <tag k='plant:output:${_powerTag.output.osm}' v='${_powerTag.output_value}'/>
 #{/if}
 #{if _powerTag.start_date}
-<tag k='start_date' v='${_powerTag.start_date}'/>
+<tag k='start_date' v='${controllers.Application.getUtcTime(_powerTag.start_date)}'/>
 #{/if}
