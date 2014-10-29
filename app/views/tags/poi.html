@@ -33,6 +33,11 @@
 	<button class='btn btn-default' id='poi_submit' type="submit">Submit</button>
 	#{/if}
 </form>
+#{if isAuthorized == true && poi && poi.googleUser &&
+((poi.googleUser.accountType.name() == "USER"      && poi.taskStatus.name() == "TODO")||
+ (poi.googleUser.accountType.name() == "SUPERUSER" && poi.taskStatus.name() != "SUBMITTED_TO_OSM"))}
+	#{poi_delete_modal /}
+#{/if}
 #{poi_photos_modal photos:poi?.photos /}
 <button class='btn btn-default' id='poi_zoom'>Zoom</button>
 <button class='btn btn-default' id='poi_close'>Close</button>
@@ -56,6 +61,9 @@
 			routes.jsonLocationTrace.url(),
 			$.param({poiId : $('#poi_id').val()}),
 			function(data) {
+				if (polygon) {
+					map.removeLayer(polygon);
+				}
 				polygon = L.polygon(data).addTo(map);
 			}
 		);

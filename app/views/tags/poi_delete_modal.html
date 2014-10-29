@@ -1,0 +1,25 @@
+<!-- Button trigger modal -->
+<button class='btn btn-default'
+	data-toggle='modal' data-target='#delete_poi_button'>Delete POI</button>
+
+<!-- Modal -->
+<div class='modal fade' id='delete_poi_button' tabindex='-1' role='dialog'
+	aria-labelledby='delete_poi_button_label' aria-hidden='true'>
+	<div class='modal-dialog'>
+		<div class='modal-content'>
+			<div class='modal-header'>
+				<button type='button' class='close' data-dismiss='modal'>
+					<span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span>
+				</button>
+				<h4 class='modal-title' id='delete_poi_button_label'>Delete POI</h4>
+			</div>
+			<div class='modal-body'>
+				<p>Do you really want to delete the POI?</p>
+			</div>
+			<div class='modal-footer'>
+				<button id='poi_delete' type='button' class='btn btn-success'>Yes</button>
+				<button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
+			</div>
+		</div>
+	</div>
+</div>

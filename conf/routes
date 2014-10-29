@@ -17,6 +17,7 @@ GET     /jsonPoi/                               Application.jsonPoi
 POST    /broadcastClosePoi/                     Application.broadcastClosePoi
 POST    /broadcastOpenPoi/                      Application.broadcastOpenPoi
 POST    /createPoi/                             Application.createPoi
+POST    /deletePoi/                             Application.deletePoi
 POST    /registerUser/                          Application.registerUser
 POST    /renderPhoto/                           Application.renderPhoto
 POST    /renderPoi/                             Application.renderPoi

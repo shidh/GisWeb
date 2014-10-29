@@ -219,6 +219,30 @@ public class Application extends Controller {
 		}
 	}
 
+	public static void deletePoi(String gToken, Long poiId) {
+		
+		if (isAuthorized(gToken)) {
+			GoogleUser googleUser = getGoogleUser(gToken);
+			Poi poi = Poi.findById(poiId);
+
+			if (googleUser != null && poi != null && poi.googleUser != null
+					&& poi.googleUser.equals(googleUser)) {
+				
+				if ((googleUser.accountType.equals(AccountType.USER) && poi.taskStatus.equals(TaskStatus.TODO))||(googleUser.accountType.equals(AccountType.SUPERUSER) && !poi.taskStatus.equals(TaskStatus.SUBMITTED_TO_OSM))) {
+					poi.delete();
+					WebSocket.publishDeleteMarkerEvent(poiId);
+					ok();
+				} else {
+					forbidden();
+				}
+			} else {
+				badRequest();
+			}
+		} else {
+			unauthorized();
+		}
+	}
+
 	private static String getGoogleId(String gToken) {
 
 		if (gToken != null) {

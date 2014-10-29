@@ -13,6 +13,14 @@ function expandPoi() {
 	}
 }
 
+function removePoiLayers() {
+	map.removeLayer(polygon);
+	for ( var i = 0; i < photoArray.length; i++) {
+		map.removeLayer(photoArray[i]);
+	}
+	photoArray = [];
+}
+
 function showPoi(poi) {
 
 	if (row_top_collapsed || $('#poi_id').val() == poi.options.id) {
@@ -190,12 +198,31 @@ $(document).on('click', '#poi_close', function() {
 	$.post(routes.broadcastClosePoi.url(), $.param(data)).done(function() {
 		collapsePhoto();
 		collapsePoi();
+		removePoiLayers();
+	});
+});
 
-		map.removeLayer(polygon);
-		for ( var i = 0; i < photoArray.length; i++) {
-			map.removeLayer(photoArray[i]);
-		}
-		photoArray = [];
+$(document).on('click', '#poi_delete', function() {
+	var data = [];
+	data.push({
+		name : 'gToken',
+		value : getGoogleIdToken()
+	});
+	data.push({
+		name : 'poiId',
+		value : $('#poi_id').val()
+	});
+	$.post(routes.deletePoi.url(), $.param(data)).done(function() {
+		$('#poi_delete').removeClass('btn-warning');
+		$('#poi_delete').addClass('btn-success');
+		$('#delete_poi_button').modal('hide');
+		$('body').removeClass('modal-open');
+		$('.modal-backdrop').remove();
+		collapsePoi();
+		removePoiLayers();
+	}).fail(function() {
+		$('#poi_delete').removeClass('btn-success');
+		$('#poi_delete').addClass('btn-warning');
 	});
 });
 
